@@ -1,7 +1,4 @@
-#from controle.ctrl_sistema import CtrlSistema
+from controle.ctrl_sistema import CtrlSistema
 
-#if __name__ == "__main__":
-#  CtrlSistema().iniciar()
-
-print("teste!")
-print("testando merge branch")
+if __name__ == "__main__":
+    CtrlSistema().programaPrincipal()
