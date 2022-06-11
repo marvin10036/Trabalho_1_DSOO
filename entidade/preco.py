@@ -40,5 +40,5 @@ class Preco():
     def cadastrador(self, cadastrador):
         self.__cadastrador = cadastrador
 
-    def somaConfirmacao(self, confirmacao: int):
+    def soma_confirmacao(self, confirmacao: int):
         self.__confirmacoes += confirmacao
