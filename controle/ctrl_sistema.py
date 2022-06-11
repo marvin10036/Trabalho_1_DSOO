@@ -1,6 +1,5 @@
 
 
-
 class CtrlSistema():
   def __init__(self):
     pass
@@ -8,4 +7,7 @@ class CtrlSistema():
   def programaPrincipal(self):
     print("Chamou programa principal.")
     pass
- 
+
+
+if __name__ == "__main__":
+    CtrlSistema().programaPrincipal()
