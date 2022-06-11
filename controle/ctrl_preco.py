@@ -7,10 +7,10 @@ class CtrlPreco():
         self.__tela = TelaPreco()
 
     def novo(self) -> list:
-        valor = self.__tela.pedeDados()
+        valor = self.__tela.pede_dados()
         if valor != None:
-            novoPreco = Preco(valor, "cadastrador") #TODO falta cadastrador
-            return novoPreco
+            novo_preco = Preco(valor, "cadastrador") #TODO falta cadastrador
+            return novo_preco
         else:
             return None
 

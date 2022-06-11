@@ -2,16 +2,16 @@
 
 
 class TelaPreco():
-    def pedeDados(self) -> float:
+    def pede_dados(self) -> float:
         while True:
-            entradaPreco = input("Insira o preco: R$")
+            entrada = input("Insira o preco: R$")
 
-            if entradaPreco == '':
+            if entrada == '':
                 return None
             else:
-                entradaPreco.replace(",", ".")
+                entrada.replace(",", ".")
                 try:
-                    preco = round(float(entradaPreco), 2)
+                    preco = round(float(entrada), 2)
                     return preco
                 except Exception: #ValueError
                     print("Valor inválido. Tente novamente.")

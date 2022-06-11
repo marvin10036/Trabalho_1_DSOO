@@ -7,36 +7,36 @@ class CtrlQualificador():
         self.__tela = TelaQualificador()
 
     def __imprime_qualificadores(self, qualificadores: list):
-        self.__tela.imprimeTitulo("Qualificadores")
+        self.__tela.imprime_titulo("Qualificadores")
         for qualificador in qualificadores:
             titulo = qualificador.titulo
             descricao = qualificador.descricao
-            self.__tela.imprimeQualificador(titulo, descricao)
-        self.__tela.linhaDeFechamento()
+            self.__tela.imprime_qualificador(titulo, descricao)
+        self.__tela.linha_de_fechamento()
 
     def novo(self) -> list:
         inserindo = True
-        listaQualificadores = []
+        lista_qualificadores = []
 
-        while (inserindo == True):
-            titulo = self.__tela.pedeTitulo()
-            descricao = self.__tela.pedeDescricao()
+        while inserindo is True:
+            titulo = self.__tela.pede_titulo()
+            descricao = self.__tela.pede_descricao()
 
-            if (titulo != None) and (descricao != None):
-                listaQualificadores.append(Qualificador(titulo, descricao))
-                self.__imprime_qualificadores(listaQualificadores)
+            if (titulo is not None) and (descricao is not None):
+                lista_qualificadores.append(Qualificador(titulo, descricao))
+                self.__imprime_qualificadores(lista_qualificadores)
                 inserindo = self.__tela.continuar("Qualificador criado com sucesso.")
             else:
-                self.__imprime_qualificadores(listaQualificadores)
+                self.__imprime_qualificadores(lista_qualificadores)
                 inserindo = self.__tela.continuar("Qualificador nao foi criado: "
                                                   "valor inválido inserido em um dos campos.")
-        if len(listaQualificadores) != 0:
-            return listaQualificadores
+        if len(lista_qualificadores) != 0:
+            return lista_qualificadores
         else:
             return None
 
 
-#teste da classe controle
+# teste da classe controle
 if __name__ == "__main__":
     ctrl = CtrlQualificador()
     ctrl.novo()

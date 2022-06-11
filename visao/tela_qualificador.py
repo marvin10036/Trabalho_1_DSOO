@@ -2,13 +2,13 @@ from visao.tela import Tela
 
 
 class TelaQualificador(Tela):
-    def pedeTitulo(self) -> str:
-        return super()._pedeStr("Insira o titulo: ")
+    def pede_titulo(self) -> str:
+        return super()._pede_str("Insira o titulo: ")
 
-    def pedeDescricao(self) -> str:
-        return super()._pedeStr("Insira a descricao: ")
+    def pede_descricao(self) -> str:
+        return super()._pede_str("Insira a descricao: ")
 
-    def continuar(self, msg) -> str:
+    def continuar(self, msg) -> bool:
         print(msg)
         entrada = input("Deseja inserir mais qualificadores? [S/N] ").capitalize()
         if entrada == 'S':
@@ -16,13 +16,13 @@ class TelaQualificador(Tela):
         else:
             return False
 
-    def imprimeTitulo(self, msg: str):
-        super()._imprimeLinhaTitulo(msg)
+    def imprime_titulo(self, msg: str):
+        super()._imprime_linha_titulo(msg)
 
-    def linhaDeFechamento(self):
-        super()._imprimeLinhaFechamento()
+    def linha_de_fechamento(self):
+        super()._imprime_linha_fechamento()
 
-    def imprimeQualificador(self, titulo: str, descricao: str):
+    def imprime_qualificador(self, titulo: str, descricao: str):
             print("- Titulo: {} \tDescricao: {}".format(titulo, descricao))
 
 #teste para TelaQualificador
