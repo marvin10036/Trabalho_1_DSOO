@@ -14,13 +14,13 @@ class RegistroDePreco():
         return self.__qualificadores
 
     @property
-    def qualificadores(self):
-        return self.__qualificadores
+    def precos(self):
+        return self.__precos
 
     @property
-    def qualificadores(self):
-        return self.__qualificadores
+    def mercados(self):
+        return self.__mercados
 
     @property
-    def qualificadores(self):
-        return self.__qualificadores
+    def cadastrador(self):
+        return self.__cadastrador

@@ -1,8 +1,8 @@
-
+from visao.tela import Tela
 
 
 class TelaPreco():
-    def pede_dados(self) -> float:
+    def pede_valor(self) -> float:
         while True:
             entrada = input("Insira o preco: R$")
 
