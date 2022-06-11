@@ -1,12 +1,12 @@
-from entidade.categoria import Categoria
+
 
 
 class Produto():
-    def __init__(self, categoria: Categoria, nome: str, descricao: str, qualificadores: list, cadastrador: str):
-        self.__categoria = categoria
+    def __init__(self, nome: str, descricao: str, cadastrador: str):
+        self.__categoria = None
         self.__nome = nome
         self.__descricao = descricao
-        self.__qualificadores = qualificadores
+        self.__qualificadores = None
         self.__cadastrador = cadastrador
 
     @property

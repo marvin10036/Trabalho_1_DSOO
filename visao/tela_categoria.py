@@ -1,6 +1,6 @@
+from visao.tela import Tela
 
 
-
-class TelaCategoria():
-    def __init__(self):
-        pass
+class TelaCategoria(Tela):
+    def pede_nome(self):
+        return super()._pede_str("Nome da categoria: ")

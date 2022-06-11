@@ -7,8 +7,11 @@ class CtrlPreco():
         self.__tela = TelaPreco()
 
     def novo(self) -> Preco:
+        self.__tela.imprime_titulo("Novo preco")
         valor = self.__tela.pede_valor()
-        if valor != None:
+        self.__tela.imprime_linha_de_fechamento()
+
+        if valor is not None:
             novo_preco = Preco(valor, "cadastrador") #TODO falta cadastrador
             return novo_preco
         else:
