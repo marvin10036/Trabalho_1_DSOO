@@ -6,11 +6,13 @@ class CtrlPreco():
     def __init__(self):
         self.__tela = TelaPreco()
 
-    def novo(self) -> Preco:
-        print("entrou em novo")
+    def novo(self) -> list:
         valor = self.__tela.pedeDados()
-        novoPreco = Preco(valor, "cadastrador") #TODO falta cadastrador
-        return novoPreco
+        if valor != None:
+            novoPreco = Preco(valor, "cadastrador") #TODO falta cadastrador
+            return novoPreco
+        else:
+            return None
 
 
 if __name__ == "__main__":
