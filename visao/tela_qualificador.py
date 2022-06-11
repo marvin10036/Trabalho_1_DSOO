@@ -16,12 +16,6 @@ class TelaQualificador(Tela):
         else:
             return False
 
-    def imprime_titulo(self, msg: str):
-        super()._imprime_linha_titulo(msg)
-
-    def linha_de_fechamento(self):
-        super()._imprime_linha_fechamento()
-
     def imprime_qualificador(self, titulo: str, descricao: str):
             print("- Titulo: {} \tDescricao: {}".format(titulo, descricao))
 

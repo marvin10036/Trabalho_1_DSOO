@@ -1,10 +1,13 @@
 
 
 class Tela():
+    def imprime(self, texto: str):
+        print(texto)
+
     #imprime linha no estilo -----"texto"-----
-    def _imprime_linha_titulo(self, texto: str):
+    def imprime_titulo(self, texto: str):
         tamanho = len(texto)
-        lados = (40 - x) // 2
+        lados = (40 - tamanho) // 2
 
         if tamanho <= 40:
             print()
@@ -19,7 +22,7 @@ class Tela():
         else:
             print(texto)
 
-    def _imprime_linha_fechamento(self):
+    def imprime_linha_de_fechamento(self):
         print('-' * 40, end='')
         print()
 
