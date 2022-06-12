@@ -32,7 +32,7 @@ class CtrlRegistroDePreco():
                 self.__tela.imprime("Produto nao encontrado: sera criado um novo com o nome inserido.")
 
                 self.__tela.imprime("Escolha uma categoria para o produto.")
-                categoria = self.__ctrl_categoria.listar(self.__usuario_logado)
+                categoria = self.__ctrl_categoria.selecionar_categoria(self.__usuario_logado)
 
                 self.__tela.imprime("Crie um conjunto de qualificadores para o produto. Exemplo: 'Marca' e 'Peso'")
                 novos_qualificadores = self.__ctrl_qualificador.novo(com_descricao=False)
@@ -54,7 +54,7 @@ class CtrlRegistroDePreco():
             preco = self.__ctrl_preco.novo(self.__usuario_logado)
 
             self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
-            mercado = self.__ctrl_mercado.listar(self.__usuario_logado)
+            mercado = self.__ctrl_mercado.selecionar_mercado(self.__usuario_logado)
 
             for registro in self.__registros: #todo arrumar checagem
                 if registro.nome_produto == nome_produto:
