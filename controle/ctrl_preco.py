@@ -6,13 +6,13 @@ class CtrlPreco():
     def __init__(self):
         self.__tela = TelaPreco()
 
-    def novo(self) -> Preco:
+    def novo(self, cadastrador) -> Preco: #TODO falta especificar tipo cadastrador
         self.__tela.imprime_titulo("Novo preco")
         valor = self.__tela.pede_valor()
         self.__tela.imprime_linha_de_fechamento()
 
         if valor is not None:
-            novo_preco = Preco(valor, "cadastrador") #TODO falta cadastrador
+            novo_preco = Preco(valor, cadastrador)
             return novo_preco
         else:
             return None

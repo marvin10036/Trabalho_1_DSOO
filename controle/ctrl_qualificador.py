@@ -16,24 +16,28 @@ class CtrlQualificador():
 
         self.__tela.imprime_linha_de_fechamento()
 
-    def novo(self):
+    def novo(self, com_descricao = True):
         inserindo = True
         lista_qualificadores = []
 
         self.__tela.imprime_titulo("Novo conjunto de qualificadores")
         while inserindo is True:
-            titulo = self.__tela.pede_titulo()  #todo nao pode ter dois com mesmo titulo
-            #descricao = self.__tela.pede_descricao()
+            titulo = self.__tela.pede_titulo(lista_qualificadores)
+
+            if com_descricao:
+                descricao = self.__tela.pede_descricao()
+            else:
+                descricao = ''
 
             #and (descricao is not None)
             if (titulo is not None):
-                lista_qualificadores.append(Qualificador(titulo, ''))
+                lista_qualificadores.append(Qualificador(titulo, descricao))
                 self.__imprime_qualificadores(lista_qualificadores)
-                inserindo = self.__tela.continuar("Qualificador criado com sucesso.")
+                inserindo = self.__tela.continuar("[Qualificador criado com sucesso]")
             else:
                 self.__imprime_qualificadores(lista_qualificadores)
-                inserindo = self.__tela.continuar("Qualificador nao foi criado: "
-                                                  "valor inválido inserido em um dos campos.")
+                inserindo = self.__tela.continuar("[Qualificador nao foi criado: "
+                                                  "valor inválido inserido em um dos campos]")
 
         if len(lista_qualificadores) != 0:
             self.__tela.imprime_linha_de_fechamento()
@@ -42,6 +46,9 @@ class CtrlQualificador():
             self.__tela.imprime("[Qualificadores nao foram criados]")
             self.__tela.imprime_linha_de_fechamento()
             return None
+
+    def novo_objeto_qualificador(self, titulo: str, descricao: str):
+        return Qualificador(titulo, descricao)
 
 
 
