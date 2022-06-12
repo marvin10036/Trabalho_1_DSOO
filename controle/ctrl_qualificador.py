@@ -23,10 +23,11 @@ class CtrlQualificador():
         self.__tela.imprime_titulo("Novo conjunto de qualificadores")
         while inserindo is True:
             titulo = self.__tela.pede_titulo()  #todo nao pode ter dois com mesmo titulo
-            descricao = self.__tela.pede_descricao()
+            #descricao = self.__tela.pede_descricao()
 
-            if (titulo is not None) and (descricao is not None):
-                lista_qualificadores.append(Qualificador(titulo, descricao))
+            #and (descricao is not None)
+            if (titulo is not None):
+                lista_qualificadores.append(Qualificador(titulo, ''))
                 self.__imprime_qualificadores(lista_qualificadores)
                 inserindo = self.__tela.continuar("Qualificador criado com sucesso.")
             else:
@@ -41,6 +42,8 @@ class CtrlQualificador():
             self.__tela.imprime("[Qualificadores nao foram criados]")
             self.__tela.imprime_linha_de_fechamento()
             return None
+
+
 
 
 # teste da classe controle

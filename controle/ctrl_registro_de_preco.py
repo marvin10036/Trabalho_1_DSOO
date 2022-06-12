@@ -18,6 +18,7 @@ class CtrlRegistroDePreco():
 
     def novo_registro(self):
         self.__tela.imprime_titulo("Novo registro de preco.")
+        self.__tela.imprime("Selecione o mercado:")
 
 
 if __name__ == "__main__":

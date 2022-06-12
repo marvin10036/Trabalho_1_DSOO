@@ -33,8 +33,27 @@ class CtrlMercado():
             return None
 
     def listar(self):
-        pass
+        self.__tela.imprime_titulo("Lista de mercados")
+        count = 1
+
+        for mercado in self.__mercados:
+            self.__tela.imprime("{} - {} - Endereco: {}.".format(count, mercado.nome, mercado.endereco))
+        self.__tela.imprime("0 - CRIAR NOVO MERCADO")
+
+        opcao = self.__tela.seleciona_mercado(len(self.__mercados))
+        self.__tela.imprime_linha_de_fechamento()
+
+        if opcao is None:
+            return None
+        elif opcao == 0:
+            self.novo()
+        else:
+            return self.__mercados[opcao - 1]
+
+
 
 if __name__ == "__main__":
     ctrl = CtrlMercado()
-    ctrl.novo()
+#    ctrl.novo()
+    ctrl.listar()
+    ctrl.listar()

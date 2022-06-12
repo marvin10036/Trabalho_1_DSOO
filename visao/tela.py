@@ -32,3 +32,18 @@ class Tela():
             return None
         else:
             return entrada
+
+    def _seleciona_opcao_int(self, n_de_opcoes: int):
+        while True:
+            entrada = input("Selecione uma opcao: ")
+
+            if entrada == '':
+                return None
+            try:
+                entrada = int(entrada)
+                if entrada >= 0 and entrada <= n_de_opcoes: #dentro da faixa de opcoes
+                    return entrada
+                else:
+                    raise ValueError
+            except ValueError:
+                print("Entrada inserida inválida: favor inserir valor inteiro dentro da faixa de opcoes fornecidas.")

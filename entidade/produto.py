@@ -2,11 +2,11 @@
 
 
 class Produto():
-    def __init__(self, nome: str, descricao: str, cadastrador: str):
+    def __init__(self, nome: str, descricao: str, qualificadores, cadastrador: str):
         self.__categoria = None
         self.__nome = nome
         self.__descricao = descricao
-        self.__qualificadores = None
+        self.__qualificadores = qualificadores
         self.__cadastrador = cadastrador
 
     @property
