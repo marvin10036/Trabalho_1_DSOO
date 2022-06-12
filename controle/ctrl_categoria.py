@@ -31,7 +31,21 @@ class CtrlCategoria():
         else:
             return None
 
+    def listar(self):
+        self.__tela.imprime_titulo("Lista de categorias")
+        count = 1
+        for categoria in self.__categorias:
+            self.__tela.imprime("{} - Categoria: {}.".format(count, categoria.nome))
+        self.__tela.imprime("0 - CRIAR NOVA CATEGORIA")
+        opcao = self.__tela.seleciona_categoria(len(self.__categorias))
+
+        if opcao is None:
+            return None
+        elif opcao == 0:
+            self.novo()
+        else:
+            return self.__categorias[opcao - 1]
 
 
 if __name__ == "__main__":
-    CtrlCategoria().novo()
+    CtrlCategoria().listar()

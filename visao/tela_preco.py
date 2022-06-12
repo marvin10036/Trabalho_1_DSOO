@@ -13,5 +13,5 @@ class TelaPreco(Tela):
                 try:
                     preco = round(float(entrada), 2)
                     return preco
-                except Exception: #ValueError
+                except ValueError: #ValueError
                     print("Valor inválido. Tente novamente.")

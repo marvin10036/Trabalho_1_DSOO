@@ -1,5 +1,6 @@
 from entidade.produto import Produto
 from visao.tela_produto import TelaProduto
+from controle.ctrl_qualificador import CtrlQualificador
 
 class CtrlProduto:
     def __init__(self):
