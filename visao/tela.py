@@ -27,7 +27,7 @@ class Tela():
         print()
 
     def _pede_str(self, msg_input: str):
-        entrada = input(msg_input)
+        entrada = input(msg_input).capitalize()
         if entrada == '':
             return None
         else:

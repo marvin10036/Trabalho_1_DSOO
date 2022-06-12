@@ -7,7 +7,7 @@ class CtrlMercado():
         self.__mercados = []
         self.__tela = TelaMercado()
 
-    def novo(self) -> Mercado:
+    def novo(self, cadastrador) -> Mercado: #TODO falta especificar tipo do cadastrador
         self.__tela.imprime_titulo("Novo mercado")
         nome = self.__tela.pede_nome()
         endereco = self.__tela.pede_endereco()
@@ -17,7 +17,7 @@ class CtrlMercado():
             if mercado is not None:
                 return mercado
             else:
-                novo_mercado = Mercado(nome, endereco,"cadastrador") #TODO falta cadastrador
+                novo_mercado = Mercado(nome, endereco, cadastrador)
                 self.__mercados.append(novo_mercado)
                 self.__tela.imprime("[Novo mercado inserido no sistema]")
                 self.__tela.imprime_linha_de_fechamento()
@@ -32,23 +32,24 @@ class CtrlMercado():
         else:
             return None
 
-    def listar(self):
-        self.__tela.imprime_titulo("Lista de mercados")
-        count = 1
+    def listar(self, usuario_logado):
+        while True:
+            self.__tela.imprime_titulo("Lista de mercados")
+            count = 1
+            for mercado in self.__mercados:
+                self.__tela.imprime("{} - {} - Endereco: {}.".format(count, mercado.nome, mercado.endereco))
+                count += 1
+            self.__tela.imprime("0 - CRIAR NOVO MERCADO")
 
-        for mercado in self.__mercados:
-            self.__tela.imprime("{} - {} - Endereco: {}.".format(count, mercado.nome, mercado.endereco))
-        self.__tela.imprime("0 - CRIAR NOVO MERCADO")
+            opcao = self.__tela.seleciona_mercado(len(self.__mercados))
+            self.__tela.imprime_linha_de_fechamento()
 
-        opcao = self.__tela.seleciona_mercado(len(self.__mercados))
-        self.__tela.imprime_linha_de_fechamento()
-
-        if opcao is None:
-            return None
-        elif opcao == 0:
-            self.novo()
-        else:
-            return self.__mercados[opcao - 1]
+            if opcao is None:
+                return None
+            elif opcao == 0:
+                self.novo(usuario_logado)
+            else:
+                return self.__mercados[opcao - 1]
 
 
 
