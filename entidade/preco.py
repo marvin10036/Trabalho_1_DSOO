@@ -42,3 +42,6 @@ class Preco():
 
     def soma_confirmacao(self, confirmacao: int):
         self.__confirmacoes += confirmacao
+
+    def atualiza_data(self):
+        self.__data = date.today().strftime("%d/%m/%Y")
