@@ -1,4 +1,6 @@
 from abstract_ctrl import AbstractCtrl
+from entidade.pessoa_fisica import PessoaFisica
+from tela.tela_pessoa_fisica import TelaPessoaFisica
 
 class PessoaFisicaCtrl(AbstractCtrl):
     def __init__(self):

@@ -1,5 +1,6 @@
 from ctrl_pessoa_juridica import PessoaJuridicaCtrl
 from ctrl_pessoa_fisica import PessoaFisicaCtrl
+from visao.tela_usuario import TelaUsuario
 
 class UsuarioCtrl:
     def __init__(self):

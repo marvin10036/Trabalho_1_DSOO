@@ -1,6 +1,6 @@
 from tela import Tela
 
-class TelaPessoaJuridica(Tela):
+class TelaPessoaFisica(Tela):
     def __init__(self):
         pass
 

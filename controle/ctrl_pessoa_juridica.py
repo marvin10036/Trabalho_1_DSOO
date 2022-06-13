@@ -1,4 +1,6 @@
 from abstract_ctrl import AbstractCtrl
+from visao.tela_pessoa_juridica import TelaPessoaJuridica
+from entidade.pessoa_juridica import PessoaJuridica
 
 class PessoaJuridicaCtrl(AbstractCtrl):
     def __init__(self):
