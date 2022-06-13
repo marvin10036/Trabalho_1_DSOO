@@ -32,21 +32,10 @@ class CtrlMercado():
         else:
             return None
 
-    def listar(self, usuario_logado):
-        self.__tela.imprime_titulo("Lista de mercados")
-        count = 1
-        for mercado in self.__mercados:
-            self.__tela.imprime("{} - {} - Endereco: {}.".format(count, mercado.nome, mercado.endereco))
-            count += 1
-        self.__tela.imprime("0 - CRIAR NOVO MERCADO")
-        self.__tela.imprime_linha_de_fechamento()
-
-        return self.__tela.seleciona_mercado(len(self.__mercados))
-
 
     def selecionar_mercado(self, usuario_logado):
         while True:
-            opcao = self.listar("CRIAR NOVO MERCADO")
+            opcao = self.listar("NOVO MERCADO")
             if opcao is None:
                 return None
             elif opcao == 0:
@@ -55,7 +44,64 @@ class CtrlMercado():
                 return self.__mercados[opcao - 1]
 
 
+    def listar(self, texto_opcao_especial=''):
+        self.__tela.imprime_titulo("Lista de categorias")
+        count = 1
+
+        self.__tela.imprime("0 - Voltar")
+
+        if texto_opcao_especial != '':
+            self.__tela.imprime("1 - {}".format(texto_opcao_especial))
+            count += 1
+
+        for mercado in self.__mercados:
+            self.__tela.imprime("{} - {} - Endereco: {}.".format(count, mercado.nome, mercado.endereco))
+            count += 1
+
+        self.__tela.imprime_linha_de_fechamento()
+        return self.__tela.seleciona_mercado(count - 1)
+
+    def excluir(self):
+        self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
+        while True:
+            opcao = self.listar()
+            if opcao is None:
+                break
+            elif opcao == 0:
+                break
+            else:
+                confirmar = self.__tela.pede_confirmacao()
+                if confirmar:
+                    del(self.__mercados[opcao - 1])
+                    break
+
+    def alterar(self, cadastrador: str):
+        self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
+        while True:
+            opcao = self.listar()
+            if opcao is None:
+                break
+            elif opcao == 0:
+                break
+            else:
+                objeto_selecionado = self.__mercados[opcao - 1]
+                while True:
+                    nome = self.__tela.pede_nome()
+                    endereco = self.__tela.pede_endereco()
+
+                    for mercado in self.__mercados:
+                        if mercado.nome == nome and mercado.endereco == endereco:
+                            self.__tela.imprime("Ja existe um objeto com esse nome.")
+                            break
+                    else:
+                        objeto_selecionado.nome = nome
+                        objeto_selecionado.endereco = endereco
+                        sucesso = True
+                        break
+            if sucesso:
+                break
 
 if __name__ == "__main__":
     ctrl = CtrlMercado()
-    ctrl.selecionar_mercado()
+    ctrl.novo("joao")
+    ctrl.alterar("joao")

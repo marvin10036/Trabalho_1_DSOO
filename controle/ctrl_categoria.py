@@ -34,17 +34,22 @@ class CtrlCategoria():
     def listar(self, texto_opcao_especial=''):
         self.__tela.imprime_titulo("Lista de categorias")
         count = 1
+
+        self.__tela.imprime("0 - Voltar")
+
+        if texto_opcao_especial != '':
+            self.__tela.imprime("1 - {}".format(texto_opcao_especial))
+            count += 1
+
         for categoria in self.__categorias:
             self.__tela.imprime("{} - Categoria: {}.".format(count, categoria.nome))
             count += 1
-        if texto_opcao_especial != '':
-            self.__tela.imprime("0 - {}".format(texto_opcao_especial))
 
         self.__tela.imprime_linha_de_fechamento()
-        return self.__tela.seleciona_categoria(len(self.__categorias))
+        return self.__tela.seleciona_categoria(count - 1)
 
     def selecionar_categoria(self, usuario_logado):
-        self.__tela.imprime("Selecione uma categoria.")
+        self.__tela.imprime("\nSelecione uma categoria.")
         while True:
             opcao = self.listar("CRIAR NOVA CATEGORIA")
             if opcao is None:
@@ -55,7 +60,7 @@ class CtrlCategoria():
                 return self.__categorias[opcao - 1]
 
     def excluir(self):
-        self.__tela.imprime("Escolha uma opcao para ser excluida.")
+        self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:
             opcao = self.listar()
             if opcao is None:
@@ -69,8 +74,7 @@ class CtrlCategoria():
                     break
 
     def alterar(self, cadastrador: str):
-        self.__tela.imprime("Escolha uma opcao para ser alterada")
-        sucesso = False
+        self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
         while True:
             opcao = self.listar()
             if opcao is None:
@@ -97,5 +101,3 @@ if __name__ == "__main__":
     ctrl = CtrlCategoria()
     ctrl.novo("joao")
     ctrl.alterar("joao")
-    ctrl.excluir()
-    ctrl.listar()

@@ -9,4 +9,7 @@ class TelaMercado(Tela):
         return super()._pede_str("Endereco: ").capitalize()
 
     def seleciona_mercado(self, n_de_mercados):
-        return super()._seleciona_opcao_int(n_de_mercados)
+        return super()._seleciona_opcao_int(n_de_mercados)\
+
+    def pede_confirmacao(self):
+        return super()._pergunta_sim_ou_nao("Tem certeza que deseja excluir essa opcao?")

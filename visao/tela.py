@@ -10,7 +10,6 @@ class Tela():
         lados = (40 - tamanho) // 2
 
         if tamanho <= 40:
-            print()
             print('-' * lados, end='')
             print(texto, end='')
             print('-' * lados, end='')
