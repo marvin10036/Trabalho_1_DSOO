@@ -3,10 +3,11 @@ from visao.tela_preco import TelaPreco
 
 
 class CtrlPreco():
-    def __init__(self):
+    def __init__(self, usuario_logado):
         self.__tela = TelaPreco()
+        self.__usuario_logado = usuario_logado
 
-    def novo(self, cadastrador) -> Preco: #TODO falta especificar tipo cadastrador
+    def novo(self) -> Preco: #TODO falta especificar tipo cadastrador
         self.__tela.imprime_titulo("Novo preco")
         valor = self.__tela.pede_valor()
         self.__tela.imprime_linha_de_fechamento()

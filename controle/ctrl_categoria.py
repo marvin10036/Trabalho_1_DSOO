@@ -1,13 +1,14 @@
 from entidade.categoria import Categoria
 from visao.tela_categoria import TelaCategoria
+from controle.abstract_ctrl import AbstractCtrl
 
-
-class CtrlCategoria():
-    def __init__(self):
+class CtrlCategoria(AbstractCtrl):
+    def __init__(self, usuario_logado):
         self.__tela = TelaCategoria()
         self.__categorias = []
+        self.__usuario_logado = usuario_logado
 
-    def novo(self, cadastrador): #TODO falta especificar tipo
+    def novo(self): #TODO falta especificar tipo
         self.__tela.imprime_titulo("Nova categoria")
         nome = self.__tela.pede_nome()
 
@@ -16,13 +17,16 @@ class CtrlCategoria():
             if categoria is not None:
                 return categoria
             else:
-                nova_categoria = Categoria(nome, cadastrador)
+                nova_categoria = Categoria(nome, self.__usuario_logado)
                 self.__categorias.append(nova_categoria)
                 self.__tela.imprime("[Nova categoria inserida no sistema]")
                 self.__tela.imprime_linha_de_fechamento()
                 return nova_categoria
         else:
             return None
+
+    def incluir(self):
+        pass
 
     def busca(self, nome: str):
         for categoria in self.__categorias:
@@ -48,14 +52,14 @@ class CtrlCategoria():
         self.__tela.imprime_linha_de_fechamento()
         return self.__tela.seleciona_categoria(count - 1)
 
-    def selecionar_categoria(self, usuario_logado):
+    def selecionar_categoria(self):
         self.__tela.imprime("\nSelecione uma categoria.")
         while True:
             opcao = self.listar("CRIAR NOVA CATEGORIA")
             if opcao is None:
                 return None
             elif opcao == 0:
-                self.novo(usuario_logado)
+                self.novo()
             else:
                 return self.__categorias[opcao - 1]
 
@@ -73,7 +77,7 @@ class CtrlCategoria():
                     del(self.__categorias[opcao - 1])
                     break
 
-    def alterar(self, cadastrador: str):
+    def alterar(self):
         self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
         while True:
             opcao = self.listar()
@@ -91,6 +95,7 @@ class CtrlCategoria():
                             break
                     else:
                         categoria_selecionada.nome = nome
+                        categoria_selecionada.cadastrador = self.__usuario_logado
                         sucesso = True
                         break
             if sucesso:
@@ -98,6 +103,6 @@ class CtrlCategoria():
 
 
 if __name__ == "__main__":
-    ctrl = CtrlCategoria()
-    ctrl.novo("joao")
-    ctrl.alterar("joao")
+    ctrl = CtrlCategoria("joaozinho")
+    ctrl.novo()
+    ctrl.alterar()

@@ -3,11 +3,12 @@ from visao.tela_mercado import TelaMercado
 
 
 class CtrlMercado():
-    def __init__(self):
+    def __init__(self, usuario_logado):
         self.__mercados = []
         self.__tela = TelaMercado()
+        self.__usuario_logado = usuario_logado
 
-    def novo(self, cadastrador) -> Mercado: #TODO falta especificar tipo do cadastrador
+    def novo(self) -> Mercado: #TODO falta especificar tipo do cadastrador
         self.__tela.imprime_titulo("Novo mercado")
         nome = self.__tela.pede_nome()
         endereco = self.__tela.pede_endereco()
@@ -17,7 +18,7 @@ class CtrlMercado():
             if mercado is not None:
                 return mercado
             else:
-                novo_mercado = Mercado(nome, endereco, cadastrador)
+                novo_mercado = Mercado(nome, endereco, self.__usuario_logado)
                 self.__mercados.append(novo_mercado)
                 self.__tela.imprime("[Novo mercado inserido no sistema]")
                 self.__tela.imprime_linha_de_fechamento()
@@ -33,13 +34,13 @@ class CtrlMercado():
             return None
 
 
-    def selecionar_mercado(self, usuario_logado):
+    def selecionar_mercado(self):
         while True:
             opcao = self.listar("NOVO MERCADO")
             if opcao is None:
                 return None
             elif opcao == 0:
-                self.novo(usuario_logado)
+                self.novo()
             else:
                 return self.__mercados[opcao - 1]
 
@@ -61,6 +62,9 @@ class CtrlMercado():
         self.__tela.imprime_linha_de_fechamento()
         return self.__tela.seleciona_mercado(count - 1)
 
+    def incluir(self):
+        pass
+
     def excluir(self):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:
@@ -75,7 +79,7 @@ class CtrlMercado():
                     del(self.__mercados[opcao - 1])
                     break
 
-    def alterar(self, cadastrador: str):
+    def alterar(self):
         self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
         while True:
             opcao = self.listar()
@@ -91,17 +95,19 @@ class CtrlMercado():
 
                     for mercado in self.__mercados:
                         if mercado.nome == nome and mercado.endereco == endereco:
-                            self.__tela.imprime("Ja existe um objeto com esse nome.")
+                            self.__tela.imprime("Ja existe um mercado com esses dados.")
                             break
                     else:
                         objeto_selecionado.nome = nome
                         objeto_selecionado.endereco = endereco
+                        objeto_selecionado.cadastrador = self.__usuario_logado
+
                         sucesso = True
                         break
             if sucesso:
                 break
 
 if __name__ == "__main__":
-    ctrl = CtrlMercado()
-    ctrl.novo("joao")
-    ctrl.alterar("joao")
+    ctrl = CtrlMercado("joaozinho")
+    ctrl.novo()
+    ctrl.alterar()

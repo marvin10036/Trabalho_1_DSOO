@@ -10,15 +10,15 @@ from entidade.registro_de_preco import RegistroDePreco
 
 
 class CtrlRegistroDePreco():
-    def __init__(self):
+    def __init__(self, usuario_logado):
+        self.__usuario_logado = usuario_logado
         self.__registros = []
         self.__tela = TelaRegistroDePreco()
-        self.__ctrl_categoria = CtrlCategoria()
-        self.__ctrl_mercado = CtrlMercado()
+        self.__ctrl_categoria = CtrlCategoria(usuario_logado)
+        self.__ctrl_mercado = CtrlMercado(usuario_logado)
+        self.__ctrl_preco = CtrlPreco(usuario_logado)
         self.__ctrl_qualificador = CtrlQualificador()
-        self.__ctrl_preco = CtrlPreco()
         self.__ctrl_produto = CtrlProduto()
-        self.__usuario_logado = "usuario"
 
     def novo_registro(self): #todo revisar tudo
         while True:
@@ -70,5 +70,5 @@ class CtrlRegistroDePreco():
 
 
 if __name__ == "__main__":
-    ctrl = CtrlRegistroDePreco()
+    ctrl = CtrlRegistroDePreco("joaozinho")
     ctrl.novo_registro()
