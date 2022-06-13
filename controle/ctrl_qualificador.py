@@ -16,7 +16,7 @@ class CtrlQualificador():
 
         self.__tela.imprime_linha_de_fechamento()
 
-    def novo(self, com_descricao = True):
+    def criador(self, com_descricao = True):
         inserindo = True
         lista_qualificadores = []
 
@@ -47,8 +47,11 @@ class CtrlQualificador():
             self.__tela.imprime_linha_de_fechamento()
             return None
 
-    def novo_objeto_qualificador(self, titulo: str, descricao: str):
-        return Qualificador(titulo, descricao)
+    def novo(self, titulo: str, descricao: str):
+        if isinstance(titulo, str) and isinstance(descricao, str):
+            return Qualificador(titulo, descricao)
+        else:
+            return None
 
 
 
@@ -56,4 +59,4 @@ class CtrlQualificador():
 # teste da classe controle
 if __name__ == "__main__":
     ctrl = CtrlQualificador()
-    ctrl.novo()
+    ctrl.criador()

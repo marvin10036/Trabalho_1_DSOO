@@ -1,12 +1,16 @@
 from entidade.categoria import Categoria
 from visao.tela_categoria import TelaCategoria
 from controle.abstract_ctrl import AbstractCtrl
+from entidade.usuario import Usuario
 
 class CtrlCategoria(AbstractCtrl):
-    def __init__(self, usuario_logado):
+    def __init__(self):
         self.__tela = TelaCategoria()
         self.__categorias = []
-        self.__usuario_logado = usuario_logado
+        self.__usuario_logado = None
+
+    def set_usuario_logado(self, usuario: Usuario):
+        self.__usuario_logado = usuario
 
     def novo(self): #TODO falta especificar tipo
         self.__tela.imprime_titulo("Nova categoria")
@@ -18,15 +22,14 @@ class CtrlCategoria(AbstractCtrl):
                 return categoria
             else:
                 nova_categoria = Categoria(nome, self.__usuario_logado)
-                self.__categorias.append(nova_categoria)
-                self.__tela.imprime("[Nova categoria inserida no sistema]")
+
                 self.__tela.imprime_linha_de_fechamento()
                 return nova_categoria
         else:
             return None
 
-    def incluir(self):
-        pass
+    def incluir(self, categoria: Categoria):
+        self.__categorias.append(categoria)
 
     def busca(self, nome: str):
         for categoria in self.__categorias:
@@ -56,12 +59,12 @@ class CtrlCategoria(AbstractCtrl):
         self.__tela.imprime("\nSelecione uma categoria.")
         while True:
             opcao = self.listar("CRIAR NOVA CATEGORIA")
-            if opcao is None:
+            if opcao == 0:
                 return None
-            elif opcao == 0:
-                self.novo()
+            elif opcao == 1:
+                self.incluir(self.novo())
             else:
-                return self.__categorias[opcao - 1]
+                return self.__categorias[opcao - 2]
 
     def excluir(self):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
@@ -103,6 +106,6 @@ class CtrlCategoria(AbstractCtrl):
 
 
 if __name__ == "__main__":
-    ctrl = CtrlCategoria("joaozinho")
+    ctrl = CtrlCategoria()
     ctrl.novo()
     ctrl.alterar()

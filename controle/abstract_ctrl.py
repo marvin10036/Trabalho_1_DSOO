@@ -37,8 +37,8 @@ class AbstractCtrl(ABC):
             return None
 
     @abstractmethod
-    def incluir(self):
-        pass
+    def incluir(self, objeto):
+        self.__lista_de_objetos.append(objeto)
 
     @abstractmethod
     def listar(self, texto_opcao_especial=''):

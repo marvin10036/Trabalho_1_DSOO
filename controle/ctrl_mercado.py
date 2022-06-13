@@ -1,12 +1,16 @@
 from entidade.mercado import Mercado
 from visao.tela_mercado import TelaMercado
 
+from entidade.usuario import Usuario
 
 class CtrlMercado():
-    def __init__(self, usuario_logado):
+    def __init__(self):
         self.__mercados = []
         self.__tela = TelaMercado()
-        self.__usuario_logado = usuario_logado
+        self.__usuario_logado = None
+
+    def set_usuario_logado(self, usuario: Usuario):
+        self.__usuario_logado = usuario
 
     def novo(self) -> Mercado: #TODO falta especificar tipo do cadastrador
         self.__tela.imprime_titulo("Novo mercado")
@@ -19,8 +23,6 @@ class CtrlMercado():
                 return mercado
             else:
                 novo_mercado = Mercado(nome, endereco, self.__usuario_logado)
-                self.__mercados.append(novo_mercado)
-                self.__tela.imprime("[Novo mercado inserido no sistema]")
                 self.__tela.imprime_linha_de_fechamento()
                 return novo_mercado
         else:
@@ -33,20 +35,24 @@ class CtrlMercado():
         else:
             return None
 
+    def incluir(self, mercado: Mercado):
+        self.__mercados.append(mercado)
 
     def selecionar_mercado(self):
         while True:
             opcao = self.listar("NOVO MERCADO")
-            if opcao is None:
+            if opcao == 0:
                 return None
-            elif opcao == 0:
-                self.novo()
+            elif opcao == 1:
+                novo = self.novo()
+                self.incluir(novo)
+                self.__tela.imprime("[Novo mercado inserido no sistema]")
             else:
-                return self.__mercados[opcao - 1]
+                return self.__mercados[opcao - 2]
 
 
     def listar(self, texto_opcao_especial=''):
-        self.__tela.imprime_titulo("Lista de categorias")
+        self.__tela.imprime_titulo("Lista de mercados")
         count = 1
 
         self.__tela.imprime("0 - Voltar")
@@ -61,9 +67,6 @@ class CtrlMercado():
 
         self.__tela.imprime_linha_de_fechamento()
         return self.__tela.seleciona_mercado(count - 1)
-
-    def incluir(self):
-        pass
 
     def excluir(self):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
@@ -108,6 +111,6 @@ class CtrlMercado():
                 break
 
 if __name__ == "__main__":
-    ctrl = CtrlMercado("joaozinho")
-    ctrl.novo()
-    ctrl.alterar()
+    mercado = CtrlMercado().selecionar_mercado()
+    if mercado == None:
+        print("erro")

@@ -1,12 +1,18 @@
 from entidade.produto import Produto
-from entidade.categoria import Categoria
-from entidade.qualificador import Qualificador
 from visao.tela_produto import TelaProduto
+
+from entidade.usuario import Usuario
+from entidade.qualificador import Qualificador
+from entidade.categoria import Categoria
 
 class CtrlProduto:
     def __init__(self):
         self.__produtos = []
         self.__tela = TelaProduto()
+        self.__usuario_logado = None
+
+    def set_usuario_logado(self, usuario: Usuario):
+        self.__usuario_logado = usuario
 
     def novo(self, qualificadores, categoria, cadastrador, nome = ''): #TODO falta especificar cadastrador
         self.__tela.imprime_titulo("Novo produto")
@@ -34,6 +40,8 @@ class CtrlProduto:
     def novo_objeto_produto(self, categoria: Categoria, nome: str, descricao: str, qualificadores, cadastrador: str):
         return Produto(categoria, nome, descricao, qualificadores, cadastrador)
 
+    def incluir(self, produto: Produto):
+        self.__produtos.append(produto)
 
     def busca(self, nome: str):
         for produto in self.__produtos:

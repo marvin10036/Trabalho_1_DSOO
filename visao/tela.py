@@ -36,8 +36,6 @@ class Tela():
         while True:
             entrada = input("Selecione uma opcao: ")
 
-            if entrada == '':
-                return None
             try:
                 entrada = int(entrada)
                 if entrada >= 0 and entrada <= n_de_opcoes: #dentro da faixa de opcoes
