@@ -29,7 +29,6 @@ class CtrlQualificador():
             else:
                 descricao = ''
 
-            #and (descricao is not None)
             if (titulo is not None):
                 lista_qualificadores.append(Qualificador(titulo, descricao))
                 self.__imprime_qualificadores(lista_qualificadores)

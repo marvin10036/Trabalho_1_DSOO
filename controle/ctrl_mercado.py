@@ -12,7 +12,8 @@ class CtrlMercado():
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
 
-    def novo(self) -> Mercado: #TODO falta especificar tipo do cadastrador
+    #cria objeto caso nao exista um igual na lista de objetos, insere na lista e retorna o objeto
+    def criador(self) -> Mercado: #TODO falta especificar tipo do cadastrador
         self.__tela.imprime_titulo("Novo mercado")
         nome = self.__tela.pede_nome()
         endereco = self.__tela.pede_endereco()
@@ -20,13 +21,39 @@ class CtrlMercado():
         if nome is not None and endereco is not None:
             mercado = self.busca(nome, endereco)
             if mercado is not None:
+                self.__tela.imprime("Ja existe um mercado com esses dados.")
+                self.__tela.imprime("[Mercado selecionado]")
+                self.__tela.imprime_linha_de_fechamento()
                 return mercado
             else:
                 novo_mercado = Mercado(nome, endereco, self.__usuario_logado)
+                self.incluir(novo_mercado)
+                self.__tela.imprime("[Novo mercado inserido no sistema]")
                 self.__tela.imprime_linha_de_fechamento()
                 return novo_mercado
         else:
             return None
+
+
+    def selecionar_mercado(self):
+        while True:
+            opcao = self.listar("NOVO MERCADO")
+            if opcao == 0:
+                return None
+            elif opcao == 1:
+                self.criador() #cria novo mercado no sistema
+            else:
+                return self.__mercados[opcao - 2]
+
+
+    def novo(self, nome: str, endereco: str) -> Mercado:
+        try:
+            if isinstance(nome, str) and isinstance(endereco, str):
+                return Mercado(nome, endereco, self.__usuario_logado)
+            else:
+                raise TypeError
+        except TypeError:
+            self.__tela.imprime("! Falha ao criar objeto: variavel de entrada em formato invalido !")
 
     def busca(self, nome: str, endereco: str):
         for mercado in self.__mercados:
@@ -35,20 +62,15 @@ class CtrlMercado():
         else:
             return None
 
-    def incluir(self, mercado: Mercado):
-        self.__mercados.append(mercado)
 
-    def selecionar_mercado(self):
-        while True:
-            opcao = self.listar("NOVO MERCADO")
-            if opcao == 0:
-                return None
-            elif opcao == 1:
-                novo = self.novo()
-                self.incluir(novo)
-                self.__tela.imprime("[Novo mercado inserido no sistema]")
+    def incluir(self, mercado: Mercado):
+        try:
+            if isinstance(mercado, Mercado):
+                self.__mercados.append(mercado)
             else:
-                return self.__mercados[opcao - 2]
+                raise TypeError
+        except TypeError:
+            self.__tela.imprime("! Falha ao incluir mercado: variavel de entrada em formato invalido !")
 
 
     def listar(self, texto_opcao_especial=''):
@@ -68,19 +90,19 @@ class CtrlMercado():
         self.__tela.imprime_linha_de_fechamento()
         return self.__tela.seleciona_mercado(count - 1)
 
+
     def excluir(self):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:
             opcao = self.listar()
-            if opcao is None:
-                break
-            elif opcao == 0:
+            if opcao == 0:
                 break
             else:
                 confirmar = self.__tela.pede_confirmacao()
                 if confirmar:
                     del(self.__mercados[opcao - 1])
                     break
+
 
     def alterar(self):
         self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
@@ -112,5 +134,3 @@ class CtrlMercado():
 
 if __name__ == "__main__":
     mercado = CtrlMercado().selecionar_mercado()
-    if mercado == None:
-        print("erro")

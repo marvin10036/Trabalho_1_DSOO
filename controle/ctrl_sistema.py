@@ -57,6 +57,7 @@ class CtrlSistema():
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
 
+    #utilizar esse metodo para criar produto, ja que essa classe possui as entidades necessarias para criacao
     def criar_novo_produto(self, nome_produto=''):
 
         if nome_produto == '':
@@ -68,9 +69,8 @@ class CtrlSistema():
         self.__tela.imprime("Crie um conjunto de qualificadores para o produto. Exemplo: 'Marca' e 'Peso'")
         novos_qualificadores = self.__ctrl_qualificador.criador(com_descricao=False)
 
-        produto = self.__ctrl_produto.novo(novos_qualificadores,
+        produto = self.__ctrl_produto.criador(novos_qualificadores,
                                            categoria,
-                                           self.__usuario_logado,
                                            nome_produto)
         return produto
 
@@ -84,7 +84,7 @@ class CtrlSistema():
 
         return qualificadores_preenchidos
 
-    def novo_registro(self): #todo revisar tudo
+    def novo_registro(self):
         try:
             self.__tela.imprime_titulo("Novo registro de preco.")
 
@@ -92,6 +92,7 @@ class CtrlSistema():
             nome_produto = self.__tela.pede_nome_produto()
             produto = self.__ctrl_produto.busca(nome_produto)
 
+            #se nao encontrar um produto na lista de produtos com o mesmo nome
             if produto is None:
                 quer_criar_produto = self.__tela.pede_confirmacao("Produto nao encontrado. Deseja criar um novo?")
 
@@ -99,7 +100,7 @@ class CtrlSistema():
                     return
                 else:
                     produto = self.criar_novo_produto(nome_produto)
-                    if produto == None:
+                    if produto is None:
                         raise Exception
 
             self.__tela.imprime("Preencha os qualificadores do produto visto.")
@@ -107,28 +108,29 @@ class CtrlSistema():
 
             self.__tela.imprime("Forneca o valor do preco visto.")
             preco = self.__ctrl_preco.criador()
-            if preco == None:
+            if preco is None:
                 raise Exception
 
             self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
             mercado = self.__ctrl_mercado.selecionar_mercado()
-            if mercado == None:
+            if mercado is None:
                 raise Exception
 
-            novo_registro = self.__ctrl_registro.novo(nome_produto,
-                                                      qualificadores_preenchidos,
-                                                      preco,
-                                                      mercado)
+            self.__tela.imprime("\nFALTA CRIAR REGISTRO E ETC\n")
 
-            registro_existente = self.__ctrl_registro.buscar(novo_registro)
+            #TODO implementar logica para criacao de registro
+            #TODO verificar se ja existe um registro igual ou criar um novo
+            #TODO verificar caso exista um registro igual se há um preco igual e somar no contador dele
 
-            if registro_existente == None:
-                self.__ctrl_registro.incluir(novo_registro)
-            else:
-                #TODO soma preco aqui
-                print("Soma preco aqui")
+            # novo_registro = self.__ctrl_registro.novo(nome_produto,
+            #                                           qualificadores_preenchidos,
+            #                                           preco,
+            #                                           mercado)
+            #
+            # registro_existente = self.__ctrl_registro.buscar(novo_registro)
+
         except Exception:
-            self.__tela.imprime("Ops, ouve algum erro. Tente novamente.")
+            self.__tela.imprime("Falha na criacao do registro - alguma variavel nao foi preenchida.")
 
         self.__tela.imprime("Criacao de registro de preco finalizada.")
         self.__tela.imprime_linha_de_fechamento()

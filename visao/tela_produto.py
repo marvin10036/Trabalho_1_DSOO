@@ -7,3 +7,6 @@ class TelaProduto(Tela):
 
     def pede_descricao(self):
         return super()._pede_str("Descricao: ")
+
+    def seleciona_opcao(self, n_de_opcoes):
+        return super()._seleciona_opcao_int(n_de_opcoes)
