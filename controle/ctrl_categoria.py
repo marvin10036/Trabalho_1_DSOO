@@ -29,7 +29,7 @@ class CtrlCategoria(AbstractCtrl):
         else:
             return None
 
-    def selecionar_categoria(self):
+    def selecionar_categoria(self) -> Categoria:
         self.__tela.imprime("\nSelecione uma categoria.")
         while True:
             opcao = self.listar("CRIAR NOVA CATEGORIA")

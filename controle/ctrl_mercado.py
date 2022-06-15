@@ -34,8 +34,7 @@ class CtrlMercado():
         else:
             return None
 
-
-    def selecionar_mercado(self):
+    def selecionar_mercado(self) -> Mercado:
         while True:
             opcao = self.listar("NOVO MERCADO")
             if opcao == 0:
@@ -44,7 +43,6 @@ class CtrlMercado():
                 self.criador() #cria novo mercado no sistema
             else:
                 return self.__mercados[opcao - 2]
-
 
     def novo(self, nome: str, endereco: str) -> Mercado:
         try:
@@ -62,7 +60,6 @@ class CtrlMercado():
         else:
             return None
 
-
     def incluir(self, mercado: Mercado):
         try:
             if isinstance(mercado, Mercado):
@@ -71,7 +68,6 @@ class CtrlMercado():
                 raise TypeError
         except TypeError:
             self.__tela.imprime("! Falha ao incluir mercado: variavel de entrada em formato invalido !")
-
 
     def listar(self, texto_opcao_especial=''):
         self.__tela.imprime_titulo("Lista de mercados")

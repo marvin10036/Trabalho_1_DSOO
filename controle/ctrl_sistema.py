@@ -23,42 +23,40 @@ class CtrlSistema():
         self.__ctrl_qualificador = CtrlQualificador()
         self.__ctrl_produto = CtrlProduto()
 
-    def __setar_usuario_logado(self, usuario_logado: Usuario):
+    def setar_usuario_geral(self, usuario_logado: Usuario):
+        self.__usuario_logado = usuario_logado
         self.__ctrl_registro.set_usuario_logado(usuario_logado)
         self.__ctrl_produto.set_usuario_logado(usuario_logado)
         self.__ctrl_mercado.set_usuario_logado(usuario_logado)
         self.__ctrl_categoria.set_usuario_logado(usuario_logado)
 
 
-    def __login(self):
+    def login(self):
         while True:
             usuario = "joao"
             if usuario != None: #TODO usuario retornado com sucesso
-                self.__setar_usuario_logado(usuario)
+                self.setar_usuario_geral(usuario)
                 return True
             else:
                 self.__tela.imprime("Usuario nao encontrado. Tente novamente.")
 
     def programa_principal(self):
-        if self.__login():
-            while True:
-                opcao = self.__tela.opcoes_menu_principal()
-                self.__tela.imprime_linha_de_fechamento()
+        self.login()
+        while True:
+            opcao = self.__tela.opcoes_menu_principal()
+            self.__tela.imprime_linha_de_fechamento()
 
-                if opcao == 0:
-                    break
-                elif opcao == 1:
-                    self.novo_registro()
-                elif opcao == 2:
-                    self.buscar_registro()
-                elif opcao == 3:
-                    self.editar_dados()
-
-    def set_usuario_logado(self, usuario: Usuario):
-        self.__usuario_logado = usuario
+            if opcao == 0:
+                break
+            elif opcao == 1:
+                self.criar_novo_registro()
+            elif opcao == 2:
+                self.buscar_registro()
+            elif opcao == 3:
+                self.editar_dados()
 
     #utilizar esse metodo para criar produto, ja que essa classe possui as entidades necessarias para criacao
-    def criar_novo_produto(self, nome_produto=''):
+    def criar_novo_produto(self, nome_produto='') -> Produto:
 
         if nome_produto == '':
             nome_produto = self.__tela.pede_nome_produto()
@@ -74,17 +72,7 @@ class CtrlSistema():
                                            nome_produto)
         return produto
 
-    def __preencher_qualificadores(self, produto: Produto):
-        qualificadores_preenchidos = []
-
-        for qualificador in produto.qualificadores:
-            descricao = self.__tela.pede_descricao_qualificador("{}: ".format(qualificador.titulo))
-            qualificador_preenchido = self.__ctrl_qualificador.novo(qualificador.titulo, descricao)
-            qualificadores_preenchidos.append(qualificador_preenchido)
-
-        return qualificadores_preenchidos
-
-    def novo_registro(self):
+    def criar_novo_registro(self):
         try:
             self.__tela.imprime_titulo("Novo registro de preco.")
 
@@ -134,6 +122,16 @@ class CtrlSistema():
 
         self.__tela.imprime("Criacao de registro de preco finalizada.")
         self.__tela.imprime_linha_de_fechamento()
+
+    def __preencher_qualificadores(self, produto: Produto):
+        qualificadores_preenchidos = []
+
+        for qualificador in produto.qualificadores:
+            descricao = self.__tela.pede_descricao_qualificador("{}: ".format(qualificador.titulo))
+            qualificador_preenchido = self.__ctrl_qualificador.novo(qualificador.titulo, descricao)
+            qualificadores_preenchidos.append(qualificador_preenchido)
+
+        return qualificadores_preenchidos
 
     def buscar_registro(self):
         pass
