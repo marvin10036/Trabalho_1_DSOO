@@ -30,13 +30,12 @@ class CtrlSistema():
         self.__ctrl_mercado.set_usuario_logado(usuario_logado)
         self.__ctrl_categoria.set_usuario_logado(usuario_logado)
 
-
     def login(self):
         while True:
             usuario = "joao"
             if usuario != None: #TODO usuario retornado com sucesso
                 self.setar_usuario_geral(usuario)
-                return True
+                break
             else:
                 self.__tela.imprime("Usuario nao encontrado. Tente novamente.")
 
@@ -55,7 +54,8 @@ class CtrlSistema():
             elif opcao == 3:
                 self.editar_dados()
 
-    #utilizar esse metodo para criar produto, ja que essa classe possui as entidades necessarias para criacao
+    # utilizar esse metodo para criar produto,
+    # ja que esta classe (CtrlSistema) possui as entidades necessarias para criacao
     def criar_novo_produto(self, nome_produto='') -> Produto:
 
         if nome_produto == '':
@@ -137,7 +137,66 @@ class CtrlSistema():
         pass
 
     def editar_dados(self):
-        pass
+        while True:
+            opcao = self.__tela.opcoes_editar_dados()
+            self.__tela.imprime_linha_de_fechamento()
+
+            if opcao == 0:
+                break
+            elif opcao == 1:
+                self.__menu_categoria()
+            elif opcao == 2:
+                self.__menu_mercado()
+            elif opcao == 3:
+                self.__menu_produto()
+
+    def __menu_categoria(self):
+        while True:
+            opcao = self.__tela.opcoes_menu_categoria()
+            self.__tela.imprime_linha_de_fechamento()
+
+            if opcao == 0:
+                break
+            elif opcao == 1:
+                self.__ctrl_categoria.listar()
+            elif opcao == 2:
+                self.__ctrl_categoria.criador()
+            elif opcao == 3:
+                self.__ctrl_categoria.alterar()
+            elif opcao == 4:
+                self.__ctrl_categoria.excluir()
+
+    def __menu_mercado(self):
+        while True:
+            opcao = self.__tela.opcoes_menu_mercado()
+            self.__tela.imprime_linha_de_fechamento()
+
+            if opcao == 0:
+                break
+            elif opcao == 1:
+                self.__ctrl_mercado.listar()
+            elif opcao == 2:
+                self.__ctrl_mercado.criador()
+            elif opcao == 3:
+                self.__ctrl_mercado.alterar()
+            elif opcao == 4:
+                self.__ctrl_mercado.excluir()
+
+    def __menu_produto(self):
+        while True:
+            opcao = self.__tela.opcoes_menu_produto()
+            self.__tela.imprime_linha_de_fechamento()
+
+            if opcao == 0:
+                break
+            elif opcao == 1:
+                self.__ctrl_produto.listar()
+            elif opcao == 2:
+                self.criar_novo_produto()
+            elif opcao == 3:
+                self.__ctrl_produto.alterar()
+            elif opcao == 4:
+                self.__ctrl_produto.excluir()
 
 if __name__ == "__main__":
     CtrlSistema().programa_principal()

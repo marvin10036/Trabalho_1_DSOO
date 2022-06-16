@@ -75,21 +75,65 @@ class CtrlProduto:
             self.__tela.imprime("1 - {}".format(texto_opcao_especial))
             count += 1
 
-        for objeto in self.__lista_de_objetos:
-            self.__tela.imprime("{} - {}.".format(count, objeto))
+        for produto in self.__produtos:
+            self.__tela.imprime("{} - {} - Descricao: {}.".format(count, produto.nome, produto.descricao))
             count += 1
 
         self.__tela.imprime_linha_de_fechamento()
-        return self.__tela.seleciona_opcao(count - 1)
+        return count - 1
+
+    def excluir(self):
+        self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
+        while True:
+            opcao = self.__tela.seleciona_opcao(self.listar())
+            if opcao == 0: #voltar
+                break
+            else:
+                confirmar = self.__tela.pede_confirmacao()
+                if confirmar:
+                    del (self.__produtos[opcao - 1])
+                    self.__tela.imprime("[Produto excluido com sucesso]")
+                    break
+
+    def alterar(self):
+        self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
+        while True:
+            opcao = self.__tela.seleciona_opcao(self.listar())
+            if opcao is None:
+                break
+            elif opcao == 0:
+                break
+            else:
+                produto_selecionado = self.__produtos[opcao - 1]
+                while True:
+
+                    nome = self.__tela.pede_nome()
+                    descricao = self.__tela.pede_descricao()
+
+                    for produto in self.__produtos:
+                        if produto.nome == nome and produto.descricao == descricao:
+                            self.__tela.imprime("Ja existe um produto com esses dados.")
+                            break
+                    else:
+                        produto_selecionado.nome = nome
+                        produto_selecionado.descricao = descricao
+                        produto_selecionado.cadastrador = self.__usuario_logado
+                        self.__tela.imprime("[Dados alterados com sucesso]")
+                        sucesso = True
+                        break
+            if sucesso:
+                break
 
     def selecionar_produto(self):
         self.__tela.imprime("\nSelecione um produto.")
         while True:
-            opcao = self.listar()
+            opcao = self.__tela.seleciona_opcao(self.listar())
             if opcao == 0:
                 return None
             else:
                 return self.__produtos[opcao - 2]
+
+
 
     def __valida_formato_qualificadores(self, qualificadores: list) -> bool:
         for qualificador in qualificadores:

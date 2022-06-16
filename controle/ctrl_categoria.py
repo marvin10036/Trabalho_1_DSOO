@@ -32,7 +32,7 @@ class CtrlCategoria(AbstractCtrl):
     def selecionar_categoria(self) -> Categoria:
         self.__tela.imprime("\nSelecione uma categoria.")
         while True:
-            opcao = self.listar("CRIAR NOVA CATEGORIA")
+            opcao = self.__tela.seleciona_categoria(self.listar("CRIAR NOVA CATEGORIA"))
             if opcao == 0:
                 return None
             elif opcao == 1:
@@ -80,12 +80,12 @@ class CtrlCategoria(AbstractCtrl):
             count += 1
 
         self.__tela.imprime_linha_de_fechamento()
-        return self.__tela.seleciona_categoria(count - 1)
+        return count - 1
 
     def excluir(self):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:
-            opcao = self.listar()
+            opcao = self.__tela.seleciona_categoria(self.listar())
             if opcao is None:
                 break
             elif opcao == 0:
@@ -99,7 +99,7 @@ class CtrlCategoria(AbstractCtrl):
     def alterar(self):
         self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
         while True:
-            opcao = self.listar()
+            opcao = self.__tela.seleciona_categoria(self.listar())
             if opcao is None:
                 break
             elif opcao == 0:
@@ -115,6 +115,7 @@ class CtrlCategoria(AbstractCtrl):
                     else:
                         categoria_selecionada.nome = nome
                         categoria_selecionada.cadastrador = self.__usuario_logado
+                        self.__tela.imprime("[Dados alterados com sucesso]")
                         sucesso = True
                         break
             if sucesso:

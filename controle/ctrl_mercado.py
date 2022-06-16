@@ -36,7 +36,7 @@ class CtrlMercado():
 
     def selecionar_mercado(self) -> Mercado:
         while True:
-            opcao = self.listar("NOVO MERCADO")
+            opcao = self.__tela.seleciona_mercado(self.listar("NOVO MERCADO"))
             if opcao == 0:
                 return None
             elif opcao == 1:
@@ -84,13 +84,13 @@ class CtrlMercado():
             count += 1
 
         self.__tela.imprime_linha_de_fechamento()
-        return self.__tela.seleciona_mercado(count - 1)
+        return count - 1
 
 
     def excluir(self):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:
-            opcao = self.listar()
+            opcao = self.__tela.seleciona_mercado(self.listar())
             if opcao == 0:
                 break
             else:
@@ -103,7 +103,7 @@ class CtrlMercado():
     def alterar(self):
         self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
         while True:
-            opcao = self.listar()
+            opcao = self.__tela.seleciona_mercado(self.listar())
             if opcao is None:
                 break
             elif opcao == 0:
@@ -122,7 +122,7 @@ class CtrlMercado():
                         objeto_selecionado.nome = nome
                         objeto_selecionado.endereco = endereco
                         objeto_selecionado.cadastrador = self.__usuario_logado
-
+                        self.__tela.imprime("[Dados alterados com sucesso]")
                         sucesso = True
                         break
             if sucesso:
