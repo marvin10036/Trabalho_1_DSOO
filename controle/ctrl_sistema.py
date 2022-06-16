@@ -197,6 +197,21 @@ class CtrlSistema():
                 self.__ctrl_produto.alterar()
             elif opcao == 4:
                 self.__ctrl_produto.excluir()
+            elif opcao == 5:
+                self.__detalhes_produto(self.__ctrl_produto.selecionar_produto())
+
+    def __detalhes_produto(self, produto: Produto):
+        self.__tela.imprime_titulo("Detalhes produto")
+        self.__tela.imprime("Nome: {}".format(produto.nome))
+        self.__tela.imprime("Descricao: {}".format(produto.descricao))
+        self.__tela.imprime("Categoria: {}".format(produto.categoria.nome))
+        self.__tela.imprime("Qualificadores:")
+        for qualificador in produto.qualificadores:
+            self.__tela.imprime("- {}".format(qualificador.titulo))
+        self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador)) #TODO imprimir nome do cadastrador
+        self.__tela.imprime_linha_de_fechamento()
+
+
 
 if __name__ == "__main__":
     CtrlSistema().programa_principal()

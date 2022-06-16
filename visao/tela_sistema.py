@@ -54,5 +54,6 @@ class TelaSistema(Tela):
         print("2 - Novo produto")
         print("3 - Editar produto")
         print("4 - Excluir produto")
+        print("5 - Detalhes produto")
         print("0 - Voltar")
-        return super()._seleciona_opcao_int(4)
+        return super()._seleciona_opcao_int(5)
