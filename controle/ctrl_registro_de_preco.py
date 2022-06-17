@@ -1,74 +1,58 @@
-from controle.ctrl_categoria import CtrlCategoria
-from controle.ctrl_mercado import CtrlMercado
-from controle.ctrl_qualificador import CtrlQualificador
-from controle.ctrl_preco import CtrlPreco
-from controle.ctrl_produto import CtrlProduto
-
 from visao.tela_registro_de_preco import TelaRegistroDePreco
-
 from entidade.registro_de_preco import RegistroDePreco
+
+from entidade.usuario import Usuario
+from entidade.mercado import Mercado
+from entidade.qualificador import Qualificador
+from entidade.preco import Preco
 
 
 class CtrlRegistroDePreco():
-    def __init__(self, usuario_logado):
-        self.__usuario_logado = usuario_logado
+    def __init__(self):
         self.__registros = []
-        self.__tela = TelaRegistroDePreco()
-        self.__ctrl_categoria = CtrlCategoria(usuario_logado)
-        self.__ctrl_mercado = CtrlMercado(usuario_logado)
-        self.__ctrl_preco = CtrlPreco(usuario_logado)
-        self.__ctrl_qualificador = CtrlQualificador()
-        self.__ctrl_produto = CtrlProduto()
+        self.__usuario_logado = None
 
-    def novo_registro(self): #todo revisar tudo
-        while True:
-            self.__tela.imprime_titulo("Novo registro de preco.")
+    def set_usuario_logado(self, usuario: Usuario):
+        self.__usuario_logado = usuario
 
-            self.__tela.imprime("Primeiramente, insira o nome do produto: ")
-            nome_produto = self.__tela.pede_nome_produto()
-            produto = self.__ctrl_produto.busca(nome_produto)
+    def get_registros(self):
+        return self.__registros
 
-            if produto is None:
-                self.__tela.imprime("Produto nao encontrado: sera criado um novo com o nome inserido.")
+    def __valida_formato_qualificadores(self, qualificadores: list) -> bool:
+        for qualificador in qualificadores:
+            if not isinstance(qualificador, Qualificador):
+                return False
+        else:
+            return True
 
-                self.__tela.imprime("Escolha uma categoria para o produto.")
-                categoria = self.__ctrl_categoria.selecionar_categoria(self.__usuario_logado)
+    def novo(self, nome_produto: str, qualificadores_preenchidos: list, preco: Preco, mercado: Mercado):
+        if isinstance(nome_produto, str) and \
+                isinstance(preco, Preco) and \
+                isinstance(mercado, Mercado) and \
+                self.__valida_formato_qualificadores(qualificadores_preenchidos):
+            return RegistroDePreco(nome_produto, qualificadores_preenchidos, preco, mercado, self.__usuario_logado)
+        else:
+            return None
 
-                self.__tela.imprime("Crie um conjunto de qualificadores para o produto. Exemplo: 'Marca' e 'Peso'")
-                novos_qualificadores = self.__ctrl_qualificador.novo(com_descricao=False)
+    def incluir(self, registro: RegistroDePreco):
+        if isinstance(registro, RegistroDePreco):
+            self.__registros.append(registro)
 
-                produto = self.__ctrl_produto.novo(novos_qualificadores,
-                                                   categoria,
-                                                   self.__usuario_logado,
-                                                   nome_produto)
+    def __valida_igualdade_qualificadores(self, registro: RegistroDePreco, registro_a_comparar: RegistroDePreco):
+        for n in range(len(registro.qualificadores)):
+            if registro.qualificadores[n].descricao != registro_a_comparar.qualificadores[n].descricao:
+                return False
+        else:
+            return True
 
-            self.__tela.imprime("Preencha os qualificadores do produto visto.")
-            qualificadores_preenchidos = []
-            for qualificador in produto.qualificadores:
-                descricao = self.__tela.pede_descricao_qualificador("{}: ".format(qualificador.titulo))
-                qualificador_preenchido = self.__ctrl_qualificador.novo_objeto_qualificador(qualificador.titulo,
-                                                                                            descricao)
-                qualificadores_preenchidos.append(qualificador_preenchido)
-
-            self.__tela.imprime("Forneca o valor do preco visto.")
-            preco = self.__ctrl_preco.novo(self.__usuario_logado)
-
-            self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
-            mercado = self.__ctrl_mercado.selecionar_mercado(self.__usuario_logado)
-
-            for registro in self.__registros: #todo arrumar checagem
-                if registro.nome_produto == nome_produto:
-                    print("ja existe")
-            else:
-                novo_registro = RegistroDePreco(nome_produto,
-                                                qualificadores_preenchidos,
-                                                preco,
-                                                mercado,
-                                                self.__usuario_logado)
-                self.__registros.append(novo_registro)
-
-
+    def buscar(self, registro_a_comparar: RegistroDePreco):
+        for registro in self.__registros:
+            if registro.nome_produto == registro_a_comparar.nome_produto and \
+                    registro.mercado == registro_a_comparar.mercado and \
+                    self.__valida_igualdade_qualificadores(registro, registro_a_comparar):
+                return registro
+        else:
+            return None
 
 if __name__ == "__main__":
-    ctrl = CtrlRegistroDePreco("joaozinho")
-    ctrl.novo_registro()
+    ctrl = CtrlRegistroDePreco()

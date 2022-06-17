@@ -1,14 +1,18 @@
 from entidade.categoria import Categoria
 from visao.tela_categoria import TelaCategoria
 from controle.abstract_ctrl import AbstractCtrl
+from entidade.usuario import Usuario
 
 class CtrlCategoria(AbstractCtrl):
-    def __init__(self, usuario_logado):
+    def __init__(self):
         self.__tela = TelaCategoria()
         self.__categorias = []
-        self.__usuario_logado = usuario_logado
+        self.__usuario_logado = None
 
-    def novo(self): #TODO falta especificar tipo
+    def set_usuario_logado(self, usuario: Usuario):
+        self.__usuario_logado = usuario
+
+    def criador(self) -> Categoria:
         self.__tela.imprime_titulo("Nova categoria")
         nome = self.__tela.pede_nome()
 
@@ -18,22 +22,48 @@ class CtrlCategoria(AbstractCtrl):
                 return categoria
             else:
                 nova_categoria = Categoria(nome, self.__usuario_logado)
-                self.__categorias.append(nova_categoria)
-                self.__tela.imprime("[Nova categoria inserida no sistema]")
+                self.incluir(nova_categoria)
+                self.__tela.imprime("[Nova categoria inclusa no sistema]")
                 self.__tela.imprime_linha_de_fechamento()
                 return nova_categoria
         else:
             return None
 
-    def incluir(self):
-        pass
+    def selecionar_categoria(self) -> Categoria:
+        self.__tela.imprime("\nSelecione uma categoria.")
+        while True:
+            opcao = self.__tela.seleciona_categoria(self.listar("CRIAR NOVA CATEGORIA"))
+            if opcao == 0:
+                return None
+            elif opcao == 1:
+                self.criador()
+            else:
+                return self.__categorias[opcao - 2]
 
-    def busca(self, nome: str):
+    def novo(self, nome: str) -> Categoria:
+        try:
+            if isinstance(nome, str):
+                return Categoria(nome, self.__usuario_logado)
+            else:
+                raise TypeError
+        except TypeError:
+            self.__tela.imprime("! Falha ao criar categoria: variavel de entrada em formato invalido !")
+
+    def busca(self, nome: str) -> Categoria:
         for categoria in self.__categorias:
             if categoria.nome == nome:
                 return categoria
         else:
             return None
+
+    def incluir(self, categoria: Categoria):
+        try:
+            if isinstance(categoria, Categoria):
+                self.__categorias.append(categoria)
+            else:
+                raise TypeError
+        except TypeError:
+            self.__tela.imprime("! Falha ao incluir categoria: variavel de entrada em formato invalido !")
 
     def listar(self, texto_opcao_especial=''):
         self.__tela.imprime_titulo("Lista de categorias")
@@ -50,23 +80,12 @@ class CtrlCategoria(AbstractCtrl):
             count += 1
 
         self.__tela.imprime_linha_de_fechamento()
-        return self.__tela.seleciona_categoria(count - 1)
-
-    def selecionar_categoria(self):
-        self.__tela.imprime("\nSelecione uma categoria.")
-        while True:
-            opcao = self.listar("CRIAR NOVA CATEGORIA")
-            if opcao is None:
-                return None
-            elif opcao == 0:
-                self.novo()
-            else:
-                return self.__categorias[opcao - 1]
+        return count - 1
 
     def excluir(self):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:
-            opcao = self.listar()
+            opcao = self.__tela.seleciona_categoria(self.listar())
             if opcao is None:
                 break
             elif opcao == 0:
@@ -80,7 +99,7 @@ class CtrlCategoria(AbstractCtrl):
     def alterar(self):
         self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
         while True:
-            opcao = self.listar()
+            opcao = self.__tela.seleciona_categoria(self.listar())
             if opcao is None:
                 break
             elif opcao == 0:
@@ -96,6 +115,7 @@ class CtrlCategoria(AbstractCtrl):
                     else:
                         categoria_selecionada.nome = nome
                         categoria_selecionada.cadastrador = self.__usuario_logado
+                        self.__tela.imprime("[Dados alterados com sucesso]")
                         sucesso = True
                         break
             if sucesso:
@@ -103,6 +123,5 @@ class CtrlCategoria(AbstractCtrl):
 
 
 if __name__ == "__main__":
-    ctrl = CtrlCategoria("joaozinho")
-    ctrl.novo()
-    ctrl.alterar()
+    ctrl = CtrlCategoria()
+    ctrl.selecionar_categoria()

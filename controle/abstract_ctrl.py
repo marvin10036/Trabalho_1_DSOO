@@ -8,8 +8,9 @@ class AbstractCtrl(ABC):
         self.__tela = Tela()  # TODO tela propria do Ctrl
         self.__lista_de_objetos = []
 
+    #cria objeto caso nao exista um igual na lista de objetos, insere na lista e retorna o objeto
     @abstractmethod
-    def novo(self):
+    def criador(self):
         self.__tela.imprime_titulo("Novo")
 
         #TODO pede dados do objeto
@@ -29,6 +30,18 @@ class AbstractCtrl(ABC):
             return None
 
     @abstractmethod
+    def novo(self, dados_de_entrada: str):
+        try:
+            if isinstance(dados_de_entrada, str):
+                objeto_criado = "criar aqui objeto"
+                return objeto_criado
+            else:
+                raise TypeError
+        except TypeError:
+            self.__tela.imprime("! Falha ao criar objeto: variavel de entrada em formato invalido !")
+
+
+    @abstractmethod
     def busca(self, dado):
         for objeto in self.__lista_de_objetos:
             if dado == dado: #TODO colocar condicao para verificar existencia
@@ -37,8 +50,14 @@ class AbstractCtrl(ABC):
             return None
 
     @abstractmethod
-    def incluir(self):
-        pass
+    def incluir(self, objeto):
+        try:
+            if isinstance(objeto, str): #TODO formato desejado
+                self.__lista_de_objetos.append(objeto)
+            else:
+                raise TypeError
+        except TypeError:
+            self.__tela.imprime("Falha ao incluir objeto: variavel de entrada em formato invalido")
 
     @abstractmethod
     def listar(self, texto_opcao_especial=''):
@@ -89,9 +108,7 @@ class AbstractCtrl(ABC):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:
             opcao = self.listar()
-            if opcao is None:
-                break
-            elif opcao == 0:
+            if opcao == 0: #voltar
                 break
             else:
                 confirmar = self.__tela._pergunta_sim_ou_nao("Tem certeza?")  # TODO utilizar metodo proprio da tela
