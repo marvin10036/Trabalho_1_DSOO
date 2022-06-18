@@ -23,7 +23,6 @@ class Usuario(ABC):
     def numDoc(self, new_numDoc:str):
         self.__numDoc = new_numDoc
 
-
     @property
     def email(self):
         return self.__email

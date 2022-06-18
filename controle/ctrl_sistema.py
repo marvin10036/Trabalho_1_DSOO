@@ -6,6 +6,7 @@ from controle.ctrl_mercado import CtrlMercado
 from controle.ctrl_qualificador import CtrlQualificador
 from controle.ctrl_preco import CtrlPreco
 from controle.ctrl_produto import CtrlProduto
+from controle.ctrl_usuario import CtrlUsuario
 
 from entidade.usuario import Usuario
 from entidade.produto import Produto
@@ -22,6 +23,7 @@ class CtrlSistema():
         self.__ctrl_preco = CtrlPreco()
         self.__ctrl_qualificador = CtrlQualificador()
         self.__ctrl_produto = CtrlProduto()
+        self.__ctrl_usuario = CtrlUsuario()
 
     def setar_usuario_geral(self, usuario_logado: Usuario):
         self.__usuario_logado = usuario_logado
@@ -31,16 +33,22 @@ class CtrlSistema():
         self.__ctrl_categoria.set_usuario_logado(usuario_logado)
 
     def login(self):
-        while True:
-            usuario = "joao"
-            if usuario != None: #TODO usuario retornado com sucesso
-                self.setar_usuario_geral(usuario)
-                break
-            else:
-                self.__tela.imprime("Usuario nao encontrado. Tente novamente.")
+        self.__ctrl_usuario.login()
+
+    def signin(self):
+        self.__ctrl_usuario.signin()
 
     def programa_principal(self):
-        self.login()
+        while True:
+            opcao = self.__tela.opcoes_menu_usuario()
+            self.__tela.imprime_linha_de_fechamento()
+            if opcao == 0:
+                break
+            elif opcao == 1:
+                self.signin()
+            else:
+                self.login()
+
         while True:
             opcao = self.__tela.opcoes_menu_principal()
             self.__tela.imprime_linha_de_fechamento()

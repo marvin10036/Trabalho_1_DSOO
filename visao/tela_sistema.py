@@ -57,3 +57,10 @@ class TelaSistema(Tela):
         print("5 - Detalhes produto")
         print("0 - Voltar")
         return super()._seleciona_opcao_int(5)
+
+    def opcoes_menu_usuario(self):
+        super().imprime_titulo("Menu Usuario")
+        print("1 - Sign in")
+        print("2 - Log in")
+        print("0 - Voltar")
+        return self._seleciona_opcao_int(2)

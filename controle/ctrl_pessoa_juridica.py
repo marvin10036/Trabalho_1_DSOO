@@ -1,4 +1,4 @@
-from abstract_ctrl import AbstractCtrl
+from controle.abstract_ctrl import AbstractCtrl
 from visao.tela_pessoa_juridica import TelaPessoaJuridica
 from entidade.pessoa_juridica import PessoaJuridica
 
@@ -7,17 +7,26 @@ class PessoaJuridicaCtrl(AbstractCtrl):
         self.__usuarios = []
         self.__tela = TelaPessoaJuridica
 
-    def signin():
-        info = self.__tela.telaSignin()
-        self.__usuarios.append(PessoaJuridica(info["nome"],info["numDoc"],info["email"]))
+    def signin(self):
+        info = self.__tela().telaSignin()
+        for usuario in self.__usuarios:
+            if usuario.__numDoc == info["numDoc"] and usuario.__email == info["email"]:
+                print("Usuario ja cadastrado")
+                break
+        else:
+            if #chamar ctrl_mercado funcao checagem de existencia: bool:
+            self.__usuarios.append(PessoaJuridica(info["nome"],info["numDoc"],info["email"]))
        
-    def login():
-        info = self.__tela.telaLogin()
+    def login(self):
+        info = self.__tela().telaLogin()
         for usuario in self.__usuarios:
             if usuario.__numDoc == info["numDoc"] and usuario.__email == info["email"]:
                 return(usuario)
         else:
             print("Usuario nao cadastrado")
+
+    def criador(self):
+        pass
 
     def novo(self):
         pass

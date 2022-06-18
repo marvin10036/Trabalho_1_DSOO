@@ -1,8 +1,8 @@
-from ctrl_pessoa_juridica import PessoaJuridicaCtrl
-from ctrl_pessoa_fisica import PessoaFisicaCtrl
+from controle.ctrl_pessoa_juridica import PessoaJuridicaCtrl
+from controle.ctrl_pessoa_fisica import PessoaFisicaCtrl
 from visao.tela_usuario import TelaUsuario
 
-class UsuarioCtrl:
+class CtrlUsuario:
     def __init__(self):
         self.__tela = TelaUsuario()
         self.__pessoa_juridica_ctrl = PessoaJuridicaCtrl()
@@ -14,9 +14,8 @@ class UsuarioCtrl:
 
         return (switcher[opcao])
 
-    def signin():
-        self.__pedetipo.signin()
+    def signin(self):
+        self.pedetipo().signin()
 
-    def login():
-        self.__pedetipo.login()
-
+    def login(self):
+        self.pedetipo().login()
