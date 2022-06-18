@@ -8,15 +8,14 @@ class TelaPessoaJuridica(Tela):
         informacoes = {}
         self.imprime_titulo("Sign in")
         informacoes["nome"] = self._pede_str("Digite o seu nome: ")
-        informacoes["numDoc"] = self._pede_str("Digite os numeros do seu CNPJ: ")
+        informacoes["numDoc"] = self._pede_int("Digite os numeros do seu CNPJ: ")
         informacoes["email"] = self._pede_str("Digite seu email: ")
-        informacoes["estabelecimento"] = self._pede_str("Digite seu estabelecimento: ")
         return informacoes
 
     def telaLogin(self):
         self.imprime_titulo("Log in")
         informacoes = {}
         informacoes["email"] = self._pede_str("Digite o seu email: ")
-        informacoes["numDoc"] = self._pede_str("Digite o seu CNPJ: ")
+        informacoes["numDoc"] = self._pede_int("Digite o seu CNPJ: ")
         return informacoes
 

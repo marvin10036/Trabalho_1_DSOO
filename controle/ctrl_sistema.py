@@ -33,23 +33,25 @@ class CtrlSistema():
         self.__ctrl_categoria.set_usuario_logado(usuario_logado)
 
     def login(self):
-        self.__ctrl_usuario.login()
+        usuario = self.__ctrl_usuario.login()
+        if usuario != None:
+            self.setar_usuario_geral(usuario)
+            return True
 
     def signin(self):
-        self.__ctrl_usuario.signin()
+        usuario = self.__ctrl_usuario.signin()
+        if usuario != None:
+            while True:
+                self.__tela.imprime_linha_de_fechamento()
+                self.__tela.imprime_titulo("PESSOA JURIDICA DEVE SER VINCULADA A UM MERCADO")
+                estabelecimento = self.__ctrl_mercado.selecionar_mercado()
+                if estabelecimento != None:
+                    usuario.estabelecimento = estabelecimento
+                    break
 
     def programa_principal(self):
-        while True:
-            opcao = self.__tela.opcoes_menu_usuario()
-            self.__tela.imprime_linha_de_fechamento()
-            if opcao == 0:
-                break
-            elif opcao == 1:
-                self.signin()
-            else:
-                self.login()
-
-        while True:
+        nao_fechar = self.__menu_usuario()
+        while True and nao_fechar:
             opcao = self.__tela.opcoes_menu_principal()
             self.__tela.imprime_linha_de_fechamento()
 
@@ -107,10 +109,14 @@ class CtrlSistema():
             if preco is None:
                 raise Exception
 
-            self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
-            mercado = self.__ctrl_mercado.selecionar_mercado()
-            if mercado is None:
-                raise Exception
+            if self.__ctrl_usuario.retorna_tipo(self.__usuario_logado) == "PessoaJuridica":
+                self.__tela.titulo("Usuario pessoa juridica detectado, foi selecionado o mercado vinculado")
+                mercado = self.__usuario_logado.estabelecimento
+            else:
+                self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
+                mercado = self.__ctrl_mercado.selecionar_mercado()
+                if mercado is None:
+                    raise Exception
 
             self.__tela.imprime("\nFALTA CRIAR REGISTRO E ETC\n")
 
@@ -216,8 +222,24 @@ class CtrlSistema():
         self.__tela.imprime("Qualificadores:")
         for qualificador in produto.qualificadores:
             self.__tela.imprime("- {}".format(qualificador.titulo))
-        self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador)) #TODO imprimir nome do cadastrador
+        self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador.nome)) #TODO imprimir nome do cadastrador
         self.__tela.imprime_linha_de_fechamento()
+
+    def __menu_usuario(self):
+        while True:
+            condicao = False
+            opcao = self.__tela.opcoes_menu_usuario()
+            self.__tela.imprime_linha_de_fechamento()
+            if opcao == 0:
+                return False
+            elif opcao == 1:
+                self.signin()
+            else:
+                condicao = self.login()
+                if condicao:
+                    return True
+
+
 
 
 

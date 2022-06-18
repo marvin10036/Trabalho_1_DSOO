@@ -32,6 +32,16 @@ class Tela():
         else:
             return entrada
 
+    def _pede_int(self, msg_input: str):
+        while True:
+            entrada = input(msg_input).capitalize()
+            try:
+                entrada = int(entrada)
+            except ValueError:
+                print("Entrada inserida inválida: favor inserir valor inteiro.")
+            else:
+                return entrada
+
     def _seleciona_opcao_int(self, n_de_opcoes: int):
         while True:
             entrada = input("Selecione uma opcao: ")
