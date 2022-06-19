@@ -1,10 +1,10 @@
-from usuario import Usuario
-from mercado import Mercado
+from entidade.usuario import Usuario
+from entidade.mercado import Mercado
 
 class PessoaJuridica(Usuario):
-    def __init__(self,nome:str,numDoc:str,email:str,estabelecimento:Mercado):
-        super().__init__(self,nome,numDoc,email)
-        self.__estabelecimento = estabelecimento
+    def __init__(self,nome:str,numDoc:int, email: str):
+        super().__init__(nome,numDoc, email)
+        self.__estabelecimento = None
 
     @property
     def estabelecimento(self):

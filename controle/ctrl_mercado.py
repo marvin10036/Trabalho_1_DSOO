@@ -86,7 +86,6 @@ class CtrlMercado():
         self.__tela.imprime_linha_de_fechamento()
         return count - 1
 
-
     def excluir(self):
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:

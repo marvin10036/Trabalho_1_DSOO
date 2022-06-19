@@ -6,6 +6,7 @@ from controle.ctrl_mercado import CtrlMercado
 from controle.ctrl_qualificador import CtrlQualificador
 from controle.ctrl_preco import CtrlPreco
 from controle.ctrl_produto import CtrlProduto
+from controle.ctrl_usuario import CtrlUsuario
 
 from entidade.usuario import Usuario
 from entidade.produto import Produto
@@ -22,6 +23,7 @@ class CtrlSistema():
         self.__ctrl_preco = CtrlPreco()
         self.__ctrl_qualificador = CtrlQualificador()
         self.__ctrl_produto = CtrlProduto()
+        self.__ctrl_usuario = CtrlUsuario()
 
     def setar_usuario_geral(self, usuario_logado: Usuario):
         self.__usuario_logado = usuario_logado
@@ -31,28 +33,39 @@ class CtrlSistema():
         self.__ctrl_categoria.set_usuario_logado(usuario_logado)
 
     def login(self):
-        while True:
-            usuario = "joao"
-            if usuario != None: #TODO usuario retornado com sucesso
-                self.setar_usuario_geral(usuario)
-                break
-            else:
-                self.__tela.imprime("Usuario nao encontrado. Tente novamente.")
+        usuario = self.__ctrl_usuario.login()
+        if usuario != None:
+            self.setar_usuario_geral(usuario)
+            return True
+
+    def signin(self):
+        usuario = self.__ctrl_usuario.signin()
+        if usuario != None:
+            while True:
+                self.__tela.imprime_linha_de_fechamento()
+                self.__tela.imprime_titulo("PESSOA JURIDICA DEVE SER VINCULADA A UM MERCADO")
+                estabelecimento = self.__ctrl_mercado.selecionar_mercado()
+                if estabelecimento != None:
+                    usuario.estabelecimento = estabelecimento
+                    break
 
     def programa_principal(self):
-        self.login()
         while True:
-            opcao = self.__tela.opcoes_menu_principal()
-            self.__tela.imprime_linha_de_fechamento()
-
-            if opcao == 0:
+            nao_fechar = self.__menu_usuario()
+            if not(nao_fechar):
                 break
-            elif opcao == 1:
-                self.criar_novo_registro()
-            elif opcao == 2:
-                self.buscar_registro()
-            elif opcao == 3:
-                self.editar_dados()
+            while True:
+                opcao = self.__tela.opcoes_menu_principal()
+                self.__tela.imprime_linha_de_fechamento()
+
+                if opcao == 0:
+                    break
+                elif opcao == 1:
+                    self.criar_novo_registro()
+                elif opcao == 2:
+                    self.buscar_registro()
+                elif opcao == 3:
+                    self.editar_dados()
 
     # utilizar esse metodo para criar produto,
     # ja que esta classe (CtrlSistema) possui as entidades necessarias para criacao
@@ -99,10 +112,14 @@ class CtrlSistema():
             if preco is None:
                 raise Exception
 
-            self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
-            mercado = self.__ctrl_mercado.selecionar_mercado()
-            if mercado is None:
-                raise Exception
+            if self.__ctrl_usuario.retorna_tipo(self.__usuario_logado) == "PessoaJuridica":
+                self.__tela.titulo("Usuario pessoa juridica detectado, foi selecionado o mercado vinculado")
+                mercado = self.__usuario_logado.estabelecimento
+            else:
+                self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
+                mercado = self.__ctrl_mercado.selecionar_mercado()
+                if mercado is None:
+                    raise Exception
 
             self.__tela.imprime("\nFALTA CRIAR REGISTRO E ETC\n")
 
@@ -110,12 +127,22 @@ class CtrlSistema():
             #TODO verificar se ja existe um registro igual ou criar um novo
             #TODO verificar caso exista um registro igual se há um preco igual e somar no contador dele
 
-            # novo_registro = self.__ctrl_registro.novo(nome_produto,
-            #                                           qualificadores_preenchidos,
-            #                                           preco,
-            #                                           mercado)
-            #
-            # registro_existente = self.__ctrl_registro.buscar(novo_registro)
+            novo_registro = self.__ctrl_registro.novo(nome_produto,
+                                                       qualificadores_preenchidos,
+                                                       preco,
+                                                       mercado)
+
+            registro_existente = self.__ctrl_registro.buscar(novo_registro)
+            if registro_existente != None:
+                registro_existente.incluir_preco(novo_registro.precos[0])
+                self.__tela.imprime_linha_de_fechamento()
+                self.__tela.imprime_titulo("Registro de produto ja existente. Adicionando preco.")
+                self.__tela.imprime_linha_de_fechamento()
+            else:
+                self.__ctrl_registro.incluir(novo_registro)
+                self.__tela.imprime_linha_de_fechamento()
+                self.__tela.imprime_titulo("Registro realizado com sucesso")
+                self.__tela.imprime_linha_de_fechamento()
 
         except Exception:
             self.__tela.imprime("Falha na criacao do registro - alguma variavel nao foi preenchida.")
@@ -134,7 +161,7 @@ class CtrlSistema():
         return qualificadores_preenchidos
 
     def buscar_registro(self):
-        pass
+        self.__ctrl_registro.mostrar_lista_completa()
 
     def editar_dados(self):
         while True:
@@ -208,8 +235,24 @@ class CtrlSistema():
         self.__tela.imprime("Qualificadores:")
         for qualificador in produto.qualificadores:
             self.__tela.imprime("- {}".format(qualificador.titulo))
-        self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador)) #TODO imprimir nome do cadastrador
+        self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador.nome))
         self.__tela.imprime_linha_de_fechamento()
+
+    def __menu_usuario(self):
+        while True:
+            condicao = False
+            opcao = self.__tela.opcoes_menu_usuario()
+            self.__tela.imprime_linha_de_fechamento()
+            if opcao == 0:
+                return False
+            elif opcao == 1:
+                self.signin()
+            else:
+                condicao = self.login()
+                if condicao:
+                    return True
+
+
 
 
 

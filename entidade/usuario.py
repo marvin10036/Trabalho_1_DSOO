@@ -1,7 +1,7 @@
 from abc import ABC
 
 class Usuario(ABC):
-    def __init__(self, nome:str, numDoc:str, email:str):
+    def __init__(self, nome:str, numDoc:int, email:str):
         self.__nome = nome
         self.__numDoc = numDoc
         self.__email = email
@@ -20,9 +20,8 @@ class Usuario(ABC):
         return self.__numDoc
 
     @numDoc.setter
-    def numDoc(self, new_numDoc:str):
+    def numDoc(self, new_numDoc:int):
         self.__numDoc = new_numDoc
-
 
     @property
     def email(self):
