@@ -11,6 +11,7 @@ class CtrlRegistroDePreco():
     def __init__(self):
         self.__registros = []
         self.__usuario_logado = None
+        self.__tela = TelaRegistroDePreco()
 
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
@@ -30,7 +31,8 @@ class CtrlRegistroDePreco():
                 isinstance(preco, Preco) and \
                 isinstance(mercado, Mercado) and \
                 self.__valida_formato_qualificadores(qualificadores_preenchidos):
-            return RegistroDePreco(nome_produto, qualificadores_preenchidos, preco, mercado, self.__usuario_logado)
+            return RegistroDePreco(nome_produto, qualificadores_preenchidos, preco, mercado,
+                                   self.__usuario_logado.nome)
         else:
             return None
 
@@ -53,6 +55,12 @@ class CtrlRegistroDePreco():
                 return registro
         else:
             return None
+
+    def mostrar_lista_completa(self):
+        if len(self.__registros) == 0:
+            self.__tela.imprime("Nenhum registro foi realizado ainda")
+        else:
+            self.__tela.printar_lista_completa(self.__registros)
 
 if __name__ == "__main__":
     ctrl = CtrlRegistroDePreco()

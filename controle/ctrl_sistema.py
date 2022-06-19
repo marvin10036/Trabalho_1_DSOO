@@ -127,12 +127,22 @@ class CtrlSistema():
             #TODO verificar se ja existe um registro igual ou criar um novo
             #TODO verificar caso exista um registro igual se há um preco igual e somar no contador dele
 
-            # novo_registro = self.__ctrl_registro.novo(nome_produto,
-            #                                           qualificadores_preenchidos,
-            #                                           preco,
-            #                                           mercado)
-            #
-            # registro_existente = self.__ctrl_registro.buscar(novo_registro)
+            novo_registro = self.__ctrl_registro.novo(nome_produto,
+                                                       qualificadores_preenchidos,
+                                                       preco,
+                                                       mercado)
+
+            registro_existente = self.__ctrl_registro.buscar(novo_registro)
+            if registro_existente != None:
+                registro_existente.incluir_preco(novo_registro.precos[0])
+                self.__tela.imprime_linha_de_fechamento()
+                self.__tela.imprime_titulo("Registro de produto ja existente. Adicionando preco.")
+                self.__tela.imprime_linha_de_fechamento()
+            else:
+                self.__ctrl_registro.incluir(novo_registro)
+                self.__tela.imprime_linha_de_fechamento()
+                self.__tela.imprime_titulo("Registro realizado com sucesso")
+                self.__tela.imprime_linha_de_fechamento()
 
         except Exception:
             self.__tela.imprime("Falha na criacao do registro - alguma variavel nao foi preenchida.")
@@ -151,7 +161,7 @@ class CtrlSistema():
         return qualificadores_preenchidos
 
     def buscar_registro(self):
-        pass
+        self.__ctrl_registro.mostrar_lista_completa()
 
     def editar_dados(self):
         while True:
