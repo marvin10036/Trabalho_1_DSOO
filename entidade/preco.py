@@ -1,11 +1,10 @@
 from datetime import date
-#TODO falta classe usuario
 
 class Preco():
-    def __init__(self, valor: float, cadastrador: str):
+    def __init__(self, valor: float, cadastrador):
         self.__data = date.today().strftime("%d/%m/%Y")
         self.__valor = valor
-        self.__cadastrador = cadastrador  # TODO falta classe usuario
+        self.__cadastrador = cadastrador
         self.__confirmacoes = 1
 
     @property

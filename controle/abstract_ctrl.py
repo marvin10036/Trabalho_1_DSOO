@@ -5,7 +5,7 @@ from visao.tela import Tela
 class AbstractCtrl(ABC):
     @abstractmethod
     def __init__(self):
-        self.__tela = Tela()  # TODO tela propria do Ctrl
+        self.__tela = Tela()  #tela propria do Ctrl
         self.__lista_de_objetos = []
 
     #cria objeto caso nao exista um igual na lista de objetos, insere na lista e retorna o objeto
@@ -13,7 +13,7 @@ class AbstractCtrl(ABC):
     def criador(self):
         self.__tela.imprime_titulo("Novo")
 
-        #TODO pede dados do objeto
+        #pede dados do objeto
         dado = "ola"
 
         if dado is not None:
@@ -21,9 +21,9 @@ class AbstractCtrl(ABC):
             if objeto is not None:
                 return objeto
             else:
-                novo_objeto = "Objeto criado" #TODO criar aqui o objeto
+                novo_objeto = "Objeto criado" #criar aqui o objeto
                 self.__lista_de_objetos.append(novo_objeto)
-                self.__tela.imprime("[Novo objeto inserido no sistema]") #TODO adaptar texto
+                self.__tela.imprime("[Novo objeto inserido no sistema]") #adaptar texto
                 self.__tela.imprime_linha_de_fechamento()
                 return novo_objeto
         else:
@@ -44,7 +44,7 @@ class AbstractCtrl(ABC):
     @abstractmethod
     def busca(self, dado):
         for objeto in self.__lista_de_objetos:
-            if dado == dado: #TODO colocar condicao para verificar existencia
+            if dado == dado: #colocar condicao para verificar existencia
                 return objeto
         else:
             return None
@@ -52,7 +52,7 @@ class AbstractCtrl(ABC):
     @abstractmethod
     def incluir(self, objeto):
         try:
-            if isinstance(objeto, str): #TODO formato desejado
+            if isinstance(objeto, str): #formato desejado
                 self.__lista_de_objetos.append(objeto)
             else:
                 raise TypeError
@@ -71,11 +71,11 @@ class AbstractCtrl(ABC):
             count += 1
 
         for objeto in self.__lista_de_objetos:
-            self.__tela.imprime("{} - {}.".format(count, objeto))  # TODO dados do objeto
+            self.__tela.imprime("{} - {}.".format(count, objeto))  #dados do objeto
             count += 1
 
         self.__tela.imprime_linha_de_fechamento()
-        return self.__tela._seleciona_opcao_int(count - 1)  # TODO chamar funcao propria da tela
+        return self.__tela._seleciona_opcao_int(count - 1)  #chamar funcao propria da tela
 
     @abstractmethod
     def alterar(self):
@@ -87,17 +87,17 @@ class AbstractCtrl(ABC):
             elif opcao == 0:
                 break
             else:
-                objeto_selecionado = self.__lista_de_objetos[opcao - 1] #TODO utilizar a propria lista
+                objeto_selecionado = self.__lista_de_objetos[opcao - 1] #utilizar a propria lista
                 while True:
 
-                    #TODO [PEDIR DADOS DA TELA AQUI]
+                    #[PEDIR DADOS DA TELA AQUI]
 
                     for objeto in self.__lista_de_objetos:
-                        if True: #TODO colocar condicao que checa existencia aqui
+                        if True: #colocar condicao que checa existencia aqui
                             self.__tela.imprime("Ja existe um objeto com esses dados.")
                             break
                     else:
-                        #TODO [ALTERA OS DADOS DO OBJETO AQUI]
+                        #[ALTERA OS DADOS DO OBJETO AQUI]
                         sucesso = True
                         break
             if sucesso:
@@ -111,7 +111,7 @@ class AbstractCtrl(ABC):
             if opcao == 0: #voltar
                 break
             else:
-                confirmar = self.__tela._pergunta_sim_ou_nao("Tem certeza?")  # TODO utilizar metodo proprio da tela
+                confirmar = self.__tela._pergunta_sim_ou_nao("Tem certeza?")  #utilizar metodo proprio da tela
                 if confirmar:
                     del (self.__lista_de_objetos[opcao - 1])
                     break

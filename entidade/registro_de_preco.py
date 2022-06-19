@@ -2,9 +2,8 @@ from entidade.qualificador import Qualificador
 from entidade.preco import Preco
 from entidade.mercado import Mercado
 
-#TODO falta cadastrador aqui
 class RegistroDePreco():
-    def __init__(self, nome_produto, qualificadores: list, preco: Preco, mercado: Mercado, cadastrador: str):
+    def __init__(self, nome_produto, qualificadores: list, preco: Preco, mercado: Mercado, cadastrador):
         self.__nome_produto = nome_produto
         self.__qualificadores = qualificadores
         self.__precos = []

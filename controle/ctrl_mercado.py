@@ -13,7 +13,7 @@ class CtrlMercado():
         self.__usuario_logado = usuario
 
     #cria objeto caso nao exista um igual na lista de objetos, insere na lista e retorna o objeto
-    def criador(self) -> Mercado: #TODO falta especificar tipo do cadastrador
+    def criador(self) -> Mercado:
         self.__tela.imprime_titulo("Novo mercado")
         nome = self.__tela.pede_nome()
         endereco = self.__tela.pede_endereco()

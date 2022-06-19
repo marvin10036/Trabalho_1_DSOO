@@ -58,7 +58,7 @@ class CtrlProduto:
 
     def incluir(self, produto: Produto):
         try:
-            if isinstance(produto, Produto): #TODO formato desejado
+            if isinstance(produto, Produto):
                 self.__produtos.append(produto)
             else:
                 raise TypeError

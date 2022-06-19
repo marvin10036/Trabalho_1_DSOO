@@ -11,7 +11,7 @@ class CtrlPreco():
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
 
-    def criador(self) -> Preco: #TODO falta especificar tipo cadastrador
+    def criador(self) -> Preco:
         self.__tela.imprime_titulo("Novo preco")
         valor = self.__tela.pede_valor()
         self.__tela.imprime_linha_de_fechamento()

@@ -2,7 +2,7 @@
 
 
 class Mercado():
-    def __init__(self, nome: str, endereco: str, cadastrador: str): #todo falta cadastrador
+    def __init__(self, nome: str, endereco: str, cadastrador):
         self.__nome = nome
         self.__endereco = endereco
         self.__cadastrador = cadastrador
