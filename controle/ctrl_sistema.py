@@ -225,7 +225,9 @@ class CtrlSistema():
             elif opcao == 4:
                 self.__ctrl_produto.excluir()
             elif opcao == 5:
-                self.__detalhes_produto(self.__ctrl_produto.selecionar_produto())
+                produto_selecionado = self.__ctrl_produto.selecionar_produto()
+                if produto_selecionado != None:
+                    self.__detalhes_produto(produto_selecionado)
 
     def __detalhes_produto(self, produto: Produto):
         self.__tela.imprime_titulo("Detalhes produto")
