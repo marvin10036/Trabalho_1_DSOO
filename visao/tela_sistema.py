@@ -10,7 +10,7 @@ class TelaSistema(Tela):
         print("1 - Novo registro de preco")
         print("2 - Buscar registro de preco")
         print("3 - Editar dados do sistema")
-        print("0 - Finalizar programa")
+        print("0 - Deslogar")
         return super()._seleciona_opcao_int(3)
 
     def pede_nome_produto(self):
@@ -62,5 +62,5 @@ class TelaSistema(Tela):
         super().imprime_titulo("Menu Usuario")
         print("1 - Sign in")
         print("2 - Log in")
-        print("0 - Voltar")
+        print("0 - Fechar programa")
         return self._seleciona_opcao_int(2)

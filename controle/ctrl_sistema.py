@@ -50,19 +50,22 @@ class CtrlSistema():
                     break
 
     def programa_principal(self):
-        nao_fechar = self.__menu_usuario()
-        while True and nao_fechar:
-            opcao = self.__tela.opcoes_menu_principal()
-            self.__tela.imprime_linha_de_fechamento()
-
-            if opcao == 0:
+        while True:
+            nao_fechar = self.__menu_usuario()
+            if not(nao_fechar):
                 break
-            elif opcao == 1:
-                self.criar_novo_registro()
-            elif opcao == 2:
-                self.buscar_registro()
-            elif opcao == 3:
-                self.editar_dados()
+            while True:
+                opcao = self.__tela.opcoes_menu_principal()
+                self.__tela.imprime_linha_de_fechamento()
+
+                if opcao == 0:
+                    break
+                elif opcao == 1:
+                    self.criar_novo_registro()
+                elif opcao == 2:
+                    self.buscar_registro()
+                elif opcao == 3:
+                    self.editar_dados()
 
     # utilizar esse metodo para criar produto,
     # ja que esta classe (CtrlSistema) possui as entidades necessarias para criacao
@@ -222,7 +225,7 @@ class CtrlSistema():
         self.__tela.imprime("Qualificadores:")
         for qualificador in produto.qualificadores:
             self.__tela.imprime("- {}".format(qualificador.titulo))
-        self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador.nome)) #TODO imprimir nome do cadastrador
+        self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador.nome))
         self.__tela.imprime_linha_de_fechamento()
 
     def __menu_usuario(self):
