@@ -93,6 +93,10 @@ class CtrlSistema():
         return produto
 
     def criar_novo_registro(self):
+        if self.__usuario_logado.cadastrouHoje:
+            self.__tela.imprime("Voce ja realizou um cadastro hoje, espere ate amanha")
+            return
+
         try:
             self.__tela.imprime_titulo("Novo registro de preco.")
 
@@ -120,17 +124,13 @@ class CtrlSistema():
                 raise Exception
 
             if self.__ctrl_usuario.retorna_tipo(self.__usuario_logado) == "PessoaJuridica":
-                self.__tela.titulo("Usuario pessoa juridica detectado, foi selecionado o mercado vinculado")
+                self.__tela.imprime_titulo("Usuario pessoa juridica detectado, foi selecionado o mercado vinculado")
                 mercado = self.__usuario_logado.estabelecimento
             else:
                 self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
                 mercado = self.__ctrl_mercado.selecionar_mercado()
                 if mercado is None:
                     raise Exception
-
-            # TODO implementar logica para criacao de registro
-            # TODO verificar se ja existe um registro igual ou criar um novo
-            # TODO verificar caso exista um registro igual se há um preco igual e somar no contador dele
 
             novo_registro = self.__ctrl_registro.novo(nome_produto,
                                                       qualificadores_preenchidos,
@@ -149,11 +149,14 @@ class CtrlSistema():
                 self.__tela.imprime_titulo("Registro realizado com sucesso")
                 self.__tela.imprime_linha_de_fechamento()
 
+            self.__usuario_logado.cadastrouHoje = True
         except Exception:
             self.__tela.imprime("Falha na criacao do registro - alguma variavel nao foi preenchida.")
+            self.__usuario_logado.cadastrouHoje = False
 
         self.__tela.imprime("Criacao de registro de preco finalizada.")
         self.__tela.imprime_linha_de_fechamento()
+
 
     def __preencher_qualificadores(self, produto: Produto):
         qualificadores_preenchidos = []
@@ -270,11 +273,16 @@ class CtrlSistema():
                 return False
             elif opcao == 1:
                 self.signup()
+            elif opcao == 3:
+                self.passa_um_dia()
             else:
                 condicao = self.login()
                 if condicao:
                     return True
 
-
+    def passa_um_dia(self):
+        self.__ctrl_usuario.setta_cadastrou_usuarios()
+        self.__tela.imprime("Sistema movido um dia a frente")
+                  
 if __name__ == "__main__":
     CtrlSistema().programa_principal()
