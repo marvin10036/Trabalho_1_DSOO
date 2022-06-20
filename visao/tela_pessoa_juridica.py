@@ -4,9 +4,9 @@ class TelaPessoaJuridica(Tela):
     def __init__(self):
         pass
 
-    def telaSignin(self):
+    def telaSignup(self):
         informacoes = {}
-        self.imprime_titulo("Sign in")
+        self.imprime_titulo("Sign up")
         informacoes["nome"] = self._pede_str("Digite o seu nome: ")
         informacoes["numDoc"] = self._pede_int("Digite os numeros do seu CNPJ: ")
         informacoes["email"] = self._pede_str("Digite seu email: ")

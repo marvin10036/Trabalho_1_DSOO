@@ -6,19 +6,26 @@ from visao.tela_pessoa_fisica import TelaPessoaFisica
 class PessoaFisicaCtrl(AbstractCtrl):
     def __init__(self):
         self.__usuarios = []
-        self.__tela = TelaPessoaFisica
+        self.__tela = TelaPessoaFisica()
 
-    def signin(self):
-        info = self.__tela().telaSignin()
-        self.__usuarios.append(PessoaFisica(info["nome"], info["numDoc"], info["email"]))
+    def signup(self):
+        info = self.__tela.telaSignup()
+        for usuario in self.__usuarios:
+            if usuario.numDoc == info["numDoc"] or usuario.email == info["email"]:
+                self.__tela.imprime("Usuario com esse CPF ou email ja cadastrado")
+                break
+        else:
+            pessoa = PessoaFisica(info["nome"],info["numDoc"],info["email"])
+            self.__usuarios.append(pessoa)
+            self.__tela.imprime("Cadastro realizado com sucesso")
 
     def login(self):
-        info = self.__tela().telaLogin()
+        info = self.__tela.telaLogin()
         for usuario in self.__usuarios:
             if usuario.numDoc == info["numDoc"] and usuario.email == info["email"]:
                 return (usuario)
         else:
-            print("Usuario nao cadastrado")
+            self.__tela.imprime("Usuario nao cadastrado")
 
     def criador(self):
         pass

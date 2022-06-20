@@ -6,6 +6,6 @@ class TelaUsuario(Tela):
 
     def pedeTipoUsuario(self):
         print("Escolha o tipo de pessoa: \n1 - Pessoa Fisica \n2 - Pessoa Juridica\n")
-        opcao = self._seleciona_opcao_int(2)
+        opcao = self._seleciona_opcao_int_restrito(2)
         super().imprime_linha_de_fechamento()
         return(opcao)

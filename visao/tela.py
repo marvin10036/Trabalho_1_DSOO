@@ -55,6 +55,20 @@ class Tela():
             except ValueError:
                 print("Entrada inserida inválida: favor inserir valor inteiro dentro da faixa de opcoes fornecidas.")
 
+    #Criei porque precisava sem o 0 em alguns casos
+    def _seleciona_opcao_int_restrito(self, n_de_opcoes: int):
+        while True:
+            entrada = input("Selecione uma opcao: ")
+
+            try:
+                entrada = int(entrada)
+                if entrada > 0 and entrada <= n_de_opcoes: #dentro da faixa de opcoes
+                    return entrada
+                else:
+                    raise ValueError
+            except ValueError:
+                print("Entrada inserida inválida: favor inserir valor inteiro dentro da faixa de opcoes fornecidas.")
+
     def _pergunta_sim_ou_nao(self, texto:str) -> bool:
         entrada = input("{} [S/N] ".format(texto)).upper()
         if entrada == "S":
