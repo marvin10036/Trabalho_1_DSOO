@@ -135,10 +135,43 @@ class CtrlRegistroDePreco():
     def ordernar_por_data(self,lista):
         pass
 
+    def listar(self, texto_opcao_especial=''):
+        self.__tela.imprime_titulo("Lista de registros")
+        count = 1
 
+        self.__tela.imprime("0 - Voltar")
 
+        if texto_opcao_especial != '':
+            self.__tela.imprime("1 - {}".format(texto_opcao_especial))
+            count += 1
 
+        for registro in self.__registros:
+            self.__tela.imprime("{}:".format(count))  #dados do objeto
+            self.__tela.imprime("- Produto: {}".format(registro.nome_produto))
+            for qualificador in registro.qualificadores:
+                self.__tela.imprime("- {}: {}".format(qualificador.titulo, qualificador.descricao))
+            self.__tela.imprime("- Mercado: {} | End: {}".format(registro.mercado.nome, registro.mercado.endereco))
+            for preco in registro.precos:
+                self.__tela.imprime("- Preco: R${} | Confirmacoes: {} | Cadastrador: {}".format(preco.valor,
+                                                                                                preco.confirmacoes,
+                                                                                                preco.cadastrador.nome))
+            count += 1
 
+        self.__tela.imprime_linha_de_fechamento()
+        return count - 1    #retorna numero de opcoes (sem contar o zero)
+
+    def excluir(self):
+        self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
+        while True:
+            opcao = self.__tela.seleciona_opcao_lista(self.listar())
+            if opcao == 0: #voltar
+                break
+            else:
+                confirmar = self.__tela.pede_confirmacao()
+                if confirmar:
+                    del (self.__registros[opcao - 1])
+                    self.__tela.imprime("[item removido da lista de registros]")
+                    break
 
 if __name__ == "__main__":
     ctrl = CtrlRegistroDePreco()

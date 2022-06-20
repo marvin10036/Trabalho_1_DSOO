@@ -69,7 +69,7 @@ class Tela():
             except ValueError:
                 print("Entrada inserida inválida: favor inserir valor inteiro dentro da faixa de opcoes fornecidas.")
 
-    def _pergunta_sim_ou_nao(self, texto:str) -> bool:
+    def _pergunta_sim_ou_nao(self, texto: str) -> bool:
         entrada = input("{} [S/N] ".format(texto)).upper()
         if entrada == "S":
             return True

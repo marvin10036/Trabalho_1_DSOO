@@ -7,6 +7,10 @@ class PessoaFisicaCtrl(AbstractCtrl):
     def __init__(self):
         self.__usuarios = []
         self.__tela = TelaPessoaFisica()
+        self.__variaveis_para_testagem()
+
+    def __variaveis_para_testagem(self):
+        self.__usuarios.append(PessoaFisica("Admin", 123, "123"))
 
     def signup(self):
         info = self.__tela.telaSignup()

@@ -23,10 +23,19 @@ class TelaSistema(Tela):
         return super()._pergunta_sim_ou_nao(texto)
 
     def opcoes_editar_dados(self):
-        super().imprime_titulo("Menu principal")
+        super().imprime_titulo("Menu editar dados")
         print("1 - Categorias")
         print("2 - Mercados")
         print("3 - Produtos")
+        print("4 - Registros de preco")
+        print("0 - Voltar")
+        return super()._seleciona_opcao_int(4)
+
+    def opcoes_menu_registro(self):
+        super().imprime_titulo("Menu Registro")
+        print("1 - Listar registros")
+        print("2 - Novo registro")
+        print("3 - Excluir registro")
         print("0 - Voltar")
         return super()._seleciona_opcao_int(3)
 

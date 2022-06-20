@@ -12,6 +12,7 @@ from entidade.usuario import Usuario
 from entidade.produto import Produto
 from entidade.registro_de_preco import RegistroDePreco
 
+
 class CtrlSistema():
     def __init__(self):
         self.__tela = TelaSistema()
@@ -31,6 +32,7 @@ class CtrlSistema():
         self.__ctrl_produto.set_usuario_logado(usuario_logado)
         self.__ctrl_mercado.set_usuario_logado(usuario_logado)
         self.__ctrl_categoria.set_usuario_logado(usuario_logado)
+        self.__ctrl_preco.set_usuario_logado(usuario_logado)
 
     def login(self):
         usuario = self.__ctrl_usuario.login()
@@ -52,20 +54,25 @@ class CtrlSistema():
     def programa_principal(self):
         while True:
             nao_fechar = self.__menu_usuario()
-            if not(nao_fechar):
+            if not (nao_fechar):
                 break
-            while True:
-                opcao = self.__tela.opcoes_menu_principal()
-                self.__tela.imprime_linha_de_fechamento()
+            self.menu_principal()
 
-                if opcao == 0:
-                    break
-                elif opcao == 1:
-                    self.criar_novo_registro()
-                elif opcao == 2:
-                    self.buscar_registro()
-                elif opcao == 3:
-                    self.editar_dados()
+
+
+    def menu_principal(self):
+        while True:
+            opcao = self.__tela.opcoes_menu_principal()
+            self.__tela.imprime_linha_de_fechamento()
+
+            if opcao == 0:
+                break
+            elif opcao == 1:
+                self.criar_novo_registro()
+            elif opcao == 2:
+                self.buscar_registro()
+            elif opcao == 3:
+                self.editar_dados()
 
     # utilizar esse metodo para criar produto,
     # ja que esta classe (CtrlSistema) possui as entidades necessarias para criacao
@@ -81,8 +88,8 @@ class CtrlSistema():
         novos_qualificadores = self.__ctrl_qualificador.criador(com_descricao=False)
 
         produto = self.__ctrl_produto.criador(novos_qualificadores,
-                                           categoria,
-                                           nome_produto)
+                                              categoria,
+                                              nome_produto)
         return produto
 
     def criar_novo_registro(self):
@@ -93,7 +100,7 @@ class CtrlSistema():
             nome_produto = self.__tela.pede_nome_produto()
             produto = self.__ctrl_produto.busca(nome_produto)
 
-            #se nao encontrar um produto na lista de produtos com o mesmo nome
+            # se nao encontrar um produto na lista de produtos com o mesmo nome
             if produto is None:
                 quer_criar_produto = self.__tela.pede_confirmacao("Produto nao encontrado. Deseja criar um novo?")
 
@@ -121,15 +128,14 @@ class CtrlSistema():
                 if mercado is None:
                     raise Exception
 
-
-            #TODO implementar logica para criacao de registro
-            #TODO verificar se ja existe um registro igual ou criar um novo
-            #TODO verificar caso exista um registro igual se há um preco igual e somar no contador dele
+            # TODO implementar logica para criacao de registro
+            # TODO verificar se ja existe um registro igual ou criar um novo
+            # TODO verificar caso exista um registro igual se há um preco igual e somar no contador dele
 
             novo_registro = self.__ctrl_registro.novo(nome_produto,
-                                                       qualificadores_preenchidos,
-                                                       preco,
-                                                       mercado)
+                                                      qualificadores_preenchidos,
+                                                      preco,
+                                                      mercado)
 
             registro_existente = self.__ctrl_registro.buscar(novo_registro)
             if registro_existente != None:
@@ -175,6 +181,22 @@ class CtrlSistema():
                 self.__menu_mercado()
             elif opcao == 3:
                 self.__menu_produto()
+            elif opcao == 4:
+                self.__menu_registros()
+
+    def __menu_registros(self):
+        while True:
+            opcao = self.__tela.opcoes_menu_registro()
+            self.__tela.imprime_linha_de_fechamento()
+
+            if opcao == 0:
+                break
+            elif opcao == 1:
+                self.__ctrl_registro.listar()
+            elif opcao == 2:
+                self.criar_novo_registro()
+            elif opcao == 3:
+                self.__ctrl_registro.excluir()
 
     def __menu_categoria(self):
         while True:
@@ -252,9 +274,6 @@ class CtrlSistema():
                 condicao = self.login()
                 if condicao:
                     return True
-
-
-
 
 
 if __name__ == "__main__":

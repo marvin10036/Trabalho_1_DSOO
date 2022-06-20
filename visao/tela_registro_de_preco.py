@@ -5,6 +5,12 @@ class TelaRegistroDePreco(Tela):
     def teste(self):
         pass
 
+    def seleciona_opcao_lista(self, n_de_opcoes):
+        return super()._seleciona_opcao_int(n_de_opcoes)
+
+    def pede_confirmacao(self):
+        return super()._pergunta_sim_ou_nao("Tem certeza que deseja excluir a opcao selecionada?")
+
     def printar_opcoes_iniciais(self):
         self.imprime_linha_de_fechamento()
         self.imprime_titulo("Menu de busca")
