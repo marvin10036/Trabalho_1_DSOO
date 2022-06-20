@@ -114,37 +114,35 @@ class CtrlRegistroDePreco():
             lista_ordenada = self.ordernar_por_data(lista)
             self.__tela.printar_lista(lista_ordenada)
 
-    def ordenar_por_preco(self, lista):
-        posicao_valor_anterior = 1
-        valor_anterior = 0
-        condicao_1 = False
-        iteracoes = 0
-        breakar = True
-        while breakar:
-            for registro in lista:
-                if condicao_1:
-                    condicao_1 = False
-                    iteracoes += 1
-                if iteracoes == len(lista):
-                    breakar = False
-                for i in range(len(registro.precos)):
-                    if registro.precos[i].valor < valor_anterior:
-                        iteracoes = 0
-                        novo_valor_anterior = registro.precos[i].valor
-                        nova_posicao_valor_anterior = lista.index(registro)
-                        lista.remove(registro)
-                        lista.insert(posicao_valor_anterior, registro)
-                        posicao_valor_anterior = nova_posicao_valor_anterior
-                        valor_anterior = novo_valor_anterior
-                else:
-                    condicao_1 = True
+    def ordenar_por_preco(self, lista): #A ideia e que retorne em uma
+        for registro in lista:          #com apenas os qualificadores
+            for i in range(0, len(registro.precos)-1):
+                for j in range(len(registro.precos)-1):
+                    if registro.precos[i].valor > registro.precos[i+1].valor:
+                        variavel_auxiliar = registro.precos[i]
+                        registro.precos[i] = registro.precos[i+1]
+                        registro.precos[i+1] = variavel_auxiliar
         return lista
 
     def ordenar_por_confirmacoes(self,lista):
-        pass
+        for registro in lista:                        #mesma logica de ordencao do anterior
+            for i in range(0, len(registro.precos)-1):
+                for j in range(len(registro.precos)-1):
+                    if registro.precos[i].confirmacoes > registro.precos[i+1].confirmacoes:
+                        variavel_auxiliar = registro.precos[i]
+                        registro.precos[i] = registro.precos[i+1]
+                        registro.precos[i+1] = variavel_auxiliar
+        return lista[::-1]
 
     def ordernar_por_data(self,lista):
-        pass
+        for registro in lista:                        #mesma logica de ordencao dos anteriores
+            for i in range(0, len(registro.precos)-1):
+                for j in range(len(registro.precos)-1):
+                    if registro.precos[i].data > registro.precos[i+1].data:
+                        variavel_auxiliar = registro.precos[i]
+                        registro.precos[i] = registro.precos[i+1]
+                        registro.precos[i+1] = variavel_auxiliar
+        return lista
 
     def listar(self, texto_opcao_especial=''):
         self.__tela.imprime_titulo("Lista de registros")
