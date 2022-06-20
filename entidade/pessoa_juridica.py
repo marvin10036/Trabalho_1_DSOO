@@ -12,5 +12,5 @@ class PessoaJuridica(Usuario):
 
     @estabelecimento.setter
     def estabelecimento(self, new_estabelecimento):
-        self.__establecimento = new_estabelecimento
+        self.__estabelecimento = new_estabelecimento
         

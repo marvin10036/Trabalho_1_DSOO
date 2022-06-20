@@ -62,5 +62,6 @@ class TelaSistema(Tela):
         super().imprime_titulo("Menu Usuario")
         print("1 - Sign up")
         print("2 - Log in")
+        print("3 - Avancar um dia")
         print("0 - Fechar programa")
-        return super()._seleciona_opcao_int(2)
+        return super()._seleciona_opcao_int(3)

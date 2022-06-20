@@ -26,6 +26,14 @@ class PessoaJuridicaCtrl(AbstractCtrl):
         else:
             self.__tela.imprime("Usuario nao cadastrado")
 
+    @property
+    def usuarios(self):
+        return self.__usuarios
+
+    def set_todos_false(self):
+        for usuario in self.__usuarios:
+            usuario.cadastrouHoje = False
+
     def criador(self):
         pass
 

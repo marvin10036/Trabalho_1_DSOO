@@ -106,7 +106,7 @@ class CtrlRegistroDePreco():
             self.__tela.printar_lista(lista)
         elif opcao == 2:
             lista_ordenada = self.ordenar_por_preco(lista)
-            self.__tela.printar.lista(lista_ordenada)
+            self.__tela.printar_lista(lista_ordenada)
         elif opcao == 3:
             lista_ordenada = self.ordenar_por_confirmacoes(lista)
             self.__tela.printar_lista(lista_ordenada)
@@ -115,19 +115,30 @@ class CtrlRegistroDePreco():
             self.__tela.printar_lista(lista_ordenada)
 
     def ordenar_por_preco(self, lista):
-        """
-        lista_retornada = []
-        contador = 1
-        while contador != 0:
-            contador = 0
+        posicao_valor_anterior = 1
+        valor_anterior = 0
+        condicao_1 = False
+        iteracoes = 0
+        breakar = True
+        while breakar:
             for registro in lista:
+                if condicao_1:
+                    condicao_1 = False
+                    iteracoes += 1
+                if iteracoes == len(lista):
+                    breakar = False
                 for i in range(len(registro.precos)):
                     if registro.precos[i].valor < valor_anterior:
-                        posicao = lista.index(registro)
-                        lista.insert()
-
-                    valor_anterior = registro
-        """
+                        iteracoes = 0
+                        novo_valor_anterior = registro.precos[i].valor
+                        nova_posicao_valor_anterior = lista.index(registro)
+                        lista.remove(registro)
+                        lista.insert(posicao_valor_anterior, registro)
+                        posicao_valor_anterior = nova_posicao_valor_anterior
+                        valor_anterior = novo_valor_anterior
+                else:
+                    condicao_1 = True
+        return lista
 
     def ordenar_por_confirmacoes(self,lista):
         pass
