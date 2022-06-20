@@ -58,8 +58,6 @@ class CtrlSistema():
                 break
             self.menu_principal()
 
-
-
     def menu_principal(self):
         while True:
             opcao = self.__tela.opcoes_menu_principal()
@@ -283,6 +281,3 @@ class CtrlSistema():
     def passa_um_dia(self):
         self.__ctrl_usuario.setta_cadastrou_usuarios()
         self.__tela.imprime("Sistema movido um dia a frente")
-                  
-if __name__ == "__main__":
-    CtrlSistema().programa_principal()

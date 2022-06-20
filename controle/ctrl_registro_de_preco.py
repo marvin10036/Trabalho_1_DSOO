@@ -135,7 +135,14 @@ class CtrlRegistroDePreco():
         return lista[::-1]
 
     def ordernar_por_data(self,lista):
-        pass
+        for registro in lista:                        #mesma logica de ordencao dos anteriores
+            for i in range(0, len(registro.precos)-1):
+                for j in range(len(registro.precos)-1):
+                    if registro.precos[i].data > registro.precos[i+1].data:
+                        variavel_auxiliar = registro.precos[i]
+                        registro.precos[i] = registro.precos[i+1]
+                        registro.precos[i+1] = variavel_auxiliar
+        return lista
 
     def listar(self, texto_opcao_especial=''):
         self.__tela.imprime_titulo("Lista de registros")
