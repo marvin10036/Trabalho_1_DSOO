@@ -5,13 +5,13 @@ from entidade.pessoa_juridica import PessoaJuridica
 class PessoaJuridicaCtrl(AbstractCtrl):
     def __init__(self):
         self.__usuarios = []
-        self.__tela = TelaPessoaJuridica
+        self.__tela = TelaPessoaJuridica()
 
-    def signin(self):
-        info = self.__tela().telaSignin()
+    def signup(self):
+        info = self.__tela.telaSignup()
         for usuario in self.__usuarios:
-            if usuario.__numDoc == info["numDoc"] and usuario.__email == info["email"]:
-                print("Usuario ja cadastrado")
+            if usuario.numDoc == info["numDoc"] or usuario.email == info["email"]:
+                self.__tela.imprime_titulo("Usuario com esse CNPJ ou email ja cadastrado")
                 break
         else:
             pessoa = PessoaJuridica(info["nome"],info["numDoc"],info["email"])
@@ -19,12 +19,12 @@ class PessoaJuridicaCtrl(AbstractCtrl):
             return pessoa
        
     def login(self):
-        info = self.__tela().telaLogin()
+        info = self.__tela.telaLogin()
         for usuario in self.__usuarios:
             if usuario.numDoc == info["numDoc"] and usuario.email == info["email"]:
                 return(usuario)
         else:
-            print("Usuario nao cadastrado")
+            self.__tela.imprime("Usuario nao cadastrado")
 
     def criador(self):
         pass

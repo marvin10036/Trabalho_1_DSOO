@@ -38,8 +38,8 @@ class CtrlSistema():
             self.setar_usuario_geral(usuario)
             return True
 
-    def signin(self):
-        usuario = self.__ctrl_usuario.signin()
+    def signup(self):
+        usuario = self.__ctrl_usuario.signup()
         if usuario != None:
             while True:
                 self.__tela.imprime_linha_de_fechamento()
@@ -121,7 +121,6 @@ class CtrlSistema():
                 if mercado is None:
                     raise Exception
 
-            self.__tela.imprime("\nFALTA CRIAR REGISTRO E ETC\n")
 
             #TODO implementar logica para criacao de registro
             #TODO verificar se ja existe um registro igual ou criar um novo
@@ -161,7 +160,7 @@ class CtrlSistema():
         return qualificadores_preenchidos
 
     def buscar_registro(self):
-        self.__ctrl_registro.mostrar_lista_completa()
+        self.__ctrl_registro.opcoes_iniciais()
 
     def editar_dados(self):
         while True:
@@ -248,7 +247,7 @@ class CtrlSistema():
             if opcao == 0:
                 return False
             elif opcao == 1:
-                self.signin()
+                self.signup()
             else:
                 condicao = self.login()
                 if condicao:

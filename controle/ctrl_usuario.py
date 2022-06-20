@@ -14,8 +14,8 @@ class CtrlUsuario:
 
         return (switcher[opcao])
 
-    def signin(self):
-        return self.pede_tipo().signin()
+    def signup(self):
+        return self.pede_tipo().signup()
 
     def login(self):
         return self.pede_tipo().login()

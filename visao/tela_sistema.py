@@ -2,7 +2,7 @@ from visao.tela import Tela
 
 
 class TelaSistema(Tela):
-    def teste(self):
+    def __init__(self):
         pass
 
     def opcoes_menu_principal(self) -> int:
@@ -60,7 +60,7 @@ class TelaSistema(Tela):
 
     def opcoes_menu_usuario(self):
         super().imprime_titulo("Menu Usuario")
-        print("1 - Sign in")
+        print("1 - Sign up")
         print("2 - Log in")
         print("0 - Fechar programa")
-        return self._seleciona_opcao_int(2)
+        return super()._seleciona_opcao_int(2)
