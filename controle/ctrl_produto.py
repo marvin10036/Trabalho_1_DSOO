@@ -91,8 +91,7 @@ class CtrlProduto:
             else:
                 confirmar = self.__tela.pede_confirmacao()
                 if confirmar:
-                    del (self.__produtos[opcao - 1])
-                    self.__tela.imprime("[Produto excluido com sucesso]")
+                    return self.__produtos.pop(opcao - 1)
                     break
 
     def alterar(self):

@@ -12,6 +12,7 @@ from entidade.usuario import Usuario
 from entidade.produto import Produto
 from entidade.registro_de_preco import RegistroDePreco
 
+#TODO -deixar snake_case
 
 class CtrlSistema():
     def __init__(self):
@@ -89,6 +90,12 @@ class CtrlSistema():
                                               categoria,
                                               nome_produto)
         return produto
+
+    def excluir_produto(self):
+        produto = self.__ctrl_produto.excluir()
+        for registro in self.__ctrl_registro.get_registros():
+            if produto.nome == registro.produto.nome:
+                self.__ctrl_registro.get_registros().remove(registro)
 
     def criar_novo_registro(self):
         if self.__usuario_logado.cadastrouHoje:
@@ -245,7 +252,7 @@ class CtrlSistema():
             elif opcao == 3:
                 self.__ctrl_produto.alterar()
             elif opcao == 4:
-                self.__ctrl_produto.excluir()
+                self.excluir_produto()
             elif opcao == 5:
                 produto_selecionado = self.__ctrl_produto.selecionar_produto()
                 if produto_selecionado != None:

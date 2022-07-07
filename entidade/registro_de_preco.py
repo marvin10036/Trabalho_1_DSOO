@@ -1,10 +1,11 @@
 from entidade.qualificador import Qualificador
 from entidade.preco import Preco
 from entidade.mercado import Mercado
+from entidade.produto import Produto
 
 class RegistroDePreco():
-    def __init__(self, nome_produto, qualificadores: list, preco: Preco, mercado: Mercado, cadastrador):
-        self.__nome_produto = nome_produto
+    def __init__(self, produto: Produto, qualificadores: list, preco: Preco, mercado: Mercado, cadastrador):
+        self.__produto = produto
         self.__qualificadores = qualificadores
         self.__precos = []
         self.__precos.append(preco)
@@ -21,8 +22,8 @@ class RegistroDePreco():
             self.__precos.append(novo_preco)
 
     @property
-    def nome_produto(self):
-        return self.__nome_produto
+    def produto(self):
+        return self.__produto
 
     @property
     def qualificadores(self):

@@ -5,7 +5,7 @@ from entidade.usuario import Usuario
 from entidade.mercado import Mercado
 from entidade.qualificador import Qualificador
 from entidade.preco import Preco
-
+from entidade.produto import Produto
 
 class CtrlRegistroDePreco():
     def __init__(self):
@@ -18,6 +18,10 @@ class CtrlRegistroDePreco():
 
     def get_registros(self):
         return self.__registros
+
+    # def excluir_registro(self, registro: RegistroDePreco):
+    #     if isinstance(registro, RegistroDePreco):
+    #         del(self.__registros[])
 
     def opcoes_iniciais(self):
         busca = self.__tela.printar_opcoes_iniciais()
@@ -37,12 +41,12 @@ class CtrlRegistroDePreco():
         else:
             return True
 
-    def novo(self, nome_produto: str, qualificadores_preenchidos: list, preco: Preco, mercado: Mercado):
-        if isinstance(nome_produto, str) and \
+    def novo(self, produto: Produto, qualificadores_preenchidos: list, preco: Preco, mercado: Mercado):
+        if isinstance(produto, Produto) and \
                 isinstance(preco, Preco) and \
                 isinstance(mercado, Mercado) and \
                 self.__valida_formato_qualificadores(qualificadores_preenchidos):
-            return RegistroDePreco(nome_produto, qualificadores_preenchidos, preco, mercado,
+            return RegistroDePreco(produto, qualificadores_preenchidos, preco, mercado,
                                    self.__usuario_logado.nome)
         else:
             return None
@@ -60,7 +64,7 @@ class CtrlRegistroDePreco():
 
     def buscar(self, registro_a_comparar: RegistroDePreco):
         for registro in self.__registros:
-            if registro.nome_produto == registro_a_comparar.nome_produto and \
+            if registro.produto.nome == registro_a_comparar.produto.nome and \
                     registro.mercado == registro_a_comparar.mercado and \
                     self.__valida_igualdade_qualificadores(registro, registro_a_comparar):
                 return registro
@@ -82,7 +86,7 @@ class CtrlRegistroDePreco():
             produto = texto
         qualificadores = texto.split(" ", 1)[1:]
         for registro in self.__registros:
-            if registro.nome_produto.upper() == produto.upper():
+            if registro.produto.nome.upper() == produto.upper():
                 registros_produto.append(registro)
         if len(registros_produto) == 0:
             self.__tela.imprime("Produto nao encontrado")
@@ -156,7 +160,7 @@ class CtrlRegistroDePreco():
 
         for registro in self.__registros:
             self.__tela.imprime("{}:".format(count))  #dados do objeto
-            self.__tela.imprime("- Produto: {}".format(registro.nome_produto))
+            self.__tela.imprime("- Produto: {}".format(registro.produto.nome))
             for qualificador in registro.qualificadores:
                 self.__tela.imprime("- {}: {}".format(qualificador.titulo, qualificador.descricao))
             self.__tela.imprime("- Mercado: {} | End: {}".format(registro.mercado.nome, registro.mercado.endereco))

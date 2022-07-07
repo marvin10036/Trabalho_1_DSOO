@@ -1,6 +1,7 @@
+from abc import ABC
 
 
-class Tela():
+class Tela(ABC):
     def imprime(self, texto: str):
         print(texto)
 

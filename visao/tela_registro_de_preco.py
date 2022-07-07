@@ -26,7 +26,7 @@ class TelaRegistroDePreco(Tela):
         self.imprime_linha_de_fechamento()
         for registro in lista:
             for preco in registro.precos:
-                print (f"{registro.nome_produto}, "
+                print (f"{registro.produto.nome}, "
                        f"{self.qualificadores_str(registro.qualificadores)}",
                        f"|Mercado: {registro.mercado.nome}",
                        f"|Preco: R$ {preco.valor}")
