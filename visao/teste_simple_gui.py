@@ -1,0 +1,42 @@
+import PySimpleGUI as sg
+
+class Tela():
+    def __init__(self):
+        self.__window = None
+        self.__init_components()
+
+    def __init_components(self):
+        #sg.ChangeLookAndFeel('Reddit')
+        sg.theme('DarkAmber')
+        layout = self.__atualiza_layout()
+        self.__window = sg.Window('Selecionar opcao', default_element_size=(40, 1)).Layout(layout)
+
+    def __atualiza_layout(self, opcoes=[]):
+        layout = [
+            [sg.Text('Selecione uma opcao da lista', size=(30, 1), font=('Arial', 20))],
+            [sg.Listbox(values=opcoes, size=(70, 5), key='lb_itens'),
+             sg.Button('OK')]
+        ]
+        return layout
+
+    def listar(self, opcoes):
+        layout = self.__atualiza_layout(opcoes)
+        self.__window = sg.Window('Selecionar opcao', default_element_size=(40, 1)).Layout(layout)
+        button, values = self.__window.Read()
+        return button, values
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
+
+    def close(self):
+        self.__window.Close()
+
+    def show_message(self, titulo: str, mensagem: str):
+        sg.Popup(titulo, mensagem)
+
+if __name__ == "__main__":
+    tela = Tela()
+    button, values = tela.open()
+    opcoes = ['opcao 1', 'opcao 2']
+    tela.listar(opcoes)
