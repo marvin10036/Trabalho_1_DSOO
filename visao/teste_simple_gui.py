@@ -6,10 +6,7 @@ class Tela():
         self.__init_components()
 
     def __init_components(self):
-        #sg.ChangeLookAndFeel('Reddit')
         sg.theme('DarkAmber')
-        layout = self.__atualiza_layout()
-        self.__window = sg.Window('Selecionar opcao', default_element_size=(40, 1)).Layout(layout)
 
     def __atualiza_layout(self, opcoes=[]):
         layout = [
@@ -19,13 +16,12 @@ class Tela():
         ]
         return layout
 
-    def listar(self, opcoes):
+    def __atualiza_opcoes(self, opcoes):
         layout = self.__atualiza_layout(opcoes)
         self.__window = sg.Window('Selecionar opcao', default_element_size=(40, 1)).Layout(layout)
-        button, values = self.__window.Read()
-        return button, values
 
-    def open(self):
+    def open(self, opcoes=[]):
+        self.__atualiza_opcoes(opcoes)
         button, values = self.__window.Read()
         return button, values
 
@@ -37,6 +33,8 @@ class Tela():
 
 if __name__ == "__main__":
     tela = Tela()
-    button, values = tela.open()
     opcoes = ['opcao 1', 'opcao 2']
-    tela.listar(opcoes)
+    button, values = tela.open(opcoes)
+    print(button)
+    print(values)
+    tela.close()
