@@ -38,3 +38,8 @@ if __name__ == "__main__":
     print(button)
     print(values)
     tela.close()
+    opcoes = ['opcao 1', 'opcao 2']
+    button, values = tela.open(opcoes)
+    print(button)
+    print(values)
+    tela.close()
