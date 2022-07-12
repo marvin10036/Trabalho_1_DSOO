@@ -177,8 +177,7 @@ class CtrlSistema():
 
     def editar_dados(self):
         while True:
-            opcao = self.__tela.opcoes_editar_dados()
-            self.__tela.imprime_linha_de_fechamento()
+            opcao = self.__tela.menu_dados()
 
             if opcao == 0:
                 break
