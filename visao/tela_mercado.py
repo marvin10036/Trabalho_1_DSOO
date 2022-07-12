@@ -4,7 +4,6 @@ import PySimpleGUI as sg
 
 class TelaMercado(Tela):
     def __init__(self):
-        self.__window = None
         self.__init_components()
 
     def __init_components(self):

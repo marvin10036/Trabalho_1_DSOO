@@ -1,9 +1,35 @@
 from visao.tela import Tela
-
+import PySimpleGUI as sg
 
 class TelaSistema(Tela):
     def __init__(self):
         pass
+
+    def pop_up(self, titulo: str, msg: str):
+        sg.Popup(titulo, msg)
+
+    def menu_principal(self):
+        layout = [
+            [sg.Text("Menu principal",
+                     size=(30, 1), font=('Arial', 15), justification='c')],
+            [sg.Button('1'), sg.Text('Novo registro de preco', size=(25, 1))],
+            [sg.Button('2'), sg.Text('Buscar registro de preco', size=(25, 1))],
+            [sg.Button('3'), sg.Text('Menus e dados', size=(25, 1))],
+            [sg.Button('0'), sg.Text('Logoff', size=(25, 1))],
+        ]
+        window = sg.Window('Menu principal', default_element_size=(40, 1)).Layout(layout)
+
+        button, values = window.Read()
+        window.Close()
+
+        if (button is None) or button == '0':
+            return 0
+        elif button == '1':
+            return 1
+        elif button == '2':
+            return 2
+        elif button == '3':
+            return 3
 
     def opcoes_menu_principal(self) -> int:
         super().imprime_titulo("Menu principal")
