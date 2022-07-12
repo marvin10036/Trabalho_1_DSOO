@@ -1,6 +1,5 @@
 from entidade.mercado import Mercado
 from visao.tela_mercado import TelaMercado
-
 from entidade.usuario import Usuario
 
 class CtrlMercado():
@@ -42,14 +41,21 @@ class CtrlMercado():
                 count += 1
                 opcoes.append("{} - Nome: {}. End: {}.".format(count, mercado.nome, mercado.endereco))
 
-            opcao = self.__tela.seleciona_opcao(opcoes)
+            button, values = self.__tela.open(opcoes)
 
-            if opcao is None:
-                return None
-            elif opcao == '0':
-                self.criador() #cria novo mercado no sistema
+            # processa os botoes/valores lidos
+            if button == 'SELECIONAR':
+                valor = values['lb_itens']
+                if len(valor) != 0:
+                    opcao = int(valor[0][0]) - 1
+                    return self.__mercados[opcao]
+                else:
+                    return None
+            elif button == 'NOVO':
+                self.criador()
             else:
-                return self.__mercados[int(opcao) - 1]
+                return None
+
 
     def novo(self, nome: str, endereco: str) -> Mercado:
         try:
