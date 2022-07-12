@@ -1,6 +1,15 @@
 from visao.tela import Tela
+from visao.tela_seleciona_da_lista import TelaSelecionaDaLista
+import PySimpleGUI as sg
 
 class TelaMercado(Tela):
+    def __init__(self):
+        self.__window = None
+        self.__init_components()
+
+    def __init_components(self):
+        sg.theme('DarkAmber')
+
     def pede_nome(self):
         return super()._pede_str("Nome: ").capitalize()
 
@@ -12,6 +21,10 @@ class TelaMercado(Tela):
 
     def pede_confirmacao(self):
         return super()._pergunta_sim_ou_nao("Tem certeza que deseja excluir essa opcao?")
+
+    def seleciona_opcao(self, opcoes: list):
+        tela = TelaSelecionaDaLista()
+        return tela.seleciona_opcao_int(opcoes, "Selecionar mercado")
 
 class TelaMercadoComGui():
     def __init__(self):

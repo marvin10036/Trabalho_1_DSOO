@@ -36,13 +36,21 @@ class CtrlMercado():
 
     def selecionar_mercado(self) -> Mercado:
         while True:
-            opcao = self.__tela.seleciona_mercado(self.listar("NOVO MERCADO"))
-            if opcao == 0:
+
+            opcoes = ["1 - Novo"]
+            count = 1
+            for mercado in self.__mercados:
+                count += 1
+                opcoes.append("{} - Nome: {}. End: {}.".format(count, mercado.nome, mercado.endereco))
+
+            opcao = self.__tela.seleciona_opcao(opcoes)
+
+            if opcao is None:
                 return None
-            elif opcao == 1:
+            elif opcao == '1':
                 self.criador() #cria novo mercado no sistema
             else:
-                return self.__mercados[opcao - 2]
+                return self.__mercados[int(opcao) - 2]
 
     def novo(self, nome: str, endereco: str) -> Mercado:
         try:
