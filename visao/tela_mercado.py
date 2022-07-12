@@ -23,7 +23,7 @@ class TelaMercado(Tela):
         return super()._pergunta_sim_ou_nao("Tem certeza que deseja excluir essa opcao?")
 
     def menu_opcoes(self, opcoes: list):
-        return TelaMenuBasico().open(opcoes, "Tela mercado")
+        return TelaMenuBasico().open(opcoes, "Tela mercado", "Menu mercado")
 
     def menu_criacao(self, titulo: str):
         while True:

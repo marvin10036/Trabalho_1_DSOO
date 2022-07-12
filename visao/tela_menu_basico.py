@@ -4,7 +4,7 @@ class TelaMenuBasico():
     def __init__(self):
         sg.theme('DarkAmber')
 
-    def open(self, opcoes=[], nome_janela='Selecionar opcao'):
+    def open(self, opcoes=[], nome_janela='Selecionar opcao', titulo='Selecione uma opcao da lista'):
         #cria layout
         coluna = [
             [sg.Button('NOVO')],
@@ -12,7 +12,7 @@ class TelaMenuBasico():
             [sg.Button('EXCLUIR')]
         ]
         layout = [
-            [sg.Text('Selecione uma opcao da lista.', size=(30, 1), font=('Arial', 20), justification='c')],
+            [sg.Text(titulo, size=(30, 1), font=('Arial', 20), justification='c')],
             [sg.Listbox(values=opcoes, size=(70, 5), key='lb_itens'), sg.Column(coluna)],
             [sg.Button('SELECIONAR'),
              sg.Button('CANCELAR')

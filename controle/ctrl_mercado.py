@@ -36,7 +36,7 @@ class CtrlMercado():
     def menu_mercado(self):
         self.selecionar_mercado()
 
-    def selecionar_mercado(self) -> Mercado:
+    def selecionar_mercado(self):
         while True:
             opcoes = []
             count = 0

@@ -40,6 +40,56 @@ class CtrlCategoria(AbstractCtrl):
             else:
                 return self.__categorias[opcao - 2]
 
+    def menu_categoria(self):
+        while True:
+            opcoes = []
+            count = 0
+            for categoria in self.__categorias:
+                count += 1
+                opcoes.append("{} - Nome: {}.".format(count, categoria.nome))
+
+            botao, opcao_selecionada = self.__tela.menu_opcoes(opcoes)
+
+            print(botao)
+            print(opcao_selecionada)
+
+            # processa os botoes/valores lidos
+            if botao is None:
+                return None
+
+            elif botao == 'SELECIONAR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao selecionar:', 'Favor selecionar uma opcao.')
+                else:
+                    return self.__categorias[opcao_selecionada]
+
+            elif botao == 'NOVO':
+                dados = self.__tela.menu_criacao('Registre a categoria')
+                if dados is None:
+                    return None
+                else:
+                    novo = self.novo(dados[0])
+                    self.incluir(novo)
+
+            elif botao == 'EXCLUIR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao excluir:', 'Favor selecionar uma opcao para excluir.')
+                else:
+                    del (self.__categorias[opcao_selecionada])
+
+            elif botao == 'EDITAR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao editar:', 'Favor selecionar uma opcao para editar.')
+                else:
+                    dados = self.__tela.menu_criacao('Insira as novas informacoes')
+                    if dados is None:
+                        return None
+                    else:
+                        self.__categorias[opcao_selecionada].nome = dados[0]
+                        self.__categorias[opcao_selecionada].cadastrador = self.__usuario_logado
+            else:
+                return None
+
     def novo(self, nome: str) -> Categoria:
         try:
             if isinstance(nome, str):
@@ -124,4 +174,4 @@ class CtrlCategoria(AbstractCtrl):
 
 if __name__ == "__main__":
     ctrl = CtrlCategoria()
-    ctrl.selecionar_categoria()
+    ctrl.menu_categoria()
