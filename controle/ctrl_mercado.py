@@ -36,9 +36,8 @@ class CtrlMercado():
 
     def selecionar_mercado(self) -> Mercado:
         while True:
-
-            opcoes = ["1 - Novo"]
-            count = 1
+            opcoes = []
+            count = 0
             for mercado in self.__mercados:
                 count += 1
                 opcoes.append("{} - Nome: {}. End: {}.".format(count, mercado.nome, mercado.endereco))
@@ -47,10 +46,10 @@ class CtrlMercado():
 
             if opcao is None:
                 return None
-            elif opcao == '1':
+            elif opcao == '0':
                 self.criador() #cria novo mercado no sistema
             else:
-                return self.__mercados[int(opcao) - 2]
+                return self.__mercados[int(opcao) - 1]
 
     def novo(self, nome: str, endereco: str) -> Mercado:
         try:
