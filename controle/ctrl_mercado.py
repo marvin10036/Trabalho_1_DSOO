@@ -44,7 +44,7 @@ class CtrlMercado():
                 count += 1
                 opcoes.append("{} - Nome: {}. End: {}.".format(count, mercado.nome, mercado.endereco))
 
-            botao, opcao_selecionada = self.__tela.open(opcoes)
+            botao, opcao_selecionada = self.__tela.menu_opcoes(opcoes)
 
             print(botao)
             print(opcao_selecionada)
@@ -60,7 +60,12 @@ class CtrlMercado():
                     return self.__mercados[opcao_selecionada]
 
             elif botao == 'NOVO':
-                self.criador()
+                dados = self.__tela.menu_criacao('Registre o mercado')
+                if dados is None:
+                    return None
+                else:
+                    novo = self.novo(dados[0], dados[1])
+                    self.incluir(novo)
 
             elif botao == 'EXCLUIR':
                 if opcao_selecionada is None:
@@ -72,10 +77,15 @@ class CtrlMercado():
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao editar:', 'Favor selecionar uma opcao para editar.')
                 else:
-                    self.alterar()
+                    dados = self.__tela.menu_criacao('Insira as novas informacoes')
+                    if dados is None:
+                        return None
+                    else:
+                        self.__mercados[opcao_selecionada].nome = dados[0]
+                        self.__mercados[opcao_selecionada].endereco = dados[1]
+                        self.__mercados[opcao_selecionada].cadastrador = self.__usuario_logado
             else:
                 return None
-
 
     def novo(self, nome: str, endereco: str) -> Mercado:
         try:
@@ -130,7 +140,6 @@ class CtrlMercado():
                 if confirmar:
                     del(self.__mercados[opcao - 1])
                     break
-
 
     def alterar(self):
         self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
