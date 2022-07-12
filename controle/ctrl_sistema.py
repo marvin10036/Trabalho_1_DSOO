@@ -137,7 +137,7 @@ class CtrlSistema():
                 if mercado is None:
                     raise Exception
 
-            novo_registro = self.__ctrl_registro.novo(nome_produto,
+            novo_registro = self.__ctrl_registro.novo(produto,
                                                       qualificadores_preenchidos,
                                                       preco,
                                                       mercado)
