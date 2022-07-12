@@ -9,7 +9,7 @@ class TelaMenuBasico():
         coluna = [
             [sg.Button('NOVO')],
             [sg.Button('EDITAR')],
-            [sg.Button('DELETAR')]
+            [sg.Button('EXCLUIR')]
         ]
         layout = [
             [sg.Text('Selecione uma opcao da lista.', size=(30, 1), font=('Arial', 20), justification='c')],
@@ -22,5 +22,17 @@ class TelaMenuBasico():
 
         #le os botoes
         button, values = window.Read()
+        valor = values['lb_itens']
+
+        foi_selecionado = False
+        opcao_selecionada = None
+        if valor is not None:
+            if len(valor) != 0:
+                foi_selecionado = True
+                opcao_selecionada = int(valor[0][0]) - 1
+
         window.Close()
-        return button, values
+        return button, opcao_selecionada
+
+    def pop_up(self, titulo: str, mensagem: str):
+        sg.Popup(titulo, mensagem)

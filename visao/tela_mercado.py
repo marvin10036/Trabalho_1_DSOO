@@ -24,3 +24,6 @@ class TelaMercado(Tela):
 
     def open(self, opcoes: list):
         return TelaMenuBasico().open(opcoes, "Tela mercado")
+
+    def pop_up(self, titulo: str, msg: str):
+        TelaMenuBasico().pop_up(titulo, msg)

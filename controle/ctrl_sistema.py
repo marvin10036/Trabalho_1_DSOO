@@ -227,16 +227,18 @@ class CtrlSistema():
             opcao = self.__tela.opcoes_menu_mercado()
             self.__tela.imprime_linha_de_fechamento()
 
-            if opcao == 0:
-                break
-            elif opcao == 1:
-                self.__ctrl_mercado.listar()
-            elif opcao == 2:
-                self.__ctrl_mercado.criador()
-            elif opcao == 3:
-                self.__ctrl_mercado.alterar()
-            elif opcao == 4:
-                self.__ctrl_mercado.excluir()
+            self.__ctrl_mercado.selecionar_mercado()
+
+            # if opcao == 0:
+            #     break
+            # elif opcao == 1:
+            #     self.__ctrl_mercado.listar()
+            # elif opcao == 2:
+            #     self.__ctrl_mercado.criador()
+            # elif opcao == 3:
+            #     self.__ctrl_mercado.alterar()
+            # elif opcao == 4:
+            #     self.__ctrl_mercado.excluir()
 
     def __menu_produto(self):
         while True:

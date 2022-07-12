@@ -33,6 +33,9 @@ class CtrlMercado():
         else:
             return None
 
+    def menu_mercado(self):
+        self.selecionar_mercado()
+
     def selecionar_mercado(self) -> Mercado:
         while True:
             opcoes = []
@@ -41,18 +44,35 @@ class CtrlMercado():
                 count += 1
                 opcoes.append("{} - Nome: {}. End: {}.".format(count, mercado.nome, mercado.endereco))
 
-            button, values = self.__tela.open(opcoes)
+            botao, opcao_selecionada = self.__tela.open(opcoes)
+
+            print(botao)
+            print(opcao_selecionada)
 
             # processa os botoes/valores lidos
-            if button == 'SELECIONAR':
-                valor = values['lb_itens']
-                if len(valor) != 0:
-                    opcao = int(valor[0][0]) - 1
-                    return self.__mercados[opcao]
+            if botao is None:
+                return None
+
+            elif botao == 'SELECIONAR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao selecionar:', 'Favor selecionar uma opcao.')
                 else:
-                    return None
-            elif button == 'NOVO':
+                    return self.__mercados[opcao_selecionada]
+
+            elif botao == 'NOVO':
                 self.criador()
+
+            elif botao == 'EXCLUIR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao excluir:', 'Favor selecionar uma opcao para excluir.')
+                else:
+                    del(self.__mercados[opcao_selecionada])
+
+            elif botao == 'EDITAR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao editar:', 'Favor selecionar uma opcao para editar.')
+                else:
+                    self.alterar()
             else:
                 return None
 
