@@ -13,7 +13,7 @@ class TelaCategoria(Tela):
         return super()._pergunta_sim_ou_nao("Tem certeza que deseja excluir a opcao {}?".format(opcao))
 
     def menu_opcoes(self, opcoes: list):
-        return TelaMenuBasico().open(opcoes, "Tela categorias", "Menu categoriasb")
+        return TelaMenuBasico().open(opcoes, "Tela categorias", "Menu categorias")
 
     def menu_criacao(self, titulo: str):
         while True:

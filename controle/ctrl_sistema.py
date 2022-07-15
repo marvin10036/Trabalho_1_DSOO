@@ -80,7 +80,7 @@ class CtrlSistema():
             nome_produto = self.__tela.pede_nome_produto()
 
         self.__tela.imprime("Escolha uma categoria para o produto.")
-        categoria = self.__ctrl_categoria.selecionar_categoria()
+        categoria = self.__ctrl_categoria.menu_categoria()
 
         self.__tela.imprime("Crie um conjunto de qualificadores para o produto. Exemplo: 'Marca' e 'Peso'")
         novos_qualificadores = self.__ctrl_qualificador.criador(com_descricao=False)
@@ -120,7 +120,12 @@ class CtrlSistema():
                         raise Exception
 
             self.__tela.imprime("Preencha os qualificadores do produto visto.")
-            qualificadores_preenchidos = self.__preencher_qualificadores(produto)
+            #TODO testando metodo
+
+            # qualificadores_preenchidos = self.__preencher_qualificadores(produto)
+            qualificadores_preenchidos = self.__ctrl_produto.preencher_qualificadores(produto)
+
+            print(qualificadores_preenchidos)
 
             self.__tela.imprime("Forneca o valor do preco visto.")
             preco = self.__ctrl_preco.criador()
@@ -132,7 +137,7 @@ class CtrlSistema():
                 mercado = self.__usuario_logado.estabelecimento
             else:
                 self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
-                mercado = self.__ctrl_mercado.selecionar_mercado()
+                mercado = self.__ctrl_mercado.menu_mercado()
                 if mercado is None:
                     raise Exception
 
@@ -256,5 +261,4 @@ class CtrlSistema():
         self.__tela.imprime("Sistema movido um dia a frente")
 
 if __name__ == "__main__":
-    #CtrlSistema().programa_principal()
-    CtrlSistema().menu_principal()
+    CtrlSistema().programa_principal()

@@ -34,7 +34,7 @@ class CtrlMercado():
             return None
 
     def menu_mercado(self):
-        self.selecionar_mercado()
+        return self.selecionar_mercado()
 
     def selecionar_mercado(self):
         while True:

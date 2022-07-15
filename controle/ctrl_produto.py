@@ -2,6 +2,7 @@ from entidade.produto import Produto
 from visao.tela_produto import TelaProduto
 
 from entidade.usuario import Usuario
+from controle.ctrl_qualificador import CtrlQualificador
 from entidade.qualificador import Qualificador
 from entidade.categoria import Categoria
 
@@ -13,6 +14,25 @@ class CtrlProduto:
 
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
+
+    def preencher_qualificadores(self, produto: Produto):
+        nome_qualificadores = []
+        for qualificador in produto.qualificadores:
+            nome_qualificadores.append(qualificador.titulo)
+
+        valores_preenchidos = self.__tela.preencher_qualificadores(nome_qualificadores)
+        if valores_preenchidos is None:
+            return None
+        else:
+            qualificadores_preenchidos = []
+
+            x = 0
+            for qualificador in produto.qualificadores:
+                qualificador_preenchido = CtrlQualificador().novo(qualificador.titulo, valores_preenchidos[x])
+                qualificadores_preenchidos.append(qualificador_preenchido)
+                x += 1
+            return qualificadores_preenchidos
+
 
     def selecionar_produto(self):
         while True:
