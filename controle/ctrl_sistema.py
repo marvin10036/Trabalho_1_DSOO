@@ -33,6 +33,7 @@ class CtrlSistema():
         self.__ctrl_produto.set_usuario_logado(usuario_logado)
         self.__ctrl_mercado.set_usuario_logado(usuario_logado)
         self.__ctrl_categoria.set_usuario_logado(usuario_logado)
+        self.__ctrl_produto.ctrl_categoria.set_usuario_logado(usuario_logado)
         self.__ctrl_preco.set_usuario_logado(usuario_logado)
 
     def login(self):
@@ -102,32 +103,21 @@ class CtrlSistema():
             return
 
         try:
-            self.__tela.imprime_titulo("Novo registro de preco.")
-
-            self.__tela.imprime("Primeiramente, insira o nome do produto: ")
-            nome_produto = self.__tela.pede_nome_produto()
-            produto = self.__ctrl_produto.busca(nome_produto)
+            self.__tela.pop_up("Registro de preco:","Selecione o produto.")
+            produto = self.__ctrl_produto.menu_produto()
 
             # se nao encontrar um produto na lista de produtos com o mesmo nome
             if produto is None:
-                quer_criar_produto = self.__tela.pede_confirmacao("Produto nao encontrado. Deseja criar um novo?")
+                raise Exception
 
-                if quer_criar_produto is False:
-                    return
-                else:
-                    produto = self.criar_novo_produto(nome_produto)
-                    if produto is None:
-                        raise Exception
-
-            self.__tela.imprime("Preencha os qualificadores do produto visto.")
-            #TODO testando metodo
+            self.__tela.pop_up("Registro de preco:", "Preencha os qualificadores do produto visto.")
 
             # qualificadores_preenchidos = self.__preencher_qualificadores(produto)
             qualificadores_preenchidos = self.__ctrl_produto.preencher_qualificadores(produto)
 
             print(qualificadores_preenchidos)
 
-            self.__tela.imprime("Forneca o valor do preco visto.")
+            self.__tela.pop_up("Registro de preco:", "Forneca o valor visto.")
             preco = self.__ctrl_preco.criador()
             if preco is None:
                 raise Exception
@@ -160,22 +150,10 @@ class CtrlSistema():
 
             self.__usuario_logado.cadastrouHoje = True
         except Exception:
-            self.__tela.imprime("Falha na criacao do registro - alguma variavel nao foi preenchida.")
+            self.__tela.pop_up("Registro de preco interrompido:", "Alguma variavel nao foi preenchida.")
             self.__usuario_logado.cadastrouHoje = False
 
-        self.__tela.imprime("Criacao de registro de preco finalizada.")
-        self.__tela.imprime_linha_de_fechamento()
-
-
-    def __preencher_qualificadores(self, produto: Produto):
-        qualificadores_preenchidos = []
-
-        for qualificador in produto.qualificadores:
-            descricao = self.__tela.pede_descricao_qualificador("{}: ".format(qualificador.titulo))
-            qualificador_preenchido = self.__ctrl_qualificador.novo(qualificador.titulo, descricao)
-            qualificadores_preenchidos.append(qualificador_preenchido)
-
-        return qualificadores_preenchidos
+        self.__tela.pop_up("Registro de preco finalizado:", "Criado com sucesso.")
 
     def buscar_registro(self):
         self.__ctrl_registro.opcoes_iniciais()
@@ -187,11 +165,11 @@ class CtrlSistema():
             if opcao == 0:
                 break
             elif opcao == 1:
-                self.__ctrl_categoria.selecionar_categoria()
+                self.__ctrl_produto.ctrl_categoria.menu_categoria()
             elif opcao == 2:
-                self.__ctrl_mercado.selecionar_mercado()
+                self.__ctrl_mercado.menu_mercado()
             elif opcao == 3:
-                self.__menu_produto()
+                self.__ctrl_produto.menu_produto()
             elif opcao == 4:
                 self.__menu_registros()
 

@@ -3,6 +3,7 @@ from visao.tela_produto import TelaProduto
 
 from entidade.usuario import Usuario
 from controle.ctrl_qualificador import CtrlQualificador
+from controle.ctrl_categoria import CtrlCategoria
 from entidade.qualificador import Qualificador
 from entidade.categoria import Categoria
 
@@ -11,6 +12,7 @@ class CtrlProduto:
         self.__produtos = []
         self.__tela = TelaProduto()
         self.__usuario_logado = None
+        self.ctrl_categoria = CtrlCategoria()
 
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
@@ -33,6 +35,8 @@ class CtrlProduto:
                 x += 1
             return qualificadores_preenchidos
 
+    def menu_produto(self):
+        return self.selecionar_produto()
 
     def selecionar_produto(self):
         while True:
@@ -62,8 +66,18 @@ class CtrlProduto:
                 if dados is None:
                     return None
                 else:
-                    novo = self.novo(dados[0], dados[1])  #todo ver isso
-                    self.incluir(novo)
+                    self.__tela.pop_up("Proximo passo:", "Selecione uma categoria para o produto.")
+                    categoria = self.ctrl_categoria.menu_categoria()
+                    if categoria is None:
+                        return None
+                    else:
+                        self.__tela.pop_up("Proximo passo:", "Crie qualificadores para o produto.")
+                        qualificadores = CtrlQualificador().criador(com_descricao=False)
+                        if qualificadores is None:
+                            return None
+                        else:
+                            novo = self.novo(categoria, dados[0], dados[1], qualificadores)
+                            self.incluir(novo)
 
             elif botao == 'EXCLUIR':
                 if opcao_selecionada is None:
@@ -193,15 +207,15 @@ class CtrlProduto:
                         break
             if sucesso:
                 break
-
-    def selecionar_produto(self):
-        self.__tela.imprime("\nSelecione um produto.")
-        while True:
-            opcao = self.__tela.seleciona_opcao(self.listar())
-            if opcao == 0:
-                return None
-            else:
-                return self.__produtos[opcao - 2]
+    #
+    # def selecionar_produto(self):
+    #     self.__tela.imprime("\nSelecione um produto.")
+    #     while True:
+    #         opcao = self.__tela.seleciona_opcao(self.listar())
+    #         if opcao == 0:
+    #             return None
+    #         else:
+    #             return self.__produtos[opcao - 2]
 
 
 

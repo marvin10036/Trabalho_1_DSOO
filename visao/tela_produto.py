@@ -24,7 +24,7 @@ class TelaProduto(Tela):
                 [sg.Text(titulo,
                          size=(30, 1), font=('Arial', 15))],
                 [sg.Text('Nome', size=(15, 1)), sg.InputText()],
-                [sg.Text('End.', size=(15, 1)), sg.InputText()],
+                [sg.Text('Descricao', size=(15, 1)), sg.InputText()],
                 [sg.Button('PRONTO'), sg.Button('CANCELAR')]
             ]
             window = sg.Window('Edicao de dados', default_element_size=(40, 1)).Layout(layout)
@@ -48,7 +48,7 @@ class TelaProduto(Tela):
             for qualificador in qualificadores:
                 count += 1
                 layout = [
-                    [sg.Text("Preencha o qualificador x", size=(30, 1), font=('Arial', 15))],
+                    [sg.Text("Preencha o qualificador {}".format(count), size=(30, 1), font=('Arial', 15))],
                     [sg.Text(qualificador, size=(15, 1)), sg.InputText()],
                     [sg.Button('PRONTO'), sg.Button('CANCELAR')]
                 ]
