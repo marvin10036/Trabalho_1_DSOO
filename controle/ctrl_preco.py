@@ -12,9 +12,7 @@ class CtrlPreco():
         self.__usuario_logado = usuario
 
     def criador(self) -> Preco:
-        self.__tela.imprime_titulo("Novo preco")
-        valor = self.__tela.pede_valor()
-        self.__tela.imprime_linha_de_fechamento()
+        valor = self.__tela.menu_criacao()
 
         if valor is not None:
             novo_preco = Preco(valor, self.__usuario_logado)
@@ -28,4 +26,4 @@ class CtrlPreco():
 
 
 if __name__ == "__main__":
-    CtrlPreco().criador()
+    print(CtrlPreco().criador().valor)

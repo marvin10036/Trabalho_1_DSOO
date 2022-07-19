@@ -3,7 +3,7 @@ from entidade.pessoa_fisica import PessoaFisica
 from visao.tela_pessoa_fisica import TelaPessoaFisica
 
 
-class PessoaFisicaCtrl(AbstractCtrl):
+class PessoaFisicaCtrl():
     def __init__(self):
         self.__usuarios = []
         self.__tela = TelaPessoaFisica()

@@ -35,16 +35,23 @@ class CtrlProduto:
                 x += 1
             return qualificadores_preenchidos
 
-    def menu(self):
-        return self.selecionar_produto()
+    def __valida_formato_qualificadores(self, qualificadores: list) -> bool:
+        for qualificador in qualificadores:
+            if not isinstance(qualificador, Qualificador):
+                return False
+        else:
+            return True
 
-    def selecionar_produto(self):
+    def __lista_de_objetos(self):
+        return self.__produtos
+
+    def menu(self):
         while True:
             opcoes = []
             count = 0
-            for produto in self.__produtos:
+            for objeto in self.__lista_de_objetos():
                 count += 1
-                opcoes.append("{} - Nome: {}. Desc: {}.".format(count, produto.nome, produto.descricao))
+                opcoes.append("{} - Nome: {}. Desc: {}.".format(count, objeto.nome, objeto.descricao)) #TODO revisar
 
             botao, opcao_selecionada = self.__tela.menu_opcoes(opcoes)
 
@@ -59,15 +66,15 @@ class CtrlProduto:
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao selecionar:', 'Favor selecionar uma opcao.')
                 else:
-                    return self.__produtos[opcao_selecionada]
+                    return self.__lista_de_objetos()[opcao_selecionada]
 
             elif botao == 'NOVO':
-                dados = self.__tela.menu_criacao('Registre o produto') #todo ver isso
+                dados = self.__tela.menu_criacao('Registre o produto.') #TODO revisar
                 if dados is None:
                     return None
                 else:
                     self.__tela.pop_up("Proximo passo:", "Selecione uma categoria para o produto.")
-                    categoria = self.ctrl_categoria.menu_categoria()
+                    categoria = self.ctrl_categoria.menu()
                     if categoria is None:
                         return None
                     else:
@@ -77,154 +84,80 @@ class CtrlProduto:
                             return None
                         else:
                             novo = self.novo(categoria, dados[0], dados[1], qualificadores)
-                            self.incluir(novo)
+                            if novo is not None:
+                                self.incluir(novo)
 
             elif botao == 'EXCLUIR':
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao excluir:', 'Favor selecionar uma opcao para excluir.')
                 else:
-                    del(self.__produtos[opcao_selecionada])
+                    self.excluir(opcao_selecionada)
 
             elif botao == 'EDITAR':
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao editar:', 'Favor selecionar uma opcao para editar.')
                 else:
-                    dados = self.__tela.menu_criacao('Insira as novas informacoes')
-                    if dados is None:
-                        return None
-                    else:
-                        self.__produtos[opcao_selecionada].nome = dados[0]
-                        self.__produtos[opcao_selecionada].descricao = dados[1]
-                        self.__produtos[opcao_selecionada].cadastrador = self.__usuario_logado
+                    self.alterar(opcao_selecionada)
             else:
                 return None
 
-    def criador(self, qualificadores, categoria, nome = ''):
-        self.__tela.imprime_titulo("Novo produto")
-        if nome == '':
-            nome = self.__tela.pede_nome()
-        else:
-            self.__tela.imprime("Nome: {}".format(nome))
-        descricao = self.__tela.pede_descricao()
-
-        if nome is not None and descricao is not None:
-            produto = self.busca(nome)
-            if produto is not None:
-                return produto
-            else:
-                novo_produto = Produto(categoria, nome, descricao, qualificadores, self.__usuario_logado)
-                self.__produtos.append(novo_produto)
-                self.__tela.imprime("[Novo produto inserido no sistema]")
-                self.__tela.imprime_linha_de_fechamento()
-                return novo_produto
-        else:
-            self.__tela.imprime("[Falha na criacao do produto]")
-            self.__tela.imprime_linha_de_fechamento()
-            return None
-
-    def novo(self, categoria: Categoria, nome: str, descricao: str, qualificadores: list):
+    def novo(self, categoria: Categoria, nome: str, descricao: str, qualificadores):
         try:
-            if isinstance(categoria, Categoria) and \
-                    isinstance(nome, str) and \
-                    isinstance(descricao, str) and \
-                    self.__valida_formato_qualificadores(qualificadores):
-                return Produto(categoria, nome, descricao, qualificadores, self.__usuario_logado)
+            if isinstance(nome, str) and isinstance(descricao, str) \
+                    and isinstance(categoria, Categoria) and self.__valida_formato_qualificadores(qualificadores):
+                return Produto(categoria, nome, descricao, qualificadores, self.__usuario_logado) #todo falta tratar duplicado
             else:
                 raise TypeError
         except TypeError:
-            self.__tela.imprime("! Falha ao criar objeto: variavel de entrada em formato invalido !")
+            self.__tela.pop_up("Falha ao criar objeto:", "Variavel de entrada em formato invalido.")
+            return None
 
     def busca(self, nome: str):
-        for produto in self.__produtos:
-            if produto.nome == nome:
-                return produto
+        for objeto in self.__lista_de_objetos():
+            if objeto.nome == nome:
+                return objeto
         else:
             return None
 
-    def incluir(self, produto: Produto):
+    def incluir(self, objeto_novo):
         try:
-            if isinstance(produto, Produto):
-                self.__produtos.append(produto)
+            if isinstance(objeto_novo, Produto):
+                for objeto in self.__lista_de_objetos():
+                    if objeto.nome == objeto_novo.nome and objeto.descricao == objeto_novo.descricao:
+                        raise TypeError
+                else:
+                    self.__lista_de_objetos().append(objeto_novo)
+                    self.__tela.pop_up("Sucesso.", "Objeto incluido no sistema.")
             else:
                 raise TypeError
         except TypeError:
-            self.__tela.imprime("Falha ao incluir produto: variavel de entrada em formato invalido")
+            self.__tela.pop_up("Falha ao incluir objeto:", "Variavel de entrada em formato invalido.")
+        except Exception:
+            self.__tela.pop_up("Falha ao incluir objeto:", "Ja incluido no sistema.")
 
-    def listar(self, texto_opcao_especial=''):
-        self.__tela.imprime_titulo("Lista de produtos")
-        count = 1
+    def excluir(self, index_opcao):
+        del self.__lista_de_objetos()[index_opcao]
 
-        self.__tela.imprime("0 - Voltar")
-
-        if texto_opcao_especial != '':
-            self.__tela.imprime("1 - {}".format(texto_opcao_especial))
-            count += 1
-
-        for produto in self.__produtos:
-            self.__tela.imprime("{} - {} - Descricao: {}.".format(count, produto.nome, produto.descricao))
-            count += 1
-
-        self.__tela.imprime_linha_de_fechamento()
-        return count - 1
-
-    def excluir(self):
-        self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
+    def alterar(self, index_opcao):
+        objeto_selecionado = self.__lista_de_objetos()[index_opcao]
         while True:
-            opcao = self.__tela.seleciona_opcao(self.listar())
-            if opcao == 0: #voltar
-                break
+            dados = self.__tela.menu_criacao('Insira as novas informacoes.')
+            if dados is None:
+                return None
             else:
-                confirmar = self.__tela.pede_confirmacao()
-                if confirmar:
-                    return self.__produtos.pop(opcao - 1)
-                    break
+                nome = dados[0]
+                descricao = dados[1]
 
-    def alterar(self):
-        self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
-        while True:
-            opcao = self.__tela.seleciona_opcao(self.listar())
-            if opcao is None:
-                break
-            elif opcao == 0:
-                break
-            else:
-                produto_selecionado = self.__produtos[opcao - 1]
-                while True:
-
-                    nome = self.__tela.pede_nome()
-                    descricao = self.__tela.pede_descricao()
-
-                    for produto in self.__produtos:
-                        if produto.nome == nome and produto.descricao == descricao:
-                            self.__tela.imprime("Ja existe um produto com esses dados.")
-                            break
-                    else:
-                        produto_selecionado.nome = nome
-                        produto_selecionado.descricao = descricao
-                        produto_selecionado.cadastrador = self.__usuario_logado
-                        self.__tela.imprime("[Dados alterados com sucesso]")
-                        sucesso = True
+                for objeto in self.__lista_de_objetos():
+                    if objeto.nome == nome and objeto.descricao == descricao: #TODO revisar
+                        self.__tela.pop_up("Problema:", "Ja existe um mercado com esses dados.") #TODO revisar
                         break
-            if sucesso:
-                break
-    #
-    # def selecionar_produto(self):
-    #     self.__tela.imprime("\nSelecione um produto.")
-    #     while True:
-    #         opcao = self.__tela.seleciona_opcao(self.listar())
-    #         if opcao == 0:
-    #             return None
-    #         else:
-    #             return self.__produtos[opcao - 2]
+                else:
+                    objeto_selecionado.nome = nome
+                    objeto_selecionado.descricao = descricao
+                    objeto_selecionado.cadastrador = self.__usuario_logado
+                    return True
 
-
-
-    def __valida_formato_qualificadores(self, qualificadores: list) -> bool:
-        for qualificador in qualificadores:
-            if not isinstance(qualificador, Qualificador):
-                return False
-        else:
-            return True
 
 
 if __name__ == "__main__":

@@ -104,7 +104,7 @@ class CtrlSistema():
 
         try:
             self.__tela.pop_up("Registro de preco:","Selecione o produto.")
-            produto = self.__ctrl_produto.menu_produto()
+            produto = self.__ctrl_produto.menu()
 
             # se nao encontrar um produto na lista de produtos com o mesmo nome
             if produto is None:
@@ -123,11 +123,11 @@ class CtrlSistema():
                 raise Exception
 
             if self.__ctrl_usuario.retorna_tipo(self.__usuario_logado) == "PessoaJuridica":
-                self.__tela.imprime_titulo("Usuario pessoa juridica detectado, foi selecionado o mercado vinculado")
+                self.__tela.pop_up("Usuario pessoa juridica detectado:", "Foi selecionado o mercado vinculado.")
                 mercado = self.__usuario_logado.estabelecimento
             else:
-                self.__tela.imprime("Selecione o mercado onde o preco foi visto.")
-                mercado = self.__ctrl_mercado.menu_mercado()
+                self.__tela.pop_up("Selecione o mercado:", "Selecione onde o preco foi visto.")
+                mercado = self.__ctrl_mercado.menu()
                 if mercado is None:
                     raise Exception
 
@@ -139,14 +139,10 @@ class CtrlSistema():
             registro_existente = self.__ctrl_registro.buscar(novo_registro)
             if registro_existente != None:
                 registro_existente.incluir_preco(novo_registro.precos[0])
-                self.__tela.imprime_linha_de_fechamento()
-                self.__tela.imprime_titulo("Registro de produto ja existente. Adicionando preco.")
-                self.__tela.imprime_linha_de_fechamento()
+                self.__tela.pop_up("Registro de produto ja existente.", "Adicionado preco ao registro.")
             else:
                 self.__ctrl_registro.incluir(novo_registro)
-                self.__tela.imprime_linha_de_fechamento()
-                self.__tela.imprime_titulo("Registro realizado com sucesso")
-                self.__tela.imprime_linha_de_fechamento()
+                self.__tela.pop_up("Registro finalizado:", "Realizado com sucesso.")
 
             self.__usuario_logado.cadastrouHoje = True
         except Exception:

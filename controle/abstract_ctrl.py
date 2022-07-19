@@ -9,14 +9,6 @@ class AbstractCtrl(ABC):
         self.__usuario_logado = None
 
     @abstractmethod
-    def set_usuario_logado(self, usuario: Usuario):
-        self.__usuario_logado = usuario
-
-    @abstractmethod
-    def __lista_de_objetos(self):
-        return self.__objetos
-
-    @abstractmethod
     def menu(self):
         while True:
             opcoes = []

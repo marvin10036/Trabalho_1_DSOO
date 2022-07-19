@@ -12,7 +12,7 @@ class CtrlMercado():
         self.__usuario_logado = usuario
 
     def __lista_de_objetos(self):
-        return self.__categorias
+        return self.__mercados
 
     def menu(self):
         while True:
@@ -63,7 +63,7 @@ class CtrlMercado():
     def novo(self, nome: str, endereco: str):
         try:
             if isinstance(nome, str) and isinstance(endereco, str): #TODO revisar
-                return Mercado(nome, self.__usuario_logado)
+                return Mercado(nome, endereco, self.__usuario_logado)
             else:
                 raise TypeError
         except TypeError:

@@ -2,7 +2,7 @@ from controle.abstract_ctrl import AbstractCtrl
 from visao.tela_pessoa_juridica import TelaPessoaJuridica
 from entidade.pessoa_juridica import PessoaJuridica
 
-class PessoaJuridicaCtrl(AbstractCtrl):
+class PessoaJuridicaCtrl():
     def __init__(self):
         self.__usuarios = []
         self.__tela = TelaPessoaJuridica()
