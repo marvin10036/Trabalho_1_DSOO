@@ -79,7 +79,7 @@ class CtrlProduto:
                         return None
                     else:
                         self.__tela.pop_up("Proximo passo:", "Crie qualificadores para o produto.")
-                        qualificadores = CtrlQualificador().criador(com_descricao=False)
+                        qualificadores = CtrlQualificador().criador()
                         if qualificadores is None:
                             return None
                         else:

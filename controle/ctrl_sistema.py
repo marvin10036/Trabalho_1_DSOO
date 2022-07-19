@@ -73,30 +73,6 @@ class CtrlSistema():
             elif opcao == 3:
                 self.editar_dados()
 
-    # utilizar esse metodo para criar produto,
-    # ja que esta classe (CtrlSistema) possui as entidades necessarias para criacao
-    def criar_novo_produto(self, nome_produto='') -> Produto:
-
-        if nome_produto == '':
-            nome_produto = self.__tela.pede_nome_produto()
-
-        self.__tela.imprime("Escolha uma categoria para o produto.")
-        categoria = self.__ctrl_categoria.menu_categoria()
-
-        self.__tela.imprime("Crie um conjunto de qualificadores para o produto. Exemplo: 'Marca' e 'Peso'")
-        novos_qualificadores = self.__ctrl_qualificador.criador(com_descricao=False)
-
-        produto = self.__ctrl_produto.criador(novos_qualificadores,
-                                              categoria,
-                                              nome_produto)
-        return produto
-
-    def excluir_produto(self):
-        produto = self.__ctrl_produto.excluir()
-        for registro in self.__ctrl_registro.get_registros():
-            if produto.nome == registro.produto.nome:
-                self.__ctrl_registro.get_registros().remove(registro)
-
     def criar_novo_registro(self):
         if self.__usuario_logado.cadastrouHoje:
             self.__tela.imprime("Voce ja realizou um cadastro hoje, espere ate amanha")
