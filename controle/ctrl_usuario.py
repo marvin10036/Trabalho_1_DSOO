@@ -9,16 +9,23 @@ class CtrlUsuario:
         self.__pessoa_fisica_ctrl = PessoaFisicaCtrl()
 
     def pede_tipo(self):
-        switcher = {1:self.__pessoa_fisica_ctrl, 2:self.__pessoa_juridica_ctrl}
-        opcao = self.__tela.pedeTipoUsuario()
+        switcher = {0:None, 1:self.__pessoa_fisica_ctrl, 2:self.__pessoa_juridica_ctrl}
+        opcao = self.__tela.open()
+        self.__tela.close()
 
         return (switcher[opcao])
 
     def signup(self):
-        return self.pede_tipo().signup()
+        opcao = self.pede_tipo()
+        if opcao == None:
+            return opcao
+        return opcao.signup()
 
     def login(self):
-        return self.pede_tipo().login()
+        opcao = self.pede_tipo()
+        if opcao == None:
+            return opcao
+        return opcao.login()
 
     def retorna_tipo(self, usuario):
         tipostr = (str(type(usuario)))[33:-2]
