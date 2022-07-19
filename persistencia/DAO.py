@@ -8,7 +8,7 @@ class DAO(ABC):
         try:
             self.__load()
         except FileNotFoundError:
-            self.__dump
+            self.__dump()
 
     def __dump(self):
         pickle.dump(self.__cache, open(self.__datasource, 'wb'))

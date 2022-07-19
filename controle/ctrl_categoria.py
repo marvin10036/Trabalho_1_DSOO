@@ -2,18 +2,21 @@ from entidade.categoria import Categoria
 from visao.tela_categoria import TelaCategoria
 from controle.abstract_ctrl import AbstractCtrl
 from entidade.usuario import Usuario
+from persistencia.DAO_categoria import DAOCategoria
 
 class CtrlCategoria(AbstractCtrl):
     def __init__(self):
+        self.__mercados = []
+        self.__DAO_proprio = DAOCategoria()
         self.__tela = TelaCategoria()
-        self.__categorias = []
         self.__usuario_logado = None
 
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
 
     def __lista_de_objetos(self):
-        return self.__categorias
+        #return self.__mercados
+        return list(self.__DAO_proprio.get_all())
 
     def menu(self):
         while True:
@@ -51,7 +54,8 @@ class CtrlCategoria(AbstractCtrl):
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao excluir:', 'Favor selecionar uma opcao para excluir.')
                 else:
-                    self.excluir(opcao_selecionada)
+                    objeto = self.__lista_de_objetos()[opcao_selecionada]
+                    self.excluir(objeto)
 
             elif botao == 'EDITAR':
                 if opcao_selecionada is None:
@@ -85,7 +89,8 @@ class CtrlCategoria(AbstractCtrl):
                     if objeto.nome == objeto_novo.nome: #TODO revisar
                         raise TypeError
                 else:
-                    self.__lista_de_objetos().append(objeto_novo)
+                    #self.__lista_de_objetos().append(objeto_novo)
+                    self.__DAO_proprio.add(objeto_novo)
                     self.__tela.pop_up("Sucesso.", "Objeto incluido no sistema.")
             else:
                 raise TypeError
@@ -94,8 +99,8 @@ class CtrlCategoria(AbstractCtrl):
         except Exception:
             self.__tela.pop_up("Falha ao incluir objeto:", "Ja incluido no sistema.")
 
-    def excluir(self, index_opcao):
-        del self.__lista_de_objetos()[index_opcao]
+    def excluir(self, objeto):
+        self.__DAO_proprio.remove(objeto.nome)
 
     def alterar(self, index_opcao):
         objeto_selecionado = self.__lista_de_objetos()[index_opcao]
@@ -108,12 +113,13 @@ class CtrlCategoria(AbstractCtrl):
 
                 for objeto in self.__lista_de_objetos():
                     if objeto.nome == nome: #TODO revisar
-                        self.__tela.pop_up("Problema:", "Ja existe uma categoria com esses dados.")
+                        self.__tela.pop_up("Problema:", "Ja existe uma categoria com esses dados.") #TODO revisar
                         break
-                else:
-                    objeto_selecionado.nome = nome
-                    objeto_selecionado.cadastrador = self.__usuario_logado
+                else: #TODO revisar
+                    self.excluir(objeto_selecionado)
+                    self.incluir(self.novo(nome))
                     return True
+
 
 if __name__ == "__main__":
     objeto = CtrlCategoria().menu()
