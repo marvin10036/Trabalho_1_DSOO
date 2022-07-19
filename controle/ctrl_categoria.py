@@ -116,9 +116,13 @@ class CtrlCategoria(AbstractCtrl):
                         self.__tela.pop_up("Problema:", "Ja existe uma categoria com esses dados.") #TODO revisar
                         break
                 else: #TODO revisar
-                    self.excluir(objeto_selecionado)
-                    self.incluir(self.novo(nome))
-                    return True
+                    novo = self.novo(nome)
+                    if novo is not None:
+                        self.excluir(objeto_selecionado)
+                        self.incluir(self.novo(nome))
+                        return True
+                    else:
+                        return None
 
 
 if __name__ == "__main__":

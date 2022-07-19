@@ -85,7 +85,7 @@ class CtrlMercado():
         try:
             if isinstance(objeto_novo, Mercado): #TODO revisar
                 for objeto in self.__lista_de_objetos():
-                    if objeto.nome == objeto_novo.nome and objeto.endereco == objeto_novo.endereco: #TODO revisar
+                    if objeto.nome == objeto_novo.nome: #TODO revisar
                         raise TypeError
                 else:
                     #self.__lista_de_objetos().append(objeto_novo)
@@ -116,9 +116,13 @@ class CtrlMercado():
                         self.__tela.pop_up("Problema:", "Ja existe um mercado com esses dados.") #TODO revisar
                         break
                 else: #TODO revisar
-                    self.excluir(objeto_selecionado)
-                    self.incluir(self.novo(nome, endereco))
-                    return True
+                    novo = self.novo(nome, endereco)
+                    if novo is not None:
+                        self.excluir(objeto_selecionado)
+                        self.incluir()
+                        return True
+                    else:
+                        return None
 
 
 

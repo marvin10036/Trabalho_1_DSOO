@@ -1,5 +1,6 @@
 from entidade.produto import Produto
 from visao.tela_produto import TelaProduto
+from persistencia.DAO_produto import DAOProduto
 
 from entidade.usuario import Usuario
 from controle.ctrl_qualificador import CtrlQualificador
@@ -9,7 +10,7 @@ from entidade.categoria import Categoria
 
 class CtrlProduto:
     def __init__(self):
-        self.__produtos = []
+        self.__DAO_proprio = DAOProduto()
         self.__tela = TelaProduto()
         self.__usuario_logado = None
         self.ctrl_categoria = CtrlCategoria()
@@ -43,7 +44,8 @@ class CtrlProduto:
             return True
 
     def __lista_de_objetos(self):
-        return self.__produtos
+        #return self.__mercados
+        return list(self.__DAO_proprio.get_all())
 
     def menu(self):
         while True:
@@ -123,10 +125,11 @@ class CtrlProduto:
         try:
             if isinstance(objeto_novo, Produto):
                 for objeto in self.__lista_de_objetos():
-                    if objeto.nome == objeto_novo.nome and objeto.descricao == objeto_novo.descricao:
+                    if objeto.nome == objeto_novo.nome:
                         raise TypeError
                 else:
-                    self.__lista_de_objetos().append(objeto_novo)
+                    # self.__lista_de_objetos().append(objeto_novo)
+                    self.__DAO_proprio.add(objeto_novo)
                     self.__tela.pop_up("Sucesso.", "Objeto incluido no sistema.")
             else:
                 raise TypeError
@@ -135,8 +138,8 @@ class CtrlProduto:
         except Exception:
             self.__tela.pop_up("Falha ao incluir objeto:", "Ja incluido no sistema.")
 
-    def excluir(self, index_opcao):
-        del self.__lista_de_objetos()[index_opcao]
+    def excluir(self, objeto):
+        self.__DAO_proprio.remove(objeto.nome)
 
     def alterar(self, index_opcao):
         objeto_selecionado = self.__lista_de_objetos()[index_opcao]
@@ -149,17 +152,30 @@ class CtrlProduto:
                 descricao = dados[1]
 
                 for objeto in self.__lista_de_objetos():
-                    if objeto.nome == nome and objeto.descricao == descricao: #TODO revisar
-                        self.__tela.pop_up("Problema:", "Ja existe um mercado com esses dados.") #TODO revisar
+                    if objeto.nome == nome: #TODO revisar
+                        self.__tela.pop_up("Problema:", "Ja existe um produto com esse nome.") #TODO revisar
                         break
                 else:
-                    objeto_selecionado.nome = nome
-                    objeto_selecionado.descricao = descricao
-                    objeto_selecionado.cadastrador = self.__usuario_logado
-                    return True
+                    self.__tela.pop_up("Proximo passo:", "Selecione uma categoria para o produto.")
+                    categoria = self.ctrl_categoria.menu()
+                    if categoria is None:
+                        return None
+                    else:
+                        self.__tela.pop_up("Proximo passo:", "Crie qualificadores para o produto.")
+                        qualificadores = CtrlQualificador().criador()
+                        if qualificadores is None:
+                            return None
+                        else:
+                            novo = self.novo(categoria, nome, descricao, qualificadores)
+                            if novo is not None:
+                                self.excluir(objeto_selecionado)
+                                self.incluir(novo)
+                                return True
+                            else:
+                                return None
 
 
 
 if __name__ == "__main__":
     ctrl = CtrlProduto()
-    ctrl.selecionar_produto()
+    ctrl.menu()

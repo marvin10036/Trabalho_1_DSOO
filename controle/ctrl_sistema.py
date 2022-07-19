@@ -159,17 +159,6 @@ class CtrlSistema():
             elif opcao == 3:
                 self.__ctrl_registro.excluir()
 
-    def __detalhes_produto(self, produto: Produto):
-        self.__tela.imprime_titulo("Detalhes produto")
-        self.__tela.imprime("Nome: {}".format(produto.nome))
-        self.__tela.imprime("Descricao: {}".format(produto.descricao))
-        self.__tela.imprime("Categoria: {}".format(produto.categoria.nome))
-        self.__tela.imprime("Qualificadores:")
-        for qualificador in produto.qualificadores:
-            self.__tela.imprime("- {}".format(qualificador.titulo))
-        self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador.nome))
-        self.__tela.imprime_linha_de_fechamento()
-
     def __menu_usuario(self):
         while True:
             condicao = False
@@ -189,6 +178,17 @@ class CtrlSistema():
     def passa_um_dia(self):
         self.__ctrl_usuario.setta_cadastrou_usuarios()
         self.__tela.imprime("Sistema movido um dia a frente")
+
+    # def __detalhes_produto(self, produto: Produto):
+    #     self.__tela.imprime_titulo("Detalhes produto")
+    #     self.__tela.imprime("Nome: {}".format(produto.nome))
+    #     self.__tela.imprime("Descricao: {}".format(produto.descricao))
+    #     self.__tela.imprime("Categoria: {}".format(produto.categoria.nome))
+    #     self.__tela.imprime("Qualificadores:")
+    #     for qualificador in produto.qualificadores:
+    #         self.__tela.imprime("- {}".format(qualificador.titulo))
+    #     self.__tela.imprime("Cadastrador: {}".format(produto.cadastrador.nome))
+    #     self.__tela.imprime_linha_de_fechamento()
 
 if __name__ == "__main__":
     CtrlSistema().programa_principal()
