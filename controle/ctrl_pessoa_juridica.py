@@ -1,11 +1,8 @@
 from visao.tela_pessoa_juridica import TelaPessoaJuridica
 from entidade.pessoa_juridica import PessoaJuridica
 
-<<<<<<< HEAD
+
 class PessoaJuridicaCtrl:
-=======
-class PessoaJuridicaCtrl():
->>>>>>> 021391082d38d5945d45bbf6ad3f9cd25da76395
     def __init__(self):
         self.__usuarios = []
         self.__tela = TelaPessoaJuridica()
