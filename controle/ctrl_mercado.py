@@ -11,38 +11,16 @@ class CtrlMercado():
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
 
-    #cria objeto caso nao exista um igual na lista de objetos, insere na lista e retorna o objeto
-    def criador(self) -> Mercado:
-        self.__tela.imprime_titulo("Novo mercado")
-        nome = self.__tela.pede_nome()
-        endereco = self.__tela.pede_endereco()
+    def __lista_de_objetos(self):
+        return self.__categorias
 
-        if nome is not None and endereco is not None:
-            mercado = self.busca(nome, endereco)
-            if mercado is not None:
-                self.__tela.imprime("Ja existe um mercado com esses dados.")
-                self.__tela.imprime("[Mercado selecionado]")
-                self.__tela.imprime_linha_de_fechamento()
-                return mercado
-            else:
-                novo_mercado = Mercado(nome, endereco, self.__usuario_logado)
-                self.incluir(novo_mercado)
-                self.__tela.imprime("[Novo mercado inserido no sistema]")
-                self.__tela.imprime_linha_de_fechamento()
-                return novo_mercado
-        else:
-            return None
-
-    def menu_mercado(self):
-        return self.selecionar_mercado()
-
-    def selecionar_mercado(self):
+    def menu(self):
         while True:
             opcoes = []
             count = 0
-            for mercado in self.__mercados:
+            for objeto in self.__lista_de_objetos():
                 count += 1
-                opcoes.append("{} - Nome: {}. End: {}.".format(count, mercado.nome, mercado.endereco))
+                opcoes.append("{} - Nome: {}. End: {}.".format(count, objeto.nome, objeto.endereco)) #TODO revisar
 
             botao, opcao_selecionada = self.__tela.menu_opcoes(opcoes)
 
@@ -57,117 +35,88 @@ class CtrlMercado():
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao selecionar:', 'Favor selecionar uma opcao.')
                 else:
-                    return self.__mercados[opcao_selecionada]
+                    return self.__lista_de_objetos()[opcao_selecionada]
 
             elif botao == 'NOVO':
-                dados = self.__tela.menu_criacao('Registre o mercado')
+                dados = self.__tela.menu_criacao('Registre o mercado.') #TODO revisar
                 if dados is None:
                     return None
                 else:
-                    novo = self.novo(dados[0], dados[1])
-                    self.incluir(novo)
+                    novo = self.novo(dados[0], dados[1]) #TODO revisar
+                    if novo is not None:
+                        self.incluir(novo)
 
             elif botao == 'EXCLUIR':
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao excluir:', 'Favor selecionar uma opcao para excluir.')
                 else:
-                    del(self.__mercados[opcao_selecionada])
+                    self.excluir(opcao_selecionada)
 
             elif botao == 'EDITAR':
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao editar:', 'Favor selecionar uma opcao para editar.')
                 else:
-                    dados = self.__tela.menu_criacao('Insira as novas informacoes')
-                    if dados is None:
-                        return None
-                    else:
-                        self.__mercados[opcao_selecionada].nome = dados[0]
-                        self.__mercados[opcao_selecionada].endereco = dados[1]
-                        self.__mercados[opcao_selecionada].cadastrador = self.__usuario_logado
+                    self.alterar(opcao_selecionada)
             else:
                 return None
 
-    def novo(self, nome: str, endereco: str) -> Mercado:
+    def novo(self, nome: str, endereco: str):
         try:
-            if isinstance(nome, str) and isinstance(endereco, str):
-                return Mercado(nome, endereco, self.__usuario_logado)
+            if isinstance(nome, str) and isinstance(endereco, str): #TODO revisar
+                return Mercado(nome, self.__usuario_logado)
             else:
                 raise TypeError
         except TypeError:
-            self.__tela.imprime("! Falha ao criar objeto: variavel de entrada em formato invalido !")
+            self.__tela.pop_up("Falha ao criar objeto:", "Variavel de entrada em formato invalido.")
+            return None
 
     def busca(self, nome: str, endereco: str):
-        for mercado in self.__mercados:
-            if mercado.nome == nome and mercado.endereco == endereco:
-                return mercado
+        for objeto in self.__lista_de_objetos():
+            if objeto.nome == nome and objeto.endereco == endereco: #TODO revisar
+                return objeto
         else:
             return None
 
-    def incluir(self, mercado: Mercado):
+    def incluir(self, objeto_novo):
         try:
-            if isinstance(mercado, Mercado):
-                self.__mercados.append(mercado)
+            if isinstance(objeto_novo, Mercado): #TODO revisar
+                for objeto in self.__lista_de_objetos():
+                    if objeto.nome == objeto_novo.nome and objeto.endereco == objeto_novo.endereco: #TODO revisar
+                        raise TypeError
+                else:
+                    self.__lista_de_objetos().append(objeto_novo)
+                    self.__tela.pop_up("Sucesso.", "Objeto incluido no sistema.")
             else:
                 raise TypeError
         except TypeError:
-            self.__tela.imprime("! Falha ao incluir mercado: variavel de entrada em formato invalido !")
+            self.__tela.pop_up("Falha ao incluir objeto:", "Variavel de entrada em formato invalido.")
+        except Exception:
+            self.__tela.pop_up("Falha ao incluir objeto:", "Ja incluido no sistema.")
 
-    def listar(self, texto_opcao_especial=''):
-        self.__tela.imprime_titulo("Lista de mercados")
-        count = 1
+    def excluir(self, index_opcao):
+        del self.__lista_de_objetos()[index_opcao]
 
-        self.__tela.imprime("0 - Voltar")
-
-        if texto_opcao_especial != '':
-            self.__tela.imprime("1 - {}".format(texto_opcao_especial))
-            count += 1
-
-        for mercado in self.__mercados:
-            self.__tela.imprime("{} - {} - Endereco: {}.".format(count, mercado.nome, mercado.endereco))
-            count += 1
-
-        self.__tela.imprime_linha_de_fechamento()
-        return count - 1
-
-    def excluir(self):
-        self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
+    def alterar(self, index_opcao):
+        objeto_selecionado = self.__lista_de_objetos()[index_opcao]
         while True:
-            opcao = self.__tela.seleciona_mercado(self.listar())
-            if opcao == 0:
-                break
+            dados = self.__tela.menu_criacao('Insira as novas informacoes.')
+            if dados is None:
+                return None
             else:
-                confirmar = self.__tela.pede_confirmacao()
-                if confirmar:
-                    del(self.__mercados[opcao - 1])
-                    break
+                nome = dados[0] #TODO revisar
+                endereco = dados[1]
 
-    def alterar(self):
-        self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
-        while True:
-            opcao = self.__tela.seleciona_mercado(self.listar())
-            if opcao is None:
-                break
-            elif opcao == 0:
-                break
-            else:
-                objeto_selecionado = self.__mercados[opcao - 1]
-                while True:
-                    nome = self.__tela.pede_nome()
-                    endereco = self.__tela.pede_endereco()
-
-                    for mercado in self.__mercados:
-                        if mercado.nome == nome and mercado.endereco == endereco:
-                            self.__tela.imprime("Ja existe um mercado com esses dados.")
-                            break
-                    else:
-                        objeto_selecionado.nome = nome
-                        objeto_selecionado.endereco = endereco
-                        objeto_selecionado.cadastrador = self.__usuario_logado
-                        self.__tela.imprime("[Dados alterados com sucesso]")
-                        sucesso = True
+                for objeto in self.__lista_de_objetos():
+                    if objeto.nome == nome and objeto.endereco == endereco: #TODO revisar
+                        self.__tela.pop_up("Problema:", "Ja existe um mercado com esses dados.") #TODO revisar
                         break
-            if sucesso:
-                break
+                else: #TODO revisar
+                    objeto_selecionado.nome = nome
+                    objeto_selecionado.endereco = endereco
+                    objeto_selecionado.cadastrador = self.__usuario_logado
+                    return True
+
+
 
 if __name__ == "__main__":
-    mercado = CtrlMercado().selecionar_mercado()
+    mercado = CtrlMercado().menu()

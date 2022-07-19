@@ -12,41 +12,16 @@ class CtrlCategoria(AbstractCtrl):
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
 
-    def criador(self) -> Categoria:
-        self.__tela.imprime_titulo("Nova categoria")
-        nome = self.__tela.pede_nome()
+    def __lista_de_objetos(self):
+        return self.__categorias
 
-        if nome is not None:
-            categoria = self.busca(nome)
-            if categoria is not None:
-                return categoria
-            else:
-                nova_categoria = Categoria(nome, self.__usuario_logado)
-                self.incluir(nova_categoria)
-                self.__tela.imprime("[Nova categoria inclusa no sistema]")
-                self.__tela.imprime_linha_de_fechamento()
-                return nova_categoria
-        else:
-            return None
-
-    def selecionar_categoria(self) -> Categoria:
-        self.__tela.imprime("\nSelecione uma categoria.")
-        while True:
-            opcao = self.__tela.seleciona_categoria(self.listar("CRIAR NOVA CATEGORIA"))
-            if opcao == 0:
-                return None
-            elif opcao == 1:
-                self.criador()
-            else:
-                return self.__categorias[opcao - 2]
-
-    def menu_categoria(self):
+    def menu(self):
         while True:
             opcoes = []
             count = 0
-            for categoria in self.__categorias:
+            for objeto in self.__lista_de_objetos():
                 count += 1
-                opcoes.append("{} - Nome: {}.".format(count, categoria.nome))
+                opcoes.append("{} - Nome: {}.".format(count, objeto.nome)) #TODO revisar
 
             botao, opcao_selecionada = self.__tela.menu_opcoes(opcoes)
 
@@ -61,117 +36,84 @@ class CtrlCategoria(AbstractCtrl):
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao selecionar:', 'Favor selecionar uma opcao.')
                 else:
-                    return self.__categorias[opcao_selecionada]
+                    return self.__lista_de_objetos()[opcao_selecionada]
 
             elif botao == 'NOVO':
-                dados = self.__tela.menu_criacao('Registre a categoria')
+                dados = self.__tela.menu_criacao('Registre a categoria.') #TODO revisar
                 if dados is None:
                     return None
                 else:
-                    novo = self.novo(dados[0])
-                    self.incluir(novo)
+                    novo = self.novo(dados[0]) #TODO revisar
+                    if novo is not None:
+                        self.incluir(novo)
 
             elif botao == 'EXCLUIR':
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao excluir:', 'Favor selecionar uma opcao para excluir.')
                 else:
-                    del (self.__categorias[opcao_selecionada])
+                    self.excluir(opcao_selecionada)
 
             elif botao == 'EDITAR':
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao editar:', 'Favor selecionar uma opcao para editar.')
                 else:
-                    dados = self.__tela.menu_criacao('Insira as novas informacoes')
-                    if dados is None:
-                        return None
-                    else:
-                        self.__categorias[opcao_selecionada].nome = dados[0]
-                        self.__categorias[opcao_selecionada].cadastrador = self.__usuario_logado
+                    self.alterar(opcao_selecionada)
             else:
                 return None
 
-    def novo(self, nome: str) -> Categoria:
+    def novo(self, nome: str):
         try:
-            if isinstance(nome, str):
+            if isinstance(nome, str): #TODO revisar
                 return Categoria(nome, self.__usuario_logado)
             else:
                 raise TypeError
         except TypeError:
-            self.__tela.imprime("! Falha ao criar categoria: variavel de entrada em formato invalido !")
+            self.__tela.pop_up("Falha ao criar objeto:", "Variavel de entrada em formato invalido.")
+            return None
 
-    def busca(self, nome: str) -> Categoria:
-        for categoria in self.__categorias:
-            if categoria.nome == nome:
-                return categoria
+    def busca(self, nome: str):
+        for objeto in self.__lista_de_objetos():
+            if objeto.nome == nome: #TODO revisar
+                return objeto
         else:
             return None
 
-    def incluir(self, categoria: Categoria):
+    def incluir(self, objeto_novo):
         try:
-            if isinstance(categoria, Categoria):
-                self.__categorias.append(categoria)
+            if isinstance(objeto_novo, Categoria): #TODO revisar
+                for objeto in self.__lista_de_objetos():
+                    if objeto.nome == objeto_novo.nome: #TODO revisar
+                        raise TypeError
+                else:
+                    self.__lista_de_objetos().append(objeto_novo)
+                    self.__tela.pop_up("Sucesso.", "Objeto incluido no sistema.")
             else:
                 raise TypeError
         except TypeError:
-            self.__tela.imprime("! Falha ao incluir categoria: variavel de entrada em formato invalido !")
+            self.__tela.pop_up("Falha ao incluir objeto:", "Variavel de entrada em formato invalido.")
+        except Exception:
+            self.__tela.pop_up("Falha ao incluir objeto:", "Ja incluido no sistema.")
 
-    def listar(self, texto_opcao_especial=''):
-        self.__tela.imprime_titulo("Lista de categorias")
-        count = 1
+    def excluir(self, index_opcao):
+        del self.__lista_de_objetos()[index_opcao]
 
-        self.__tela.imprime("0 - Voltar")
-
-        if texto_opcao_especial != '':
-            self.__tela.imprime("1 - {}".format(texto_opcao_especial))
-            count += 1
-
-        for categoria in self.__categorias:
-            self.__tela.imprime("{} - Categoria: {}.".format(count, categoria.nome))
-            count += 1
-
-        self.__tela.imprime_linha_de_fechamento()
-        return count - 1
-
-    def excluir(self):
-        self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
+    def alterar(self, index_opcao):
+        objeto_selecionado = self.__lista_de_objetos()[index_opcao]
         while True:
-            opcao = self.__tela.seleciona_categoria(self.listar())
-            if opcao is None:
-                break
-            elif opcao == 0:
-                break
+            dados = self.__tela.menu_criacao('Insira as novas informacoes.')
+            if dados is None:
+                return None
             else:
-                confirmar = self.__tela.pede_confirmacao(opcao)
-                if confirmar:
-                    del(self.__categorias[opcao - 1])
-                    break
+                nome = dados[0] #TODO revisar
 
-    def alterar(self):
-        self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
-        while True:
-            opcao = self.__tela.seleciona_categoria(self.listar())
-            if opcao is None:
-                break
-            elif opcao == 0:
-                break
-            else:
-                categoria_selecionada = self.__categorias[opcao - 1]
-                while True:
-                    nome = self.__tela.pede_nome()
-                    for categoria in self.__categorias:
-                        if categoria.nome == nome:
-                            self.__tela.imprime("Ja existe categoria com esse nome.")
-                            break
-                    else:
-                        categoria_selecionada.nome = nome
-                        categoria_selecionada.cadastrador = self.__usuario_logado
-                        self.__tela.imprime("[Dados alterados com sucesso]")
-                        sucesso = True
+                for objeto in self.__lista_de_objetos():
+                    if objeto.nome == nome: #TODO revisar
+                        self.__tela.pop_up("Problema:", "Ja existe uma categoria com esses dados.")
                         break
-            if sucesso:
-                break
-
+                else:
+                    objeto_selecionado.nome = nome
+                    objeto_selecionado.cadastrador = self.__usuario_logado
+                    return True
 
 if __name__ == "__main__":
-    ctrl = CtrlCategoria()
-    ctrl.menu_categoria()
+    objeto = CtrlCategoria().menu()

@@ -165,11 +165,11 @@ class CtrlSistema():
             if opcao == 0:
                 break
             elif opcao == 1:
-                self.__ctrl_produto.ctrl_categoria.menu_categoria()
+                self.__ctrl_produto.ctrl_categoria.menu()
             elif opcao == 2:
-                self.__ctrl_mercado.menu_mercado()
+                self.__ctrl_mercado.menu()
             elif opcao == 3:
-                self.__ctrl_produto.menu_produto()
+                self.__ctrl_produto.menu()
             elif opcao == 4:
                 self.__menu_registros()
 
@@ -186,26 +186,6 @@ class CtrlSistema():
                 self.criar_novo_registro()
             elif opcao == 3:
                 self.__ctrl_registro.excluir()
-
-    def __menu_produto(self):
-        while True:
-            opcao = self.__tela.opcoes_menu_produto()
-            self.__tela.imprime_linha_de_fechamento()
-
-            if opcao == 0:
-                break
-            elif opcao == 1:
-                self.__ctrl_produto.listar()
-            elif opcao == 2:
-                self.criar_novo_produto()
-            elif opcao == 3:
-                self.__ctrl_produto.alterar()
-            elif opcao == 4:
-                self.excluir_produto()
-            elif opcao == 5:
-                produto_selecionado = self.__ctrl_produto.selecionar_produto()
-                if produto_selecionado != None:
-                    self.__detalhes_produto(produto_selecionado)
 
     def __detalhes_produto(self, produto: Produto):
         self.__tela.imprime_titulo("Detalhes produto")

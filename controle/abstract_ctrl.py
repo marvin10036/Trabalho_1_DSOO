@@ -1,117 +1,123 @@
 from abc import ABC, abstractmethod
-from visao.tela import Tela
 
 
 class AbstractCtrl(ABC):
     @abstractmethod
     def __init__(self):
-        self.__tela = Tela()  #tela propria do Ctrl
-        self.__lista_de_objetos = []
-
-    #cria objeto caso nao exista um igual na lista de objetos, insere na lista e retorna o objeto
-    @abstractmethod
-    def criador(self):
-        self.__tela.imprime_titulo("Novo")
-
-        #pede dados do objeto
-        dado = "ola"
-
-        if dado is not None:
-            objeto = self.busca(dado)
-            if objeto is not None:
-                return objeto
-            else:
-                novo_objeto = "Objeto criado" #criar aqui o objeto
-                self.__lista_de_objetos.append(novo_objeto)
-                self.__tela.imprime("[Novo objeto inserido no sistema]") #adaptar texto
-                self.__tela.imprime_linha_de_fechamento()
-                return novo_objeto
-        else:
-            return None
+        self.__tela = None
+        self.__objetos = []
+        self.__usuario_logado = None
 
     @abstractmethod
-    def novo(self, dados_de_entrada: str):
-        try:
-            if isinstance(dados_de_entrada, str):
-                objeto_criado = "criar aqui objeto"
-                return objeto_criado
-            else:
-                raise TypeError
-        except TypeError:
-            self.__tela.imprime("! Falha ao criar objeto: variavel de entrada em formato invalido !")
-
+    def set_usuario_logado(self, usuario: Usuario):
+        self.__usuario_logado = usuario
 
     @abstractmethod
-    def busca(self, dado):
-        for objeto in self.__lista_de_objetos:
-            if dado == dado: #colocar condicao para verificar existencia
-                return objeto
-        else:
-            return None
+    def __lista_de_objetos(self):
+        return self.__objetos
 
     @abstractmethod
-    def incluir(self, objeto):
-        try:
-            if isinstance(objeto, str): #formato desejado
-                self.__lista_de_objetos.append(objeto)
-            else:
-                raise TypeError
-        except TypeError:
-            self.__tela.imprime("Falha ao incluir objeto: variavel de entrada em formato invalido")
-
-    @abstractmethod
-    def listar(self, texto_opcao_especial=''):
-        self.__tela.imprime_titulo("Lista")
-        count = 1
-
-        self.__tela.imprime("0 - Voltar")
-
-        if texto_opcao_especial != '':
-            self.__tela.imprime("1 - {}".format(texto_opcao_especial))
-            count += 1
-
-        for objeto in self.__lista_de_objetos:
-            self.__tela.imprime("{} - {}.".format(count, objeto))  #dados do objeto
-            count += 1
-
-        self.__tela.imprime_linha_de_fechamento()
-        return self.__tela._seleciona_opcao_int(count - 1)  #chamar funcao propria da tela
-
-    @abstractmethod
-    def alterar(self):
-        self.__tela.imprime("\nEscolha uma opcao para ser alterada.")
+    def menu(self):
         while True:
-            opcao = self.listar()
-            if opcao is None:
-                break
-            elif opcao == 0:
-                break
+            opcoes = []
+            count = 0
+            for objeto in self.__lista_de_objetos():
+                count += 1
+                opcoes.append("{} - Nome: {}.".format(count, objeto.nome)) #TODO revisar
+
+            botao, opcao_selecionada = self.__tela.menu_opcoes(opcoes)
+
+            print(botao)
+            print(opcao_selecionada)
+
+            # processa os botoes/valores lidos
+            if botao is None:
+                return None
+
+            elif botao == 'SELECIONAR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao selecionar:', 'Favor selecionar uma opcao.')
+                else:
+                    return self.__lista_de_objetos()[opcao_selecionada]
+
+            elif botao == 'NOVO':
+                dados = self.__tela.menu_criacao('Registre a categoria.') #TODO revisar
+                if dados is None:
+                    return None
+                else:
+                    novo = self.novo(dados[0]) #TODO revisar
+                    if novo is not None:
+                        self.incluir(novo)
+
+            elif botao == 'EXCLUIR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao excluir:', 'Favor selecionar uma opcao para excluir.')
+                else:
+                    self.excluir(opcao_selecionada)
+
+            elif botao == 'EDITAR':
+                if opcao_selecionada is None:
+                    self.__tela.pop_up('Erro ao editar:', 'Favor selecionar uma opcao para editar.')
+                else:
+                    self.alterar(opcao_selecionada)
             else:
-                objeto_selecionado = self.__lista_de_objetos[opcao - 1] #utilizar a propria lista
-                while True:
+                return None
 
-                    #[PEDIR DADOS DA TELA AQUI]
+    @abstractmethod
+    def novo(self, nome: str):
+        try:
+            if isinstance(nome, str): #TODO revisar
+                return Categoria(nome, self.__usuario_logado)
+            else:
+                raise TypeError
+        except TypeError:
+            self.__tela.pop_up("Falha ao criar objeto:", "Variavel de entrada em formato invalido.")
+            return None
 
-                    for objeto in self.__lista_de_objetos:
-                        if True: #colocar condicao que checa existencia aqui
-                            self.__tela.imprime("Ja existe um objeto com esses dados.")
-                            break
-                    else:
-                        #[ALTERA OS DADOS DO OBJETO AQUI]
-                        sucesso = True
+    @abstractmethod
+    def busca(self, nome: str):
+        for objeto in self.__lista_de_objetos():
+            if objeto.nome == nome: #TODO revisar
+                return objeto
+        else:
+            return None
+
+    @abstractmethod
+    def incluir(self, objeto_novo):
+        try:
+            if isinstance(objeto_novo, Categoria): #TODO revisar
+                for objeto in self.__lista_de_objetos():
+                    if objeto.nome == objeto_novo.nome: #TODO revisar
+                        raise TypeError
+                else:
+                    self.__lista_de_objetos().append(objeto_novo)
+                    self.__tela.pop_up("Sucesso.", "Objeto incluido no sistema.")
+            else:
+                raise TypeError
+        except TypeError:
+            self.__tela.pop_up("Falha ao incluir objeto:", "Variavel de entrada em formato invalido.")
+        except Exception:
+            self.__tela.pop_up("Falha ao incluir objeto:", "Ja incluido no sistema.")
+
+    @abstractmethod
+    def excluir(self, index_opcao):
+        del self.__lista_de_objetos()[index_opcao]
+
+    @abstractmethod
+    def alterar(self, index_opcao):
+        objeto_selecionado = self.__lista_de_objetos()[index_opcao]
+        while True:
+            dados = self.__tela.menu_criacao('Insira as novas informacoes.')
+            if dados is None:
+                return None
+            else:
+                nome = dados[0] #TODO revisar
+
+                for objeto in self.__lista_de_objetos():
+                    if objeto.nome == nome: #TODO revisar
+                        self.__tela.pop_up("Problema:", "Ja existe uma categoria com esses dados.")
                         break
-            if sucesso:
-                break
-
-    @abstractmethod
-    def excluir(self):
-        self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
-        while True:
-            opcao = self.listar()
-            if opcao == 0: #voltar
-                break
-            else:
-                confirmar = self.__tela._pergunta_sim_ou_nao("Tem certeza?")  #utilizar metodo proprio da tela
-                if confirmar:
-                    del (self.__lista_de_objetos[opcao - 1])
-                    break
+                else:
+                    objeto_selecionado.nome = nome
+                    objeto_selecionado.cadastrador = self.__usuario_logado
+                    return True

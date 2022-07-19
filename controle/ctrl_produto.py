@@ -35,7 +35,7 @@ class CtrlProduto:
                 x += 1
             return qualificadores_preenchidos
 
-    def menu_produto(self):
+    def menu(self):
         return self.selecionar_produto()
 
     def selecionar_produto(self):
