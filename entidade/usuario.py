@@ -38,6 +38,3 @@ class Usuario(ABC):
     @cadastrouHoje.setter
     def cadastrouHoje(self, new_cadastrouHoje:bool):
         self.__cadastrouHoje = new_cadastrouHoje
-
-
-
