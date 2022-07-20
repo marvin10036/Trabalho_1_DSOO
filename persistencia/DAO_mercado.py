@@ -3,7 +3,7 @@ from entidade.mercado import Mercado
 
 class DAOMercado(DAO):
     def __init__(self):
-        super().__init__("../persistencia/data/data_mercado.pkl")
+        super().__init__("data/data_mercado.pkl")
 
     def add(self, objeto): #TODO adaptar tipo conforme necessario
         if isinstance(objeto, Mercado) and isinstance(objeto.nome, str):

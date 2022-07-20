@@ -3,7 +3,7 @@ from entidade.categoria import Categoria
 
 class DAOCategoria(DAO):
     def __init__(self):
-        super().__init__("../persistencia/data/data_categoria.pkl")
+        super().__init__("data/data_categoria.pkl")
 
     def add(self, objeto): #TODO adaptar tipo conforme necessario
         if isinstance(objeto, Categoria) and isinstance(objeto.nome, str):
