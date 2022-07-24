@@ -9,23 +9,30 @@ class PessoaFisicaCtrl():
         self.__tela = TelaPessoaFisica()
 
     def signup(self):
-        info = self.__tela.telaSignup()
+        info = self.__tela.tela_signup_open()
+        self.__tela.tela_close()
+        if info == None:
+            return None
+
         for usuario in self.__usuarios:
-            if usuario.numDoc == info["numDoc"] or usuario.email == info["email"]:
-                self.__tela.imprime("Usuario com esse CPF ou email ja cadastrado")
+            if usuario.numDoc == info["num_doc"] or usuario.email == info["email"]:
+                self.__tela.pop_up("Erro de cadastro repetido", "Usuario com esse CPF ou email ja cadastrado")
                 break
         else:
-            pessoa = PessoaFisica(info["nome"],info["numDoc"],info["email"])
+            pessoa = PessoaFisica(info["nome"],info["num_doc"],info["email"])
             self.__usuarios.append(pessoa)
-            self.__tela.imprime("Cadastro realizado com sucesso")
 
     def login(self):
-        info = self.__tela.telaLogin()
+        info = self.__tela.tela_login_open()
+        self.__tela.tela_close()
+        if info == None:
+            return None
+
         for usuario in self.__usuarios:
-            if usuario.numDoc == info["numDoc"] and usuario.email == info["email"]:
-                return (usuario)
+            if str(usuario.numDoc) == info["num_doc"] and usuario.email == info["email"]:
+                return(usuario)
         else:
-            self.__tela.imprime("Usuario nao cadastrado")
+            self.__tela.pop_up("Usuario nao cadastrado", "Nenhum usuario com essas credenciais encontrado")
 
     @property
     def usuarios(self):
@@ -34,24 +41,3 @@ class PessoaFisicaCtrl():
     def set_todos_false(self):
         for usuario in self.__usuarios:
             usuario.cadastrouHoje = False
-
-    def criador(self):
-        pass
-
-    def novo(self):
-        pass
-
-    def busca(self):
-        pass
-
-    def incluir(self):
-        pass
-
-    def listar(self):
-        pass
-
-    def alterar(self):
-        pass
-
-    def excluir(self):
-        pass

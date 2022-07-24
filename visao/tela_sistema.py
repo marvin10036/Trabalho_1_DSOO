@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 
 class TelaSistema(Tela):
     def __init__(self):
-        pass
+        self.__window = None
 
     def pop_up(self, titulo: str, msg: str):
         sg.Popup(titulo, msg)
@@ -119,10 +119,26 @@ class TelaSistema(Tela):
         print("0 - Voltar")
         return super()._seleciona_opcao_int(5)
 
-    def opcoes_menu_usuario(self):
-        super().imprime_titulo("Menu Usuario")
-        print("1 - Sign up")
-        print("2 - Log in")
-        print("3 - Avancar um dia")
-        print("0 - Fechar programa")
-        return super()._seleciona_opcao_int(3)
+    def init_components_menu_usuario(self):
+        layout = [
+            [sg.Text(" " * 80), sg.Button("Login", size=(7,1)), sg.Button("Signup",size=(7,1))],
+            [sg.Text(" ")],
+            [sg.Text(" ")],
+            [sg.Text("Sistema legal",
+                     size=(30, 1), font=('Arial', 22), justification='center')],
+            [sg.Text(" ")],
+            [sg.Text(" ")],
+            [sg.Button('Avancar um dia', size=(18,1)), sg.Text(" " * 35), sg.Button('Fechar programa', size=(18,1))],
+        ]
+        self.__window = sg.Window('Inicio do Sistema', default_element_size=(40, 1)).Layout(layout)
+
+    def menu_usuario_open(self):
+        self.init_components_menu_usuario()
+        button = self.__window.Read()
+        if button[0] == None:
+            return None
+        switcher = {"Fechar programa":0, "Signup":1, "Login": 2, "Avancar um dia":3}
+        return switcher[button[0]]
+
+    def close(self):
+        self.__window.Close()
