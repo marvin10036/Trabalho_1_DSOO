@@ -46,12 +46,12 @@ class CtrlSistema():
         usuario = self.__ctrl_usuario.signup()
         if usuario != None:
             while True:
-                self.__tela.imprime_linha_de_fechamento()
-                self.__tela.imprime_titulo("PESSOA JURIDICA DEVE SER VINCULADA A UM MERCADO")
-                estabelecimento = self.__ctrl_mercado.selecionar_mercado()
+                estabelecimento = self.__ctrl_mercado.menu()
                 if estabelecimento != None:
                     usuario.estabelecimento = estabelecimento
                     break
+                self.__tela.pop_up("Erro no cadastro",
+                                   "Pessoa juridica deve estar obrigatoriamente vinculada a um mercado")
 
     def programa_principal(self):
         while True:
@@ -75,7 +75,8 @@ class CtrlSistema():
 
     def criar_novo_registro(self):
         if self.__usuario_logado.cadastrouHoje:
-            self.__tela.imprime("Voce ja realizou um cadastro hoje, espere ate amanha")
+            self.__tela.pop_up("Limite maximo de cadastro diario",
+                               "Voce ja realizou um cadastro hoje, espere ate amanha")
             return
 
         try:
@@ -91,7 +92,7 @@ class CtrlSistema():
             # qualificadores_preenchidos = self.__preencher_qualificadores(produto)
             qualificadores_preenchidos = self.__ctrl_produto.preencher_qualificadores(produto)
 
-            print(qualificadores_preenchidos)
+
 
             self.__tela.pop_up("Registro de preco:", "Forneca o valor visto.")
             preco = self.__ctrl_preco.criador()
@@ -162,9 +163,9 @@ class CtrlSistema():
     def __menu_usuario(self):
         while True:
             condicao = False
-            opcao = self.__tela.opcoes_menu_usuario()
-            self.__tela.imprime_linha_de_fechamento()
-            if opcao == 0:
+            opcao = self.__tela.menu_usuario_open()
+            self.__tela.close()
+            if opcao == 0 or opcao == None:
                 return False
             elif opcao == 1:
                 self.signup()
@@ -177,7 +178,7 @@ class CtrlSistema():
 
     def passa_um_dia(self):
         self.__ctrl_usuario.setta_cadastrou_usuarios()
-        self.__tela.imprime("Sistema movido um dia a frente")
+        self.__tela.pop_up("Passagem de um dia", "Sistema movido um dia a frente")
 
     # def __detalhes_produto(self, produto: Produto):
     #     self.__tela.imprime_titulo("Detalhes produto")

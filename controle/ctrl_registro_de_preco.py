@@ -24,9 +24,15 @@ class CtrlRegistroDePreco():
     #         del(self.__registros[])
 
     def opcoes_iniciais(self):
-        busca = self.__tela.printar_opcoes_iniciais()
-        busca = self.pesquisar_produto(busca)
+        texto = self.__tela.opcoes_iniciais_open()
+        self.__tela.tela_close()
+
+        if texto == None:
+            return None
+
+        busca = self.pesquisar_produto(texto)
         if busca == None:
+            self.__tela.pop_up("Falha", "Produto nao encontrado")
             return None
         elif len(busca[1]) == 0: #se nao tiver qualificadores
             self.menu_ordenacao(busca[0])
@@ -75,7 +81,7 @@ class CtrlRegistroDePreco():
         if len(self.__registros) == 0:
             self.__tela.imprime("Nenhum registro foi realizado ainda")
         else:
-            self.__tela.printar_lista(self.__registros)
+            self.printar_lista(self.__registros)
 
     def pesquisar_produto(self, texto: str):
         registros_produto = []
@@ -85,6 +91,7 @@ class CtrlRegistroDePreco():
         except:
             produto = texto
         qualificadores = texto.split(" ", 1)[1:]
+
         for registro in self.__registros:
             if registro.produto.nome.upper() == produto.upper():
                 registros_produto.append(registro)
@@ -105,18 +112,22 @@ class CtrlRegistroDePreco():
         return(lista_retornada)
 
     def menu_ordenacao(self, lista):
-        opcao = self.__tela.mostrar_opcao_ordenacao()
+        opcao = self.__tela.opcao_ordenacao_open()
+        self.__tela.tela_close()
+
         if opcao == 1:
-            self.__tela.printar_lista(lista)
+            self.printar_lista(lista)
         elif opcao == 2:
             lista_ordenada = self.ordenar_por_preco(lista)
-            self.__tela.printar_lista(lista_ordenada)
+            self.printar_lista(lista_ordenada)
         elif opcao == 3:
             lista_ordenada = self.ordenar_por_confirmacoes(lista)
-            self.__tela.printar_lista(lista_ordenada)
-        else:
+            self.printar_lista(lista_ordenada)
+        elif opcao == 4:
             lista_ordenada = self.ordernar_por_data(lista)
-            self.__tela.printar_lista(lista_ordenada)
+            self.printar_lista(lista_ordenada)
+        else:
+            return None
 
     def ordenar_por_preco(self, lista): #A ideia e que retorne em uma
         for registro in lista:          #com apenas os qualificadores
@@ -185,6 +196,28 @@ class CtrlRegistroDePreco():
                     del (self.__registros[opcao - 1])
                     self.__tela.imprime("[item removido da lista de registros]")
                     break
+
+    def printar_lista(self, lista):
+        matriz = []
+        for registro in lista:
+            for preco in registro.precos:
+                item = []
+                item.append(f"{registro.produto.nome}")
+                item.append(f"{self.qualificadores_str(registro.qualificadores)}")
+                item.append(f"Mercado: {registro.mercado.nome}")
+                item.append(f"Preco: R$ {preco.valor}")
+                matriz.append(item)
+
+        self.__tela.printar_lista_open(matriz)
+        self.__tela.tela_close()
+
+    def qualificadores_str(self, lista_qualificadores: list):
+        texto = ""
+        for qualificador in lista_qualificadores:
+            texto += f"{qualificador.titulo}: {qualificador.descricao}, "
+        texto = texto[:-2]
+
+        return texto
 
 if __name__ == "__main__":
     ctrl = CtrlRegistroDePreco()
