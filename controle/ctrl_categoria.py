@@ -6,7 +6,6 @@ from persistencia.DAO_categoria import DAOCategoria
 
 class CtrlCategoria(AbstractCtrl):
     def __init__(self):
-        self.__mercados = []
         self.__DAO_proprio = DAOCategoria()
         self.__tela = TelaCategoria()
         self.__usuario_logado = None
