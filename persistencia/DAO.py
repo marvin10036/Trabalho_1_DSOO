@@ -35,3 +35,9 @@ class DAO(ABC):
 
     def get_all(self):
         return self.__cache.values()
+
+    def get_keys_list(self):
+        return self.__cache.keys()
+
+    def update(self):
+        self.__dump()

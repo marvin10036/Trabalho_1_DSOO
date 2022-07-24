@@ -49,6 +49,7 @@ class CtrlSistema():
                 estabelecimento = self.__ctrl_mercado.menu()
                 if estabelecimento != None:
                     usuario.estabelecimento = estabelecimento
+                    self.__ctrl_usuario.update_pessoa()
                     break
                 self.__tela.pop_up("Erro no cadastro",
                                    "Pessoa juridica deve estar obrigatoriamente vinculada a um mercado")
@@ -116,13 +117,15 @@ class CtrlSistema():
             registro_existente = self.__ctrl_registro.buscar(novo_registro)
             if registro_existente != None:
                 registro_existente.incluir_preco(novo_registro.precos[0])
+                self.__ctrl_registro.update_cache()
                 self.__tela.pop_up("Registro de produto ja existente.", "Adicionado preco ao registro.")
             else:
                 self.__ctrl_registro.incluir(novo_registro)
                 self.__tela.pop_up("Registro finalizado:", "Realizado com sucesso.")
 
             self.__usuario_logado.cadastrouHoje = True
-        except Exception:
+        except Exception as e:
+            print(e)
             self.__tela.pop_up("Registro de preco interrompido:", "Alguma variavel nao foi preenchida.")
             self.__usuario_logado.cadastrouHoje = False
 
