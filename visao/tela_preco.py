@@ -1,8 +1,7 @@
-from visao.tela import Tela
 import PySimpleGUI as sg
 
 
-class TelaPreco(Tela):
+class TelaPreco():
     def menu_criacao(self):
         while True:
             layout = [

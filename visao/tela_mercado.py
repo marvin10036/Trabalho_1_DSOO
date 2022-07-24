@@ -2,7 +2,7 @@ from visao.tela import Tela
 from visao.tela_menu_basico import TelaMenuBasico
 import PySimpleGUI as sg
 
-class TelaMercado(Tela):
+class TelaMercado():
     def __init__(self):
         self.__init_components()
 

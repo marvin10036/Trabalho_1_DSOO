@@ -23,7 +23,9 @@ class CtrlProduto:
         for qualificador in produto.qualificadores:
             nome_qualificadores.append(qualificador.titulo)
 
+        print(nome_qualificadores)
         valores_preenchidos = self.__tela.preencher_qualificadores(nome_qualificadores)
+        print(valores_preenchidos)
         if valores_preenchidos is None:
             return None
         else:
@@ -93,7 +95,7 @@ class CtrlProduto:
                 if opcao_selecionada is None:
                     self.__tela.pop_up('Erro ao excluir:', 'Favor selecionar uma opcao para excluir.')
                 else:
-                    self.excluir(opcao_selecionada)
+                    self.excluir(self.__lista_de_objetos()[opcao_selecionada])
 
             elif botao == 'EDITAR':
                 if opcao_selecionada is None:

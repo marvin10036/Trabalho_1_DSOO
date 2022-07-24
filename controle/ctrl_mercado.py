@@ -5,7 +5,6 @@ from persistencia.DAO_mercado import DAOMercado
 
 class CtrlMercado():
     def __init__(self):
-        self.__mercados = []
         self.__DAO_proprio = DAOMercado()
         self.__tela = TelaMercado()
         self.__usuario_logado = None

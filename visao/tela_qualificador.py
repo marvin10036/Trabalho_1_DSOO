@@ -3,32 +3,6 @@ import PySimpleGUI as sg
 
 
 class TelaQualificador(Tela):
-    def pede_titulo(self, qualificadores) -> str:
-        while True:
-            titulo = super()._pede_str("Insira o titulo do qualificador: ")
-            for qualificador in qualificadores:
-                if qualificador.titulo == titulo:
-                    print("Titulo já inserido no conjunto - tente novamente!")
-                    break
-            else:
-                return titulo
-
-    def pede_descricao(self) -> str:
-        return super()._pede_str("Insira a descricao: ")
-
-    def continuar(self, msg) -> bool:
-        print(msg)
-        entrada = input("Deseja inserir mais qualificadores? [S/N] ").capitalize()
-        if entrada == 'S':
-            return True
-        else:
-            return False
-
-    def imprime_qualificador(self, titulo: str, descricao: str):
-        if descricao != '':
-            print("- Titulo: {} \tDescricao: {}".format(titulo, descricao))
-        else:
-            print("- Titulo: {}".format(titulo))
 
     def menu_criacao(self):
         titulo_qualificadores = []
@@ -56,6 +30,8 @@ class TelaQualificador(Tela):
                 if len(titulo_qualificadores) == 0:
                     self.pop_up('Nenhum qualificador inserido.', 'Operacao cancelada.')
                 else:
+                    for qualif in titulo_qualificadores:
+                        print(qualif)
                     return titulo_qualificadores
             else:
                 return None
