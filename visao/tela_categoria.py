@@ -1,8 +1,7 @@
-from visao.tela import Tela
 from visao.tela_menu_basico import TelaMenuBasico
 import PySimpleGUI as sg
 
-class TelaCategoria(Tela):
+class TelaCategoria():
     def menu_opcoes(self, opcoes: list):
         return TelaMenuBasico().open(opcoes, "Tela categorias", "Menu categorias")
 

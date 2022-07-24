@@ -30,6 +30,8 @@ class TelaQualificador(Tela):
                 if len(titulo_qualificadores) == 0:
                     self.pop_up('Nenhum qualificador inserido.', 'Operacao cancelada.')
                 else:
+                    for qualif in titulo_qualificadores:
+                        print(qualif)
                     return titulo_qualificadores
             else:
                 return None
