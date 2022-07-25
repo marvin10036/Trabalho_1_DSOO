@@ -5,10 +5,7 @@ import os
 
 class DAORegistroDePreco(DAO):
     def __init__(self):
-        caminho = os.getcwd()
-        caminho = os.path.join(caminho, "controle/data/data_registro_de_preco.pkl")
-
-        super().__init__(caminho)
+        super().__init__("data/data_registro_de_preco.pkl")
 
     def add(self, objeto, identifier):
         if isinstance(objeto, RegistroDePreco) and isinstance(identifier, int):

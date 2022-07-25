@@ -4,10 +4,7 @@ import os
 
 class DAOPessoaJuridica(DAO):
     def __init__(self):
-        caminho = os.getcwd()
-        caminho = os.path.join(caminho, "controle/data/data_pessoa_juridica.pkl")
-
-        super().__init__(caminho)
+        super().__init__("data/data_pessoa_juridica.pkl")
 
     def add(self, objeto):
         if isinstance(objeto, PessoaJuridica) and isinstance(objeto.numDoc, int):
