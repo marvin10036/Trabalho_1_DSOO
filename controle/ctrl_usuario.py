@@ -34,3 +34,7 @@ class CtrlUsuario:
     def setta_cadastrou_usuarios(self):
         self.__pessoa_juridica_ctrl.set_todos_false()
         self.__pessoa_fisica_ctrl.set_todos_false()
+
+    def update_pessoa(self):
+        self.__pessoa_juridica_ctrl.update_cache()
+        self.__pessoa_fisica_ctrl.update_cache()

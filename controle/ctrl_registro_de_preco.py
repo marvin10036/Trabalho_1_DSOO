@@ -7,17 +7,20 @@ from entidade.qualificador import Qualificador
 from entidade.preco import Preco
 from entidade.produto import Produto
 
+from persistencia.DAO_registro_de_preco import DAORegistroDePreco
+
 class CtrlRegistroDePreco():
     def __init__(self):
-        self.__registros = []
+        self.__DAO_proprio = DAORegistroDePreco()
         self.__usuario_logado = None
         self.__tela = TelaRegistroDePreco()
 
     def set_usuario_logado(self, usuario: Usuario):
         self.__usuario_logado = usuario
 
+    @property
     def get_registros(self):
-        return self.__registros
+        return list(self.__DAO_proprio.get_all())
 
     # def excluir_registro(self, registro: RegistroDePreco):
     #     if isinstance(registro, RegistroDePreco):
@@ -59,7 +62,8 @@ class CtrlRegistroDePreco():
 
     def incluir(self, registro: RegistroDePreco):
         if isinstance(registro, RegistroDePreco):
-            self.__registros.append(registro)
+            identifier = self.highest_key_number()
+            self.__DAO_proprio.add(registro, identifier)
 
     def __valida_igualdade_qualificadores(self, registro: RegistroDePreco, registro_a_comparar: RegistroDePreco):
         for n in range(len(registro.qualificadores)):
@@ -69,19 +73,19 @@ class CtrlRegistroDePreco():
             return True
 
     def buscar(self, registro_a_comparar: RegistroDePreco):
-        for registro in self.__registros:
+        for registro in self.get_registros:
             if registro.produto.nome == registro_a_comparar.produto.nome and \
-                    registro.mercado == registro_a_comparar.mercado and \
+                    registro.mercado.nome == registro_a_comparar.mercado.nome and \
                     self.__valida_igualdade_qualificadores(registro, registro_a_comparar):
                 return registro
         else:
             return None
 
     def mostrar_lista_completa(self):
-        if len(self.__registros) == 0:
+        if len(self.get_registros) == 0:
             self.__tela.imprime("Nenhum registro foi realizado ainda")
         else:
-            self.printar_lista(self.__registros)
+            self.printar_lista(self.get_registros)
 
     def pesquisar_produto(self, texto: str):
         registros_produto = []
@@ -92,7 +96,7 @@ class CtrlRegistroDePreco():
             produto = texto
         qualificadores = texto.split(" ", 1)[1:]
 
-        for registro in self.__registros:
+        for registro in self.get_registros:
             if registro.produto.nome.upper() == produto.upper():
                 registros_produto.append(registro)
         if len(registros_produto) == 0:
@@ -169,7 +173,7 @@ class CtrlRegistroDePreco():
             self.__tela.imprime("1 - {}".format(texto_opcao_especial))
             count += 1
 
-        for registro in self.__registros:
+        for registro in self.get_registros:
             self.__tela.imprime("{}:".format(count))  #dados do objeto
             self.__tela.imprime("- Produto: {}".format(registro.produto.nome))
             for qualificador in registro.qualificadores:
@@ -184,7 +188,7 @@ class CtrlRegistroDePreco():
         self.__tela.imprime_linha_de_fechamento()
         return count - 1    #retorna numero de opcoes (sem contar o zero)
 
-    def excluir(self):
+    def excluir(self): #######problema, se n usar o metodo n tem problema
         self.__tela.imprime("\nEscolha uma opcao para ser excluida.")
         while True:
             opcao = self.__tela.seleciona_opcao_lista(self.listar())
@@ -218,6 +222,18 @@ class CtrlRegistroDePreco():
         texto = texto[:-2]
 
         return texto
+
+    def highest_key_number(self):
+        lista = self.__DAO_proprio.get_keys_list()
+        try:
+            valor_max = max(lista) + 1
+        except ValueError:
+            return 0
+        else:
+            return valor_max
+
+    def update_cache(self):
+        self.__DAO_proprio.update()
 
 if __name__ == "__main__":
     ctrl = CtrlRegistroDePreco()
