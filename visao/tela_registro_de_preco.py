@@ -29,7 +29,7 @@ class TelaRegistroDePreco(Tela):
     def opcoes_iniciais_open(self):
         self.init_components_opcoes_iniciais()
         button, values = self.__window.Read()
-        print(values)
+
         if button == "PESQUISAR":
             return values["texto"]
         return None
@@ -49,7 +49,6 @@ class TelaRegistroDePreco(Tela):
     def opcao_ordenacao_open(self):
         self.init_components_opcao_ordenacao()
         button, values = self.__window.Read()
-        print(button)
         return int(button)
 
     def init_components_printar_lista(self, matriz):
