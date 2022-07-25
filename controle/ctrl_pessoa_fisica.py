@@ -1,4 +1,3 @@
-from controle.abstract_ctrl import AbstractCtrl
 from entidade.pessoa_fisica import PessoaFisica
 from visao.tela_pessoa_fisica import TelaPessoaFisica
 from persistencia.DAO_pessoa_fisica import DAOPessoaFisica

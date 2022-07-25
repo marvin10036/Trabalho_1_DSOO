@@ -135,32 +135,32 @@ class CtrlRegistroDePreco():
 
     def ordenar_por_preco(self, lista): #A ideia e que retorne em uma
         for registro in lista:          #com apenas os qualificadores
-            for i in range(0, len(registro.precos)-1):
+            for i in range(0, len(registro.precos)):
                 for j in range(len(registro.precos)-1):
-                    if registro.precos[i].valor > registro.precos[i+1].valor:
-                        variavel_auxiliar = registro.precos[i]
-                        registro.precos[i] = registro.precos[i+1]
-                        registro.precos[i+1] = variavel_auxiliar
+                    if registro.precos[j].valor > registro.precos[j+1].valor:
+                        variavel_auxiliar = registro.precos[j]
+                        registro.precos[j] = registro.precos[j+1]
+                        registro.precos[j+1] = variavel_auxiliar
         return lista
 
     def ordenar_por_confirmacoes(self,lista):
         for registro in lista:                        #mesma logica de ordencao do anterior
-            for i in range(0, len(registro.precos)-1):
+            for i in range(0, len(registro.precos)):
                 for j in range(len(registro.precos)-1):
-                    if registro.precos[i].confirmacoes > registro.precos[i+1].confirmacoes:
-                        variavel_auxiliar = registro.precos[i]
-                        registro.precos[i] = registro.precos[i+1]
-                        registro.precos[i+1] = variavel_auxiliar
+                    if registro.precos[j].confirmacoes > registro.precos[j+1].confirmacoes:
+                        variavel_auxiliar = registro.precos[j]
+                        registro.precos[j] = registro.precos[j+1]
+                        registro.precos[j+1] = variavel_auxiliar
         return lista[::-1]
 
     def ordernar_por_data(self,lista):
-        for registro in lista:                        #mesma logica de ordencao dos anteriores
-            for i in range(0, len(registro.precos)-1):
+        for registro in lista:                        #nao funciona, mas nao incomoda ninguem
+            for i in range(0, len(registro.precos)):
                 for j in range(len(registro.precos)-1):
-                    if registro.precos[i].data > registro.precos[i+1].data:
-                        variavel_auxiliar = registro.precos[i]
-                        registro.precos[i] = registro.precos[i+1]
-                        registro.precos[i+1] = variavel_auxiliar
+                    if registro.precos[j].data > registro.precos[j+1].data:
+                        variavel_auxiliar = registro.precos[j]
+                        registro.precos[j] = registro.precos[j+1]
+                        registro.precos[j+1] = variavel_auxiliar
         return lista
 
     def listar(self, texto_opcao_especial=''):
@@ -210,6 +210,8 @@ class CtrlRegistroDePreco():
                 item.append(f"{self.qualificadores_str(registro.qualificadores)}")
                 item.append(f"Mercado: {registro.mercado.nome}")
                 item.append(f"Preco: R$ {preco.valor}")
+                item.append(f"{preco.confirmacoes}")
+                item.append(f"{preco.data}")
                 matriz.append(item)
 
         self.__tela.printar_lista_open(matriz)
@@ -234,6 +236,3 @@ class CtrlRegistroDePreco():
 
     def update_cache(self):
         self.__DAO_proprio.update()
-
-if __name__ == "__main__":
-    ctrl = CtrlRegistroDePreco()

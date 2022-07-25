@@ -124,12 +124,9 @@ class CtrlSistema():
                 self.__tela.pop_up("Registro finalizado:", "Realizado com sucesso.")
 
             self.__usuario_logado.cadastrou_hoje = True
-        except Exception as e:
-            print(e)
+        except Exception:
             self.__tela.pop_up("Registro de preco interrompido:", "Alguma variavel nao foi preenchida.")
             self.__usuario_logado.cadastrou_hoje = False
-
-        self.__tela.pop_up("Registro de preco finalizado:", "Criado com sucesso.")
 
     def buscar_registro(self):
         self.__ctrl_registro.opcoes_iniciais()

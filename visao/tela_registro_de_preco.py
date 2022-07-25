@@ -54,7 +54,7 @@ class TelaRegistroDePreco(Tela):
 
     def init_components_printar_lista(self, matriz):
         sg.theme("DarkAmber")
-        headings = ["Produto", "Qualificadores", "Mercado", "Preco"]
+        headings = ["Produto", "Qualificadores", "Mercado", "Preco", "Confirmacoes", "Data"]
 
         layout = [
             [sg.Table(values=matriz,
