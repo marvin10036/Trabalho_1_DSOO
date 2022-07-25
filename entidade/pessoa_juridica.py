@@ -2,8 +2,8 @@ from entidade.usuario import Usuario
 from entidade.mercado import Mercado
 
 class PessoaJuridica(Usuario):
-    def __init__(self,nome:str,numDoc:int, email: str):
-        super().__init__(nome,numDoc, email)
+    def __init__(self,nome:str,num_doc:int, email: str):
+        super().__init__(nome,num_doc, email)
         self.__estabelecimento = None
 
     @property
@@ -13,4 +13,3 @@ class PessoaJuridica(Usuario):
     @estabelecimento.setter
     def estabelecimento(self, new_estabelecimento):
         self.__estabelecimento = new_estabelecimento
-        

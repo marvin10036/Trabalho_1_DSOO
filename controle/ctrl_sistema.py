@@ -75,7 +75,7 @@ class CtrlSistema():
                 self.editar_dados()
 
     def criar_novo_registro(self):
-        if self.__usuario_logado.cadastrouHoje:
+        if self.__usuario_logado.cadastrou_hoje:
             self.__tela.pop_up("Limite maximo de cadastro diario",
                                "Voce ja realizou um cadastro hoje, espere ate amanha")
             return
@@ -123,11 +123,11 @@ class CtrlSistema():
                 self.__ctrl_registro.incluir(novo_registro)
                 self.__tela.pop_up("Registro finalizado:", "Realizado com sucesso.")
 
-            self.__usuario_logado.cadastrouHoje = True
+            self.__usuario_logado.cadastrou_hoje = True
         except Exception as e:
             print(e)
             self.__tela.pop_up("Registro de preco interrompido:", "Alguma variavel nao foi preenchida.")
-            self.__usuario_logado.cadastrouHoje = False
+            self.__usuario_logado.cadastrou_hoje = False
 
         self.__tela.pop_up("Registro de preco finalizado:", "Criado com sucesso.")
 
@@ -146,7 +146,7 @@ class CtrlSistema():
                 self.__ctrl_mercado.menu()
             elif opcao == 3:
                 self.__ctrl_produto.menu()
-            elif opcao == 4:
+            elif opcao == 4:        #inutilizada
                 self.__menu_registros()
 
     def __menu_registros(self):

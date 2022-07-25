@@ -1,11 +1,11 @@
 from abc import ABC
 
 class Usuario(ABC):
-    def __init__(self, nome:str, numDoc:int, email:str):
+    def __init__(self, nome:str, num_doc:int, email:str):
         self.__nome = nome
-        self.__numDoc = numDoc
+        self.__num_doc = num_doc
         self.__email = email
-        self.__cadastrouHoje = False
+        self.__cadastrou_hoje = False
 
     @property
     def nome(self):
@@ -16,12 +16,12 @@ class Usuario(ABC):
         self.__nome = new_nome
 
     @property
-    def numDoc(self):
-        return self.__numDoc
+    def num_doc(self):
+        return self.__num_doc
 
-    @numDoc.setter
-    def numDoc(self, new_numDoc:int):
-        self.__numDoc = new_numDoc
+    @num_doc.setter
+    def num_doc(self, new_num_doc:int):
+        self.__num_doc = new_num_doc
 
     @property
     def email(self):
@@ -32,9 +32,9 @@ class Usuario(ABC):
         self.__email = new_email
 
     @property
-    def cadastrouHoje(self):
-        return self.__cadastrouHoje
+    def cadastrou_hoje(self):
+        return self.__cadastrou_hoje
 
-    @cadastrouHoje.setter
-    def cadastrouHoje(self, new_cadastrouHoje:bool):
-        self.__cadastrouHoje = new_cadastrouHoje
+    @cadastrou_hoje.setter
+    def cadastrou_hoje(self, new_cadastrou_hoje:bool):
+        self.__cadastrou_hoje = new_cadastrou_hoje

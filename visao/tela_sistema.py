@@ -38,7 +38,6 @@ class TelaSistema(Tela):
             [sg.Button('1'), sg.Text('Menu categoria', size=(25, 1))],
             [sg.Button('2'), sg.Text('Menu mercado', size=(25, 1))],
             [sg.Button('3'), sg.Text('Menu produto', size=(25, 1))],
-            [sg.Button('4'), sg.Text('Menu registro', size=(25, 1))],
             [sg.Button('0'), sg.Text('Logoff', size=(25, 1))],
         ]
         window = sg.Window('Menu dados', default_element_size=(40, 1)).Layout(layout)
@@ -54,8 +53,6 @@ class TelaSistema(Tela):
             return 2
         elif button == '3':
             return 3
-        elif button == '4':
-            return 4
 
     def opcoes_menu_principal(self) -> int:
         super().imprime_titulo("Menu principal")

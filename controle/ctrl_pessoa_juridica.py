@@ -15,7 +15,7 @@ class PessoaJuridicaCtrl:
             return None
 
         for usuario in self.usuarios:
-            if usuario.numDoc == info["num_doc"] or usuario.email == info["email"]:
+            if usuario.num_doc == info["num_doc"] or usuario.email == info["email"]:
                 self.__tela.pop_up("Erro de cadastro repetido", "Usuario com esse CNPJ ou email ja cadastrado")
                 break
         else:
@@ -30,7 +30,7 @@ class PessoaJuridicaCtrl:
             return None
 
         for usuario in self.usuarios:
-            if str(usuario.numDoc) == info["num_doc"] and usuario.email == info["email"]:
+            if str(usuario.num_doc) == info["num_doc"] and usuario.email == info["email"]:
                 return(usuario)
         else:
             self.__tela.pop_up("Usuario nao cadastrado", "Nenhum usuario com essas credenciais encontrado")
@@ -41,7 +41,7 @@ class PessoaJuridicaCtrl:
 
     def set_todos_false(self):
         for usuario in self.usuarios:
-            usuario.cadastrouHoje = False
+            usuario.cadastrou_hoje = False
 
     def update_cache(self):
         self.__DAO_proprio.update()
